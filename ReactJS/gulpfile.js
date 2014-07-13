@@ -8,55 +8,61 @@ var gulp = require('gulp'),
     react = require('gulp-react');
 
 
-var paths = {
-  src: 'src/**',
-  dest: 'target/',
-  jsxScripts: 'target/**/*.jsx',
-  jsScripts: 'target/**/*.js',
-  stylus: 'target/**/*.styl',
+var bases = {
+ src: 'src/',
+ target: 'target/',
 };
 
-gulp.task('clean', function() {
-  return gulp.src(paths.dest, {read: false})
+var paths = {
+  all: "**",
+  jsx: '**/*.jsx',
+  js: '**/*.js',
+  stylus: '**/*.styl',
+  html: '**/*.html',
+  md: '**/*.md'
+};
+
+gulp.task('clean-target', function() {
+  return gulp.src(bases.target, {read: false})
              .pipe(clean({force: true}));
 });
 
-gulp.task('copy', function() {
-  return gulp.src(paths.src)
-      .pipe(gulp.dest(paths.dest));
+gulp.task('copy', ['clean-target'], function() {
+  return gulp.src(paths.all, {cwd: bases.src})
+      .pipe(gulp.dest(bases.target));
 });
 
-gulp.task('stylus', function () {
-  gulp.src(paths.stylus)
+gulp.task('stylus', ['copy'], function () {
+  return gulp.src(paths.stylus, {cwd: bases.target})
     .pipe(stylus({errors: true}))
-    .pipe(gulp.dest(paths.dest));
+    .pipe(gulp.dest(bases.target));
 });
 
-gulp.task('scripts', function() {
+gulp.task('scripts', ['copy'], function() {
   var stream = streamqueue({objectMode: true});
 
-  // js scripts
-  /*stream.queue(gulp.src(paths.jsScripts)
-                  .pipe(jshint('./.jshintrc'))
-                  .pipe(jshint.reporter(stylish)));*/
-
   // jsx scripts
-  stream.queue(gulp.src(paths.jsxScripts)
+  stream.queue(gulp.src(paths.jsx, {cwd: bases.target})
                   .pipe(react())
                   .pipe(jshint('./.jshintrc'))
                   .pipe(jshint.reporter(stylish)));
 
   // copy to dest
   return stream.done()
-              .pipe(gulp.dest(paths.dest));
+              .pipe(gulp.dest(bases.target));
+});
+
+gulp.task('clean-templates', ['stylus', 'scripts'], function() {
+  return gulp.src([paths.md, paths.stylus, paths.jsx], {read: false, cwd: bases.target})
+             .pipe(clean({force: true}));
 });
 
 gulp.task('watch', function() {
-  gulp.watch(paths.jsxScripts, ['scripts']);
-  gulp.watch(paths.jsScripts, ['scripts']);
-  gulp.watch(paths.stylus, ['stylus']);
+  gulp.watch([bases.src + paths.jsx,
+              bases.src + paths.js,
+              bases.src + paths.stylus,
+              bases.src + paths.html], ['default']);
 });
 
 
-gulp.task('default', ['copy', 'stylus', 'scripts']);
-gulp.task('dev', ['default', 'watch']);
+gulp.task('default', ['clean-target', 'copy', 'stylus', 'scripts', 'clean-templates']);
