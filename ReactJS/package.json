@@ -1,0 +1,17 @@
+{
+  "name": "ReactJS",
+  "version": "0.0.1",
+  "description": "Examples using ReactJS",
+  "private": false,
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.6.2",
+    "gulp-stylus": "^1.0.0",
+    "gulp-jshint": "^1.5.5",
+    "gulp-concat": "^2.2.0",
+    "jshint-stylish": "^0.1.5",
+    "streamqueue": "0.0.7",
+    "gulp-clean": "^0.2.4",
+    "gulp-react": "^0.3.3"
+  }
+}
