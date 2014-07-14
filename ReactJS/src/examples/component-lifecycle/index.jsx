@@ -29,13 +29,9 @@
         addNotification: function (msg, startFresh) {
             var self = this;
             setTimeout(function() {
-                var currentNotifications;
-                if (startFresh) {
-                    currentNotifications = [msg];
-                } else {
-                   currentNotifications = self.state.notifications.concat([msg]);
-                }
-                self.setState({notifications: currentNotifications});
+                self.setState({
+                  notifications: (startFresh ? [] : self.state.notifications).concat([msg])
+                });
             }, 0);
         },
 
