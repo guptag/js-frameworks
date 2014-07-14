@@ -6,7 +6,7 @@
     var Notifications = React.createClass({
         render: function() {
             var nodes = this.state.notifications.map(function (notification, index) {
-                 return <li className="notifcation">{notification}</li>;
+                 return <li className="notifcation" key={index}>{notification}</li>;
              });
 
              return (
@@ -64,7 +64,7 @@
               title: "Hello World (default)",
               NotificationComponent: {
                 addNotification: function(msg) {
-                  console.log("addNotification - noop");
+                  console.log("addNotification - noop", msg);
                 }
               }
             };
@@ -78,20 +78,20 @@
             this.props.NotificationComponent.addNotification("componentDidMount");
         },
 
-        componentWillReceiveProps: function(nextProps) {
+        componentWillReceiveProps: function(/*nextProps*/) {
             this.props.NotificationComponent.addNotification("componentWillReceiveProps");
         },
 
-        shouldComponentUpdate: function(nextProps, nextStat) {
+        shouldComponentUpdate: function(/*nextProps, nextState*/) {
             this.props.NotificationComponent.addNotification("shouldComponentUpdate");
             return true;
         },
 
-        componentWillUpdate: function (nextProps, nextState) {
+        componentWillUpdate: function (/*nextProps, nextState*/) {
             this.props.NotificationComponent.addNotification("componentWillUpdate");
         },
 
-        componentDidUpdate: function (prevProps, prevState) {
+        componentDidUpdate: function (/*prevProps, prevState*/) {
             this.props.NotificationComponent.addNotification("componentDidUpdate");
         },
 
