@@ -1,4 +1,5 @@
 /** @jsx React.DOM */
+    //http://facebook.github.io/react/docs/component-specs.html
     var Notifications = React.createClass({
         render: function() {
             var nodes = this.state.notifications.map(function (msg, index) {
@@ -6,9 +7,12 @@
              });
 
              return (
-                <ul className="notifcationlist">
-                    {nodes}
-                </ul>
+                <div>
+                  <header>Notifications</header>
+                  <ul className="notifcationlist">
+                      {nodes}
+                  </ul>
+                </div>
              );
         },
 
@@ -22,18 +26,20 @@
             var currentNotifications = this.state.notifications;
             currentNotifications.push(msg);
             this.setState({notifications: currentNotifications});
+        },
+
+        clear: function () {
+          this.setState({notifications: []});
         }
     });
-
     NotificationComponent = React.renderComponent(<Notifications/>, $("#notifications")[0]);
 
 
 
-
-    var SimpleComponent = React.createClass({
+    var HelloWorld = React.createClass({
         render: function() {
             this.props.NotificationComponent.addNotification("In Render");
-            return <div>Hello {this.props.name}</div>;
+            return <div>{this.props.title}</div>;
         },
 
         getInitialState: function () {
@@ -44,10 +50,10 @@
         getDefaultProps: function () {
            this.props.NotificationComponent.addNotification("Get Default Props");
            return {
-              name: "Default",
+              title: "Hello World (default)",
               NotificationComponent: {
                 addNotification: function(msg) {
-                  alert(msg);
+                  console.log("addNotification - noop");
                 }
               }
             };
@@ -83,29 +89,45 @@
         }
     });
 
-    var ApplicationComponent = React.createClass({
+    var Actions = React.createClass({
         render: function() {
             return (
-                <SimpleComponent name={this.state.name} NotificationComponent={NotificationComponent}/>
+                <div>
+                  <button disabled={this.state.helloWorldComponent !== null ? "disabled" : ""} onClick={this.createComponent}>Create Component</button>
+                  <button disabled={this.state.helloWorldComponent === null ? "false" : ""} onClick={this.updateComponentProps}>Update Component</button>
+                  <button disabled={this.state.helloWorldComponent === null ? "false" : ""} onClick={this.deleteComponent}>Remove Component</button>
+                </div>
             );
         },
 
         getInitialState: function () {
             return {
-              name: "world (created) "
+              updateCount: 0,
+              helloWorldComponent: null
             };
         },
 
-        componentDidMount: function () {
-          var self = this;
-          setTimeout(function() {
-              self.setState({name: "world (updated)"});
-          }, 1000);
-
-          setTimeout(function() {
-              self.setState({name: "world (updated again)"});
-          }, 2000);
+        createComponent: function () {
+            this.props.NotificationComponent.addNotification("");
+            this.setState({
+              helloWorldComponent: React.renderComponent(<HelloWorld title={"Hello World"} NotificationComponent={this.props.NotificationComponent}/>, $("#helloworld")[0]),
+              updateCount: 0
+            });
         },
+
+        updateComponentProps: function () {
+            this.props.NotificationComponent.addNotification("");
+            this.setState({updateCount: this.state.updateCount + 1});
+            this.state.helloWorldComponent.setProps({title: "Hello World Updated (" + this.state.updateCount + ")"});
+        },
+
+        deleteComponent: function () {
+          this.props.NotificationComponent.addNotification("");
+          React.unmountComponentAtNode($("#helloworld")[0]);
+          this.setState({
+              helloWorldComponent: null
+          });
+        }
     });
 
-    React.renderComponent(<ApplicationComponent NotificationComponent={NotificationComponent}/>, $("#appcomponent")[0]);
+    React.renderComponent(<Actions NotificationComponent={NotificationComponent}/>, $("#actions")[0]);

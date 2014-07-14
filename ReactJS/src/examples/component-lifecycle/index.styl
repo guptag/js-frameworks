@@ -1,5 +1,69 @@
+*
+ margin 0
+ padding 0
+ box-sizing border-box
+
+html, body
+  height 100%
+
 body
-  font-family: 'Lucida Grande', verdana, sans-serif;
-  color: #FFF;
-  background: #171D25;
+  font-family 'Lucida Grande', verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding 10px
+  font-size 15px
+  font-style normal
+  font-variant normal
+  font-weight normal
+  background-color #E6ECF1
+  color #333
+
+
+#root
+  header
+    padding 30px 20px
+
+    &:before
+      content: '';
+      width 10px;
+      background-color #00AEEF;
+      float left;
+      height 50px;
+      margin-right 5px;
+
+  #helloworld
+    background #FFF
+    border-radius 6px
+    border 1px solid #00AEEF
+    box-shadow 5px 5px 10px rgba(0, 0, 0, 0.1)
+    margin 10px 0 0 30px
+    text-align center
+    width 400px
+    padding 40px
+    font-size 1.5em
+
+#notifications
+  position absolute
+  top 20px
+  right 25px
+  width 500px
+  height 600px
+  overflow scroll
+  color #FFF
+  padding: 5px 0 0 20px
+  background #171D25
+  float left
+
+  header
+    color #00AEEF
+    font-size 1.2em
+    text-decoration underline
+    padding 10px 5px
+
+  ul
+    list-style none
+
+    li:before
+      content: "\00BB \0020";
+
+
 
