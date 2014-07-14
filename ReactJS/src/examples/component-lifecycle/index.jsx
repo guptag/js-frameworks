@@ -2,8 +2,8 @@
     //http://facebook.github.io/react/docs/component-specs.html
     var Notifications = React.createClass({
         render: function() {
-            var nodes = this.state.notifications.map(function (msg, index) {
-                 return <li className="notifcation" key={index}>{msg}</li>;
+            var nodes = this.state.notifications.map(function (notification, index) {
+                 return <li className="notifcation">{notification}</li>;
              });
 
              return (
@@ -16,16 +16,27 @@
              );
         },
 
+        componentDidMount: function() {
+          console.log("notifications mounted");
+        },
+
         getInitialState: function () {
             return {
               notifications: []
             };
         },
 
-        addNotification: function (msg) {
-            var currentNotifications = this.state.notifications;
-            currentNotifications.push(msg);
-            this.setState({notifications: currentNotifications});
+        addNotification: function (msg, startFresh) {
+            var self = this;
+            setTimeout(function() {
+                var currentNotifications;
+                if (startFresh) {
+                    currentNotifications = [msg];
+                } else {
+                   currentNotifications = self.state.notifications.concat([msg]);
+                }
+                self.setState({notifications: currentNotifications});
+            }, 0);
         },
 
         clear: function () {
@@ -48,7 +59,7 @@
         },
 
         getDefaultProps: function () {
-           this.props.NotificationComponent.addNotification("Get Default Props");
+           this.props.NotificationComponent.addNotification("Get Default Props", true);
            return {
               title: "Hello World (default)",
               NotificationComponent: {
