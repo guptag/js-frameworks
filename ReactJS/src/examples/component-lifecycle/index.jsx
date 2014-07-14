@@ -1,5 +1,8 @@
 /** @jsx React.DOM */
-    //http://facebook.github.io/react/docs/component-specs.html
+
+    // Isolated Component - Listens for events from other React components and renders to DOM
+    // Cannot be part of the actual application since the events can occur before the app dom is mounted
+    // Use this pattern sparingly
     var Notifications = React.createClass({
         render: function() {
             var nodes = this.state.notifications.map(function (notification, index) {
@@ -8,7 +11,7 @@
 
              return (
                 <div>
-                  <header>Notifications</header>
+                  <header>Events</header>
                   <ul className="notifcationlist">
                       {nodes}
                   </ul>
@@ -39,23 +42,24 @@
           this.setState({notifications: []});
         }
     });
-    NotificationComponent = React.renderComponent(<Notifications/>, $("#notifications")[0]);
+    var NotificationInstance = React.renderComponent(<Notifications/>, $("#notifications")[0]);
 
 
 
+    // This Component is created and disposed dynamically from Application
     var HelloWorld = React.createClass({
         render: function() {
-            this.props.NotificationComponent.addNotification("In Render");
+            this.props.NotificationComponent.addNotification("render");
             return <div>{this.props.title}</div>;
         },
 
         getInitialState: function () {
-             this.props.NotificationComponent.addNotification("Get Initial State");
+             this.props.NotificationComponent.addNotification("getInitialState");
              return {};
         },
 
         getDefaultProps: function () {
-           this.props.NotificationComponent.addNotification("Get Default Props", true);
+           this.props.NotificationComponent.addNotification("getDefaultProps", true);
            return {
               title: "Hello World (default)",
               NotificationComponent: {
@@ -67,42 +71,45 @@
         },
 
         componentWillMount: function () {
-            this.props.NotificationComponent.addNotification("Component Will Mount");
+            this.props.NotificationComponent.addNotification("componentWillMount");
         },
 
         componentDidMount: function () {
-            this.props.NotificationComponent.addNotification("Component Did Mount");
+            this.props.NotificationComponent.addNotification("componentDidMount");
         },
 
         componentWillReceiveProps: function(nextProps) {
-            this.props.NotificationComponent.addNotification("Component Will Receive Props");
+            this.props.NotificationComponent.addNotification("componentWillReceiveProps");
         },
 
         shouldComponentUpdate: function(nextProps, nextStat) {
-            this.props.NotificationComponent.addNotification("Should Component Update");
+            this.props.NotificationComponent.addNotification("shouldComponentUpdate");
             return true;
         },
 
         componentWillUpdate: function (nextProps, nextState) {
-            this.props.NotificationComponent.addNotification("Component Will Update");
+            this.props.NotificationComponent.addNotification("componentWillUpdate");
         },
 
         componentDidUpdate: function (prevProps, prevState) {
-            this.props.NotificationComponent.addNotification("Component Did Update");
+            this.props.NotificationComponent.addNotification("componentDidUpdate");
         },
 
         componentWillUnmount: function () {
-            this.props.NotificationComponent.addNotification("Component will unmount");
+            this.props.NotificationComponent.addNotification("componentWillUnmount");
         }
     });
 
-    var Actions = React.createClass({
+    var Application = React.createClass({
         render: function() {
             return (
-                <div>
-                  <button disabled={this.state.helloWorldComponent !== null ? "disabled" : ""} onClick={this.createComponent}>Create Component</button>
-                  <button disabled={this.state.helloWorldComponent === null ? "false" : ""} onClick={this.updateComponentProps}>Update Component</button>
-                  <button disabled={this.state.helloWorldComponent === null ? "false" : ""} onClick={this.deleteComponent}>Remove Component</button>
+                <div id="root">
+                  <div id="helloworld"></div>
+                  <div id="actions">
+                    <button className="ff_btn btn_green" disabled={this.state.helloWorldComponent !== null ? "disabled" : ""} onClick={this.createComponent}>Create Component</button>
+                    <button className="ff_btn btn_blue" disabled={this.state.helloWorldComponent === null ? "false" : ""} onClick={this.updateComponentProps}>Update Component</button>
+                    <button className="ff_btn btn_orange" disabled={this.state.helloWorldComponent === null ? "false" : ""} onClick={this.deleteComponent}>Remove Component</button>
+                  </div>
                 </div>
             );
         },
@@ -137,4 +144,4 @@
         }
     });
 
-    React.renderComponent(<Actions NotificationComponent={NotificationComponent}/>, $("#actions")[0]);
+    React.renderComponent(<Application NotificationComponent={NotificationInstance}/>, $("#content")[0]);
