@@ -1,12 +1,21 @@
     /** @jsx React.DOM */
     var Ticker = React.createClass({
         render: function() {
-            return <div>{this.props.ticker}</div>;
+            return (<div key={this.props.ticker.symbol}>
+              <span>{this.props.ticker.symbol}</span>&nbsp;
+              <span>{(this.props.ticker.open).toFixed(2)}</span>&nbsp;
+              <span>{(this.props.ticker.open + this.props.ticker.dayChange).toFixed(2)}</span>&nbsp;
+              <span>{this.props.ticker.dayChange}</span>
+            </div>);
         },
 
         getDefaultProps: function () {
            return {
-              ticker: ""
+              ticker: {
+                symbol: "",
+                open: 0,
+                dayChange: 0
+              }
             };
         }
     });
@@ -14,51 +23,42 @@
 
     var TickerList = React.createClass({
         render: function() {
-            return <div>{this.props.title}</div>;
+            var tickerNodes = this.state.tickerData.map(function(ticker) {
+              return <Ticker ticker={ticker}></Ticker>;
+            })
+
+            return (<div id="tickerpanel">
+                      {tickerNodes}
+                    </div>);
         },
 
         getInitialState: function () {
-            this.props.NotificationComponent.addNotification({
-              msg: "getInitialState",
-              addlInfo: ["Invoked once before the component is mounted", "The return value will be used as the initial value of this.state"]
-            });
-            return {};
+            return {
+              tickerData:[]
+            };
         },
 
-        componentWillMount: function () {
+        loadData: function () {
+           var latestData = TickerData.getLatest();
+           this.setState({
+              tickerData: latestData
+           });
         },
 
         componentDidMount: function () {
-        },
-
-        componentWillReceiveProps: function(/*nextProps*/) {
-        },
-
-        shouldComponentUpdate: function(/*nextProps, nextState*/) {
-        },
-
-        componentWillUpdate: function (/*nextProps, nextState*/) {
-        },
-
-        componentDidUpdate: function (/*prevProps, prevState*/) {
+          this.interval = setInterval(this.loadData, 1000);
         },
 
         componentWillUnmount: function () {
+          clearInterval(this.interval);
         }
     });
 
     var Application = React.createClass({
         render: function() {
             return (
-                <div id="tickerlist"></div>
+                <TickerList></TickerList>
             );
-        },
-
-        getInitialState: function () {
-            return {
-              updateCount: 0,
-              helloWorldComponent: null
-            };
         }
     });
 
