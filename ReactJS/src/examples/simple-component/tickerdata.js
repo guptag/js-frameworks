@@ -2,86 +2,86 @@
 
     var activeTickers = [
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "MSFT",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "GOOGL",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "LNKD",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "NFLX",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "FB",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "TWTR",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "YHOO",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "CRM",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "GE",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "GM",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "BBY",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "C",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "JPM",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         },
 
         {
-            ticker: "MSFT",
-            open: getRandomNumberInRange(40, 50)
+            symbol: "BAC",
+            open: getRandomNumberInRange(40, 50),
             dayChange: 0
         }
     ];
@@ -93,20 +93,22 @@
 
     function getrandomMultiplier()
     {
-        return (Math.random() * 100) % 2 === 0 ? 1 : -1;
+        return parseInt(Math.random() * 13) % 2 === 0 ? 1 : -1;
     }
 
     w.TickerData = new function () {
-        this.getLatestPriceData = function () {
+        this.getLatest = function () {
             activeTickers.forEach(function(ticker) {
-                ticker.dayChange = ticker.open + (getrandomMultiplier() * getRandomNumberInRange(0, 10) * ticker.open);
+                ticker.dayChange = (getrandomMultiplier() * getRandomNumberInRange(0, 1) * ((ticker.open + ticker.dayChange)/100));
 
-                if (ticker.dayChange > (10 * ticker.open / 100)) {
-                    ticker.dayChange -=  (4 * ticker.open / 100);
-                } else if (ticker.dayChange < (10 * ticker.open / 100)) {
-                    ticker.dayChange +=  (4 * ticker.open / 100);
+                console.log(ticker.dayChange);
+                if (ticker.dayChange > (2 * ticker.open / 100)) {
+                    ticker.dayChange -=  (0.5 * ticker.open / 100);
+                } else if (ticker.dayChange < (2 * ticker.open / 100)) {
+                    ticker.dayChange +=  (0.5 * ticker.open / 100);
                 }
 
+                ticker.open = +ticker.open.toFixed(2);
                 ticker.dayChange = +ticker.dayChange.toFixed(2);
             });
 
