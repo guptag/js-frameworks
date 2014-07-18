@@ -1,16 +1,13 @@
     /** @jsx React.DOM */
-    var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
-    var Ticker = React.createClass({
+    var TickerItem = React.createClass({
         render: function() {
             return (
-              <ReactCSSTransitionGroup key={this.props.ticker.symbol} transitionName="ticker">
-                  <div key={this.props.ticker.symbol} className={"ticker " + (this.props.ticker.dayChange > 0 ? 'up' : 'down')}>
-                    <span>{this.props.ticker.symbol}</span>&nbsp;
-                    <span>{(this.props.ticker.open).toFixed(2)}</span>&nbsp;
-                    <span>{(this.props.ticker.open + this.props.ticker.dayChange).toFixed(2)}</span>&nbsp;
-                    <span>{this.props.ticker.dayChange}</span>
-                  </div>
-              </ReactCSSTransitionGroup>
+              <div key={this.props.ticker.symbol} className={"ticker " + (this.props.ticker.dayChange > 0 ? 'up' : 'down')}>
+                <span>{this.props.ticker.symbol}</span>&nbsp;
+                <span>{(this.props.ticker.open).toFixed(2)}</span>&nbsp;
+                <span>{(this.props.ticker.open + this.props.ticker.dayChange).toFixed(2)}</span>&nbsp;
+                <span>{this.props.ticker.dayChange}</span>
+              </div>
             );
         },
 
@@ -29,7 +26,7 @@
     var TickerList = React.createClass({
         render: function() {
             var tickerNodes = this.state.tickerData.map(function(ticker) {
-              return <Ticker ticker={ticker}></Ticker>;
+              return <TickerItem ticker={ticker}></TickerItem>;
             })
 
             return (<div id="tickerpanel">
@@ -59,12 +56,4 @@
         }
     });
 
-    var Application = React.createClass({
-        render: function() {
-            return (
-                <TickerList></TickerList>
-            );
-        }
-    });
-
-    React.renderComponent(<Application/>, $("#content")[0]);
+    React.renderComponent(<TickerList/>, $("#content")[0]);

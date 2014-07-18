@@ -96,8 +96,25 @@
         return parseInt(Math.random() * 13) % 2 === 0 ? 1 : -1;
     }
 
+    var getAscComparator = function(property) {
+        return function(a, b) {
+            var aVal = a[property] || 0,
+                bVal = b[property] || 0;
+            return (aVal === bVal) ? (a.name < b.name ? -1 : 1) : (aVal < bVal ? -1 : 1);
+        };
+    };
+
+    var getDescComparator = function(property) {
+        return function(a, b) {
+            var aVal = a[property] || 0,
+                bVal = b[property] || 0;
+            return (aVal === bVal) ? (a.name > b.name ? -1 : 1) : (aVal > bVal ? -1 : 1);
+        };
+    };
+
     w.TickerData = new function () {
-        this.getLatest = function () {
+
+        this.getLatest = function (sortBy, showFilter) {
             activeTickers.forEach(function(ticker) {
                 ticker.dayChange = (getrandomMultiplier() * getRandomNumberInRange(0, 1) * ((ticker.open + ticker.dayChange)/100));
 
@@ -111,7 +128,24 @@
                 ticker.dayChange = +ticker.dayChange.toFixed(2);
             });
 
-            return activeTickers;
+
+            //filter
+            var filteredList = activeTickers.filter(function (ticker) {
+                switch(showFilter.toLowerCase()) {
+                    case "all" : return true;
+                    case "gainers": return (ticker.dayChange > 0);
+                    case "losers": return (ticker.dayChange < 0);
+                };
+
+                return true;
+            });
+
+            //sort
+            filteredList.sort(sortBy === "name" ? getAscComparator("name") : getDescComparator("dayChange"));
+
+            console.log(sortBy, showFilter, filteredList);
+
+            return filteredList;
         }
     }
 })(window)
