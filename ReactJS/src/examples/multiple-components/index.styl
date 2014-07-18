@@ -1,0 +1,40 @@
+
+body
+  font-family 'Lucida Grande', verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding 10px
+  font-size 15px
+  font-style normal
+  font-variant normal
+  font-weight normal
+  background-color #E6ECF1
+  color #333
+
+
+body > header
+    padding 30px 20px
+
+    &:before
+      content: '';
+      width 10px;
+      background-color #00AEEF;
+      float left;
+      height 50px;
+      margin-right 5px;
+
+body > footer
+    font-size 12px
+    font-style italic
+    margin 10px 25px
+
+.ticker
+  text-align center
+  color black
+  -webkit-transition: all 1s ease;
+
+  &.up
+      color green
+
+  &.down
+      color red
+
