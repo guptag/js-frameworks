@@ -2,7 +2,7 @@
     var TickerItem = React.createClass({
         render: function() {
             return (
-              <div key={this.props.ticker.symbol} className={"ticker " + (this.props.ticker.dayChange > 0 ? 'up' : 'down')}>
+              <div className={"ticker " + (this.props.ticker.dayChange > 0 ? 'up' : 'down')}>
                 <span>{this.props.ticker.symbol}</span>&nbsp;
                 <span>{(this.props.ticker.open).toFixed(2)}</span>&nbsp;
                 <span>{(this.props.ticker.open + this.props.ticker.dayChange).toFixed(2)}</span>&nbsp;
@@ -26,7 +26,7 @@
     var TickerList = React.createClass({
         render: function() {
             var tickerNodes = this.state.tickerData.map(function(ticker) {
-              return <TickerItem ticker={ticker}></TickerItem>;
+              return <TickerItem ticker={ticker} key={ticker.symbol}></TickerItem>;
             })
 
             return (<div id="tickerpanel">
@@ -48,7 +48,7 @@
         },
 
         componentDidMount: function () {
-          this.interval = setInterval(this.loadData, 1000);
+          this.interval = setInterval(this.loadData, 2000);
         },
 
         componentWillUnmount: function () {
