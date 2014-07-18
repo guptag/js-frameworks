@@ -93,7 +93,7 @@
     var OptionPanel = React.createClass({
         getDefaultProps: function () {
            return {
-              refreshIntervalInSec: 1,
+              refreshIntervalInSec: 2,
               sortBy: "name",
               showFilter: "all",
               onOptionsUpdated: function() {}
@@ -172,7 +172,7 @@
             return {
               sortBy: "name",
               showFilter: "all",
-              refreshIntervalInSec: 1
+              refreshIntervalInSec: 2
             };
         },
 
