@@ -1,21 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ReactJS - Component Keys</title>
-  <meta name="description" content="ReactJS - Component Keys" />
+  <title>ReactJS - Component keys and node reconciliation in lists</title>
+  <meta name="description" content="ReactJS - Component keys and node reconciliation in lists" />
   <meta charset="utf-8">
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <header>
       <h2>ReactJS</h2>
-      <span>Component keys in lists</span>
+      <span>Component keys and node reconciliation in lists</span>
     </header>
+    <div class="info">
+      This page visualizes how React reconciles the dom nodes when the underlying list data source is changed. According to the
+      <a href="http://facebook.github.io/react/docs/multiple-components.html#dynamic-children" target="_blank">
+      ReactJs documentation</a>, here is how it does the reconciliation:
+      <blockquote>When React reconciles the keyed children, it will ensure that any child with key will be reordered (instead of clobbered) or destroyed (instead of reused).</blockquote>
+    </div>
+    <div class="notes">
+        <h3>Visual Reference</h3>
+        <div>
+           <span class="item highlight">1</span> -> <span class="item">1</span>
+           <span>This animation means React created a new dom node. See how all nodes are recreated when random keys are used (don't use this)</span>
+        </div>
+        <div>
+           <span class="item" style="background-color:#D89858">1</span> -> <span class="item" style="background-color:#D89858">5</span>
+           <span>Color code mismatch. React reused an existing node for the new data item. This behavior will be seen when default keys are used.</span>
+        </div>
+    </div>
     <div id="content"></div>
     <footer>
       <span>Based on these awesome articles:</span><br/>
       <a href="https://coderwall.com/p/jdybeq" target="_blank">https://coderwall.com/p/jdybeq</a><br/>
-      <a href="http://calendar.perfplanet.com/2013/diff/" target="_blank">http://calendar.perfplanet.com/2013/diff/</a>
+      <a href="http://calendar.perfplanet.com/2013/diff/" target="_blank">http://calendar.perfplanet.com/2013/diff/</a><br/>
+
     </footer>
     <script type="text/javascript" src="jquery-1.9.1.js"></script>
     <script type="text/javascript" src="react-with-addons.js"></script>
