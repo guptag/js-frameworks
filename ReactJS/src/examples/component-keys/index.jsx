@@ -6,8 +6,13 @@
             });
 
             return (
-              <div className={"itemlist"}>
-                  {itemNodes}
+              <div className={"displayrow clearfix"}>
+                <div className={"title"}>
+                    Reference color codes
+                </div>
+                <div className={"itemlist"}>
+                    {itemNodes}
+                </div>
               </div>
             );
         },
@@ -27,8 +32,13 @@
             });
 
             return (
-              <div className={"itemlist"}>
-                  {itemNodes}
+              <div className={"displayrow clearfix"}>
+                <div className={"title"}>
+                    No Key or index as key (default)
+                </div>
+                <div className={"itemlist"}>
+                    {itemNodes}
+                </div>
               </div>
             );
         },
@@ -47,8 +57,13 @@
             });
 
             return (
-              <div className={"itemlist"}>
-                  {itemNodes}
+              <div className={"displayrow clearfix"}>
+                <div className={"title"}>
+                    Unique random keys
+                </div>
+                <div className={"itemlist"}>
+                    {itemNodes}
+                </div>
               </div>
             );
         },
@@ -68,8 +83,13 @@
             });
 
             return (
-              <div className={"itemlist"}>
-                  {itemNodes}
+              <div className={"displayrow clearfix"}>
+                <div className={"title"}>
+                    Unique constant keys
+                </div>
+                <div className={"itemlist"}>
+                    {itemNodes}
+                </div>
               </div>
             );
         },
@@ -85,9 +105,21 @@
     var OptionPanel = React.createClass({
         render: function() {
             return (<div className={"options"}>
-                        <button onClick={this.addToFront} disabled={this.props.disableListUpdates ? "disabled" : ""}>Add to the front</button>
-                        <button onClick={this.addToEnd} disabled={this.props.disableListUpdates ? "disabled" : ""}>Add to the end</button>
-                        <button onClick={this.resetLists}>Reset Lists</button>
+                        <button
+                            className="ff_btn btn_blue"
+                            onClick={this.addToFront} disabled={this.props.disableListUpdates ? "disabled" : ""}>
+                            Add item to the front
+                        </button>
+                        <button className="ff_btn btn_green"
+                            onClick={this.addToEnd}
+                            disabled={this.props.disableListUpdates ? "disabled" : ""}>
+                            Add item to the end
+                        </button>
+                        <button
+                          className="ff_btn btn_red"
+                          onClick={this.resetLists}>
+                            Reset Lists
+                        </button>
                     </div>
                 );
         },
@@ -118,6 +150,7 @@
     var Application = React.createClass({
         render: function() {
             return (<div>
+                      <h3>See it in action</h3>
                       <ReferenceList items={this.state.referenceList} />
                       <ListWithDefaultKeys items={this.state.keyList} />
                       <ListWithRandomKeys items={this.state.keyList} />
@@ -149,7 +182,7 @@
           var newItem = this.state.keyList.length + 1;
           this.setState({
             keyList: this.state.keyList.concat([newItem]),
-            disableListUpdates: newItem > 10
+            disableListUpdates: newItem >= 9
           }, function() { this.updateMarker(newItem); });
         },
 
@@ -159,14 +192,14 @@
           setTimeout(function() {
 
             console.log("update marker", itemKey);
-            $(".item[data-item='" + itemKey + "']").each(function(index, item) {
+            $(".item[data-item='" + itemKey + "']", $("#content")).each(function(index, item) {
                 var $item = $(item);
                 if (!$item.hasClass("marker")) {
                   $item.addClass("marker " + "marker_" + $item.text().trim());
                 }
             });
 
-            $("span.highlight").removeClass("highlight");
+            $("span.highlight", $("#content")).removeClass("highlight");
           }, 100);
         },
 
