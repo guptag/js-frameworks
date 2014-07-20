@@ -10,3 +10,11 @@
 
 ***
 ![screen shot 2014-07-19 at 12 54 05 am](https://cloud.githubusercontent.com/assets/1994225/3633865/c7659552-0f00-11e4-8031-38843d9e8f41.png)
+
+***
+
+![screen shot 2014-07-20 at 9 39 55 am](https://cloud.githubusercontent.com/assets/1994225/3637583/7746cdc0-1013-11e4-8add-1eda07416538.png)
+
+****
+
+![screen shot 2014-07-20 at 9 40 04 am](https://cloud.githubusercontent.com/assets/1994225/3637584/78994e8c-1013-11e4-88e0-4ee4029a0671.png)
