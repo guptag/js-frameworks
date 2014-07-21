@@ -80,6 +80,9 @@
 
         componentDidMount: function () {
           this.configureLoadData(this.props);
+          setTimeout(function() {
+            $(".ticker").css("backgroundColor", "aliceblue");
+          }, 200);
         },
 
         componentWillUnmount: function () {
