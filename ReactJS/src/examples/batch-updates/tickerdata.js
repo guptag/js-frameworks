@@ -9,79 +9,79 @@
 
         {
             symbol: "GOOGL",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(400, 700),
             dayChange: 0
         },
 
         {
             symbol: "LNKD",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(60, 100),
             dayChange: 0
         },
 
         {
             symbol: "NFLX",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(400, 500),
             dayChange: 0
         },
 
         {
             symbol: "FB",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(60, 90),
             dayChange: 0
         },
 
         {
             symbol: "TWTR",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(20, 40),
             dayChange: 0
         },
 
         {
             symbol: "YHOO",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(20, 40),
             dayChange: 0
         },
 
         {
             symbol: "CRM",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(100, 120),
             dayChange: 0
         },
 
         {
             symbol: "GE",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(10, 20),
             dayChange: 0
         },
 
         {
             symbol: "GM",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(30, 35),
             dayChange: 0
         },
 
         {
             symbol: "BBY",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(5, 10),
             dayChange: 0
         },
 
         {
             symbol: "C",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(32, 37),
             dayChange: 0
         },
 
         {
             symbol: "JPM",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(40, 70),
             dayChange: 0
         },
 
         {
             symbol: "BAC",
-            open: getRandomNumberInRange(40, 50),
+            open: getRandomNumberInRange(11, 14),
             dayChange: 0
         }
     ];

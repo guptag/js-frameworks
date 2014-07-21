@@ -3,10 +3,9 @@
         render: function() {
             return (
               <div className={"ticker " + (this.props.ticker.dayChange > 0 ? 'up' : 'down')}>
-                    <span>{this.props.ticker.symbol}</span>&nbsp;
-                    <span>{(this.props.ticker.open).toFixed(2)}</span>&nbsp;
-                    <span>{(this.props.ticker.open + this.props.ticker.dayChange).toFixed(2)}</span>&nbsp;
-                    <span>{this.props.ticker.dayChange}</span>
+                <span className="symbol">{this.props.ticker.symbol}</span>
+                <span className="price">{"$" + (this.props.ticker.open + this.props.ticker.dayChange).toFixed(2)}</span>
+                <span className="change">{(this.props.ticker.dayChange >0 ? "+" : "-") + Math.abs(this.props.ticker.dayChange)}</span>
               </div>
             );
         },
@@ -37,7 +36,7 @@
               return <TickerItem ticker={ticker} key={ticker.symbol}></TickerItem>;
             })
 
-            return (<div id="tickerpanel">
+            return (<div className="tickerpanel">
                       {tickerNodes}
                     </div>);
         },
@@ -80,9 +79,6 @@
 
         componentDidMount: function () {
           this.configureLoadData(this.props);
-          setTimeout(function() {
-            $(".ticker").css("backgroundColor", "aliceblue");
-          }, 200);
         },
 
         componentWillUnmount: function () {
