@@ -131,7 +131,7 @@
             return (
                 <div>
                   <div id="actions">
-                    <button className="ff_btn btn_green" onClick={this.refreshData}>Refresh Data</button>
+                    <button className="ff_btn btn_blue" onClick={this.refreshData}>Refresh Data</button>
                   </div>
                   <TickerList ref="tickerList"/>
                   <TickerListOne ref="tickerListOne"/>
@@ -150,4 +150,22 @@
         }
     });
 
-    React.renderComponent(<Application/>, $("#content")[0]);
+    React.renderComponent(<Application/>, $("#react_content")[0]);
+
+    $("#refresh_data").on("click", function () {
+       console.log("refresh click");
+       var latestData = TickerData.getLatest();
+       var tickerListHtml = "";
+       $.each(latestData, function(index, ticker) {
+              tickerListHtml += '<div class="ticker ' + (ticker.dayChange > 0 ? 'up' : 'down') + '">' +
+                '<span>' + ticker.symbol + '</span>&nbsp;' +
+                '<span>' + (ticker.open).toFixed(2) + '</span>&nbsp;' +
+                '<span>' + (ticker.open + ticker.dayChange).toFixed(2) + '</span>&nbsp;' +
+                '<span>' + ticker.dayChange + '</span>' +
+              '</div>';
+        });
+       $("#panel1").html(tickerListHtml);
+       $("#panel2").html(tickerListHtml);
+       $("#panel3").html(tickerListHtml);
+       $("#panel4").html(tickerListHtml);
+    })
