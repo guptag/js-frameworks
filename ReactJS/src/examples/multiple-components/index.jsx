@@ -101,15 +101,17 @@
 
         render: function() {
             return (
-              <form id="optionPanel">
+              <form className="optionpanel">
                   <div>
                     <span>Refresh Interval (sec): </span>
                     <input
-                        type="text"
                         placeholder="Refresh Interval..."
                         defaultValue={this.props.refreshIntervalInSec}
                         ref="refreshIntervalInput"
                         onChange={this.handleChange}
+                        type="number"
+                        min="2"
+                        max="10"
                     />
                   </div>
                   <div ref="sortOptions">
@@ -179,7 +181,7 @@
            this.setState({
               sortBy: sortBy,
               showFilter: showFilter,
-              refreshIntervalInSec: parseInt(refreshIntervalInSec) || 1
+              refreshIntervalInSec: parseInt(refreshIntervalInSec) || 2
            });
 
            console.log(refreshIntervalInSec, sortBy, showFilter);
