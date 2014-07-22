@@ -1,0 +1,87 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: 'Lucida Grande', verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding: 10px;
+  font-size: 15px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  background-color: #e6ecf1;
+  color: #333;
+}
+body > header {
+  padding: 30px 20px;
+}
+body > header:before {
+  content: '';
+  width: 10px;
+  background-color: #00aeef;
+  float: left;
+  height: 50px;
+  margin-right: 5px;
+}
+body > footer {
+  font-size: 12px;
+  font-style: italic;
+  margin: 10px 25px;
+}
+.ticker {
+  float: left;
+  height: 80px;
+  width: 160px;
+  margin: 15px;
+  text-align: center;
+  color: #000;
+  -webkit-transition: background 150ms ease;
+  position: relative;
+  border-radius: 5px;
+}
+.ticker span.symbol {
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  font-size: 1em;
+}
+.ticker span.price {
+  position: absolute;
+  top: 28px;
+  left: 50px;
+  font-size: 1.6em;
+}
+.ticker span.change {
+  position: absolute;
+  bottom: 2px;
+  left: 5px;
+  font-size: 0.8em;
+}
+.up {
+  background-color: rgba(22,160,123,0.9);
+}
+.down {
+  background-color: rgba(229,108,105,0.8);
+}
+.down span.symbol,
+.down span.price {
+  color: #fff;
+}
+.down span.change {
+  color: #fff;
+}
+.optionpanel {
+  background-color: #f2b36c;
+  padding: 20px;
+  width: 400px;
+  margin-left: 18px;
+}
+.optionpanel > div {
+  margin: 15px 0;
+}

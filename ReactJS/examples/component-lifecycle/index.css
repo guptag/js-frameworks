@@ -1,0 +1,147 @@
+.ff_btn {
+  border: 0 none;
+  border-radius: 2px 2px 2px 2px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 20px;
+  margin-bottom: 0;
+  margin-top: 10px;
+  padding: 7px 10px;
+  text-transform: none;
+  text-align: center;
+}
+.btn_red {
+  background: #e56c69;
+}
+.btn_green {
+  background: #1b7e5a;
+}
+.btn_blue {
+  background: #2489c5;
+}
+.btn_aero {
+  background: #9cc2cb;
+}
+.btn_grey {
+  background: #73716e;
+}
+.btn_yellow {
+  background: #fc3;
+}
+.btn_pink {
+  background: #a77a94;
+}
+.btn_purple {
+  background: #6a5a8c;
+}
+.btn_orange {
+  background: #f70;
+}
+.btn_large {
+  font-size: 20px;
+  padding: 12px 50px;
+  line-height: 40px;
+}
+.btn_medium {
+  font-size: 16px;
+  padding: 10px 30px;
+  line-height: 30px;
+}
+.ff_btn:hover {
+  background: #000;
+}
+.ff_btn[disabled] {
+  background-color: #808080;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: 'Lucida Grande', verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding: 10px;
+  font-size: 15px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  background-color: #e6ecf1;
+  color: #333;
+}
+body > header {
+  padding: 30px 20px;
+}
+body > header:before {
+  content: '';
+  width: 10px;
+  background-color: #00aeef;
+  float: left;
+  height: 50px;
+  margin-right: 5px;
+}
+body > footer {
+  font-size: 12px;
+  font-style: italic;
+  margin: 10px 25px;
+}
+#helloworld {
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #00aeef;
+  box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
+  margin: 10px 0 0 30px;
+  text-align: center;
+  width: 400px;
+  padding: 40px;
+  font-size: 1.5em;
+  height: 110px;
+}
+#actions {
+  padding: 20px;
+}
+#actions button {
+  margin: 5px;
+}
+#notifications {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  width: 500px;
+  height: 600px;
+  overflow: auto;
+  color: #fff;
+  padding: 5px 0 0 20px;
+  background: #171d25;
+  float: left;
+}
+#notifications header {
+  color: #00aeef;
+  font-size: 1.2em;
+  text-decoration: underline;
+  padding: 10px 5px;
+}
+#notifications ul {
+  list-style: none;
+}
+#notifications ul li:before {
+  content: "\00BB \0020";
+}
+#notifications ul > li > span {
+  color: #fff;
+  font-weight: bold;
+}
+#notifications ul li > ul {
+  padding: 10px 30px;
+}
+#notifications ul li > ul li {
+  padding: 3px;
+  font-size: 0.85em;
+  color: #cac5c5;
+}

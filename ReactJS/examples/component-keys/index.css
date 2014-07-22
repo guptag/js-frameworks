@@ -1,0 +1,208 @@
+.ff_btn {
+  border: 0 none;
+  border-radius: 2px 2px 2px 2px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 20px;
+  margin-bottom: 0;
+  margin-top: 10px;
+  padding: 7px 10px;
+  text-transform: none;
+  text-align: center;
+}
+.btn_red {
+  background: #e56c69;
+}
+.btn_green {
+  background: #1b7e5a;
+}
+.btn_blue {
+  background: #2489c5;
+}
+.btn_aero {
+  background: #9cc2cb;
+}
+.btn_grey {
+  background: #73716e;
+}
+.btn_yellow {
+  background: #fc3;
+}
+.btn_pink {
+  background: #a77a94;
+}
+.btn_purple {
+  background: #6a5a8c;
+}
+.btn_orange {
+  background: #f70;
+}
+.btn_large {
+  font-size: 20px;
+  padding: 12px 50px;
+  line-height: 40px;
+}
+.btn_medium {
+  font-size: 16px;
+  padding: 10px 30px;
+  line-height: 30px;
+}
+.ff_btn[disabled] {
+  background-color: #808080;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: 'Lucida Grande', verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding: 10px;
+  font-size: 15px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  background-color: #e6ecf1;
+  color: #333;
+  min-width: 1100px;
+}
+body > header {
+  padding: 30px 20px;
+}
+body > header:before {
+  content: '';
+  width: 10px;
+  background-color: #00aeef;
+  float: left;
+  height: 50px;
+  margin-right: 5px;
+}
+body > footer {
+  font-size: 1em;
+  font-style: italic;
+  margin: 10px 25px;
+}
+blockquote {
+  margin: 20px 40px;
+  font-size: 1.1em;
+  font-style: italic;
+  border: 2px dashed #9c93c7;
+  padding: 10px;
+  color: #757272;
+}
+h3 {
+  padding: 20px 0 20px 0;
+  font-size: 1.3em;
+}
+#content h3 {
+  padding: 30px 0 10px 0;
+}
+/* http://css-tricks.com/snippets/css/clear-fix/ */
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+#content {
+  margin-left: 20px;
+}
+.displayrow {
+  height: 100px;
+  padding: 0 0 0 20px;
+  margin: 5px;
+}
+.title {
+  float: left;
+  height: 100%;
+  width: 220px;
+  padding: 32px 0 0 0;
+  font-size: 1em;
+  font-weight: bold;
+}
+.title:after {
+  content: ' : ';
+  height: 100%;
+  color: #008000;
+  font-size: 1.1em;
+}
+.itemlist {
+  float: left;
+  height: 100%;
+}
+.item {
+  border-radius: 50%;
+  border: 1px solid #000;
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+  padding: 19px 0 0 23px;
+  margin: 15px;
+  font-weight: bold;
+  background-color: transparent;
+  -transition: background-color 200ms ease-in, border 2s ease-out;
+  -webkit-transition: background-color 200ms ease-in, border 2s ease-out;
+/* http://llllll.li/randomColor/ */
+}
+.item.highlight {
+  border: 3px dashed #018e8e;
+}
+.item.marker_1 {
+  background-color: #d89858;
+}
+.item.marker_2 {
+  background-color: #75ea7f;
+}
+.item.marker_3 {
+  background-color: #ce0e91;
+}
+.item.marker_4 {
+  background-color: #8eede9;
+}
+.item.marker_5 {
+  background-color: #c7d664;
+}
+.item.marker_6 {
+  background-color: #fcb79f;
+}
+.item.marker_7 {
+  background-color: #a985d3;
+}
+.item.marker_8 {
+  background-color: #e56276;
+}
+.item.marker_9 {
+  background-color: #ffeea5;
+}
+.notes .item {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0 0 10px;
+  font-size: 0.8em;
+  margin: 7px;
+}
+.notes .item.highlight {
+  border-width: 1px;
+}
+.notes,
+.info {
+  margin: 5px 20px 5px 20px;
+}
+.options {
+  margin: 5px 0 5px 270px;
+}
+.options button {
+  margin: 10px;
+  width: 150px;
+  height: 50px;
+  color: #000;
+}
