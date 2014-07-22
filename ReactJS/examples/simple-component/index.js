@@ -1,12 +1,12 @@
     /** @jsx React.DOM */
-    var TickerItem = React.createClass({
+    var TickerItem = React.createClass({displayName: 'TickerItem',
         render: function() {
             return (
-              <div className={"ticker " + (this.props.ticker.dayChange > 0 ? 'up' : 'down')}>
-                <span className="symbol">{this.props.ticker.symbol}</span>
-                <span className="price">{"$" + (this.props.ticker.open + this.props.ticker.dayChange).toFixed(2)}</span>
-                <span className="change">{(this.props.ticker.dayChange >0 ? "+" : "-") + Math.abs(this.props.ticker.dayChange)}</span>
-              </div>
+              React.DOM.div( {className:"ticker " + (this.props.ticker.dayChange > 0 ? 'up' : 'down')}, 
+                React.DOM.span( {className:"symbol"}, this.props.ticker.symbol),
+                React.DOM.span( {className:"price"}, "$" + (this.props.ticker.open + this.props.ticker.dayChange).toFixed(2)),
+                React.DOM.span( {className:"change"}, (this.props.ticker.dayChange >0 ? "+" : "-") + Math.abs(this.props.ticker.dayChange))
+              )
             );
         },
 
@@ -22,15 +22,15 @@
     });
 
 
-    var TickerList = React.createClass({
+    var TickerList = React.createClass({displayName: 'TickerList',
         render: function() {
             var tickerNodes = this.state.tickerData.map(function(ticker) {
-              return <TickerItem ticker={ticker} key={ticker.symbol}></TickerItem>;
+              return TickerItem( {ticker:ticker, key:ticker.symbol});
             })
 
-            return (<div id="tickerpanel">
-                      {tickerNodes}
-                    </div>);
+            return (React.DOM.div( {id:"tickerpanel"}, 
+                      tickerNodes
+                    ));
         },
 
         getInitialState: function () {
@@ -56,4 +56,4 @@
         }
     });
 
-    React.renderComponent(<TickerList/>, $("#content")[0]);
+    React.renderComponent(TickerList(null), $("#content")[0]);

@@ -3,26 +3,26 @@
     // Isolated Component - Listens for events from other React components and renders to DOM
     // Cannot be part of the actual application since the events can occur before the app dom is mounted
     // Use this pattern sparingly
-    var Notifications = React.createClass({
+    var Notifications = React.createClass({displayName: 'Notifications',
         render: function() {
             var notificationNodes = this.state.notifications.map(function (notification, index) {
                 var infoNodes = (notification.addlInfo || []).map(function(info, infoItemIndex) {
-                  return <li key={infoItemIndex}>{info}</li>;
+                  return React.DOM.li( {key:infoItemIndex}, info);
                 });
 
-                 return <li className="notifcation" key={index}>
-                          {notification.msg}
-                          <ul>{infoNodes}</ul>
-                        </li>;
+                 return React.DOM.li( {className:"notifcation", key:index}, 
+                          notification.msg,
+                          React.DOM.ul(null, infoNodes)
+                        );
              });
 
              return (
-                <div>
-                  <header>Events</header>
-                  <ul className="notifcationlist">
-                      {notificationNodes}
-                  </ul>
-                </div>
+                React.DOM.div(null, 
+                  React.DOM.header(null, "Events"),
+                  React.DOM.ul( {className:"notifcationlist"}, 
+                      notificationNodes
+                  )
+                )
              );
         },
 
@@ -49,15 +49,15 @@
           this.setState({notifications: []});
         }
     });
-    var NotificationInstance = React.renderComponent(<Notifications/>, $("#notifications")[0]);
+    var NotificationInstance = React.renderComponent(Notifications(null), $("#notifications")[0]);
 
 
 
     // This Component is created and disposed dynamically from Application
-    var HelloWorld = React.createClass({
+    var HelloWorld = React.createClass({displayName: 'HelloWorld',
         render: function() {
             this.props.NotificationComponent.addNotification({msg: "render", addlInfo: ["Component is rendered."]});
-            return <div>{this.props.title}</div>;
+            return React.DOM.div(null, this.props.title);
         },
 
         getInitialState: function () {
@@ -140,17 +140,17 @@
         }
     });
 
-    var Application = React.createClass({
+    var Application = React.createClass({displayName: 'Application',
         render: function() {
             return (
-                <div id="root">
-                  <div id="helloworld"></div>
-                  <div id="actions">
-                    <button className="ff_btn btn_green" disabled={this.state.helloWorldComponent !== null ? "disabled" : ""} onClick={this.createComponent}>Create Component</button>
-                    <button className="ff_btn btn_blue" disabled={this.state.helloWorldComponent === null ? "false" : ""} onClick={this.updateComponentProps}>Update Component</button>
-                    <button className="ff_btn btn_orange" disabled={this.state.helloWorldComponent === null ? "false" : ""} onClick={this.deleteComponent}>Remove Component</button>
-                  </div>
-                </div>
+                React.DOM.div( {id:"root"}, 
+                  React.DOM.div( {id:"helloworld"}),
+                  React.DOM.div( {id:"actions"}, 
+                    React.DOM.button( {className:"ff_btn btn_green", disabled:this.state.helloWorldComponent !== null ? "disabled" : "", onClick:this.createComponent}, "Create Component"),
+                    React.DOM.button( {className:"ff_btn btn_blue", disabled:this.state.helloWorldComponent === null ? "false" : "", onClick:this.updateComponentProps}, "Update Component"),
+                    React.DOM.button( {className:"ff_btn btn_orange", disabled:this.state.helloWorldComponent === null ? "false" : "", onClick:this.deleteComponent}, "Remove Component")
+                  )
+                )
             );
         },
 
@@ -164,7 +164,7 @@
         createComponent: function () {
             this.props.NotificationComponent.addNotification("");
             this.setState({
-              helloWorldComponent: React.renderComponent(<HelloWorld title={"Hello World"} NotificationComponent={this.props.NotificationComponent}/>, $("#helloworld")[0]),
+              helloWorldComponent: React.renderComponent(HelloWorld( {title:"Hello World", NotificationComponent:this.props.NotificationComponent}), $("#helloworld")[0]),
               updateCount: 0
             });
         },
@@ -184,4 +184,4 @@
         }
     });
 
-    React.renderComponent(<Application NotificationComponent={NotificationInstance}/>, $("#content")[0]);
+    React.renderComponent(Application( {NotificationComponent:NotificationInstance}), $("#content")[0]);
