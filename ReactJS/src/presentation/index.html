@@ -70,6 +70,10 @@
         line-height: 0.8em;
       }
 
+      .links {
+        font-size: 0.8em;
+      }
+
       /* Slide-specific styling */
       #slide-inverse .footnote {
         bottom: 12px;
@@ -112,9 +116,11 @@
         height: 92%;
         float: left;
       }
-        .left-column h2:last-of-type, .left-column h3:last-child {
+
+      .left-column h2:last-of-type, .left-column h3:last-child {
           color: #000;
-        }
+      }
+
       .right-column {
         width: 75%;
         float: right;
@@ -173,13 +179,84 @@ layout: false
 ---
 template: inverse
 
-## How does the React Component look ?
+## How do things work within React Component ?
 
 ---
 
-Anatomy of a React Component
+High-Level view of a React Component:
 
 ![screen shot 2014-07-20 at 9 39 55 am](https://cloud.githubusercontent.com/assets/1994225/3637583/7746cdc0-1013-11e4-8add-1eda07416538.png)
+
+---
+.left-column[
+  ## Building blocks
+  ## JSX
+]
+.right-column[
+
+
+- syntactic sugar to represent javscript function calls in HTML syntax.
+
+  ``` javascript
+  // javascript
+  React.DOM.a(
+      {href: 'http://facebook.github.io/react/'},
+      'Hello React!'
+  );
+
+  // jsx
+  &lt;a href="http://facebook.github.io/react/"&gt;
+        Hello React!
+  &lt;/a&gt;
+  ```
+
+- javascript expressions
+
+  ``` javascript
+  // Input (JSX):
+  var person = <Person
+        name={window.isLoggedIn ? window.name : ''} />;
+
+  // Output (JS):
+  var person = Person({
+    name: window.isLoggedIn ? window.name : ''
+  });
+  ```
+]
+
+---
+
+.left-column[
+  ## Building blocks
+  ## props and state
+]
+.right-column[
+
+- Props
+  - Props are inputs set on a components by its parent and cannot be changed within the component.
+
+- State
+  - State is created within the component and can be changed.
+  - State should contain data that a component's event handlers may change to trigger a UI update.
+  - State shouldn't contain computed data from other variables, duplicated data from prop.
+  - Try to keep as many of your components as possible stateless. By doing this you'll isolate the state to its most logical place and minimize redundancy, making it easier to reason about your application.
+]
+
+---
+
+template: inverse
+
+## Stateful React Component (example)
+
+---
+
+Stock ticker dashboard using React (with mock data)
+
+* [test url](https://guptag.github.io/js-frameworks/ReactJS/examples/simple-component/index.html)
+* [source](https://github.com/guptag/js-frameworks/tree/master/ReactJS/src/examples/simple-component)
+* [transformed script](https://guptag.github.io/js-frameworks/ReactJS/examples/simple-component/index.js)
+
+![screen shot 2014-07-22 at 10 27 09 pm](https://cloud.githubusercontent.com/assets/8048953/3668635/aad33632-1221-11e4-8c01-1b25b9ca6cc7.png)
 
 ---
 name: how
