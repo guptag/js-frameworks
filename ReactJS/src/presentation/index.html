@@ -70,6 +70,10 @@
         line-height: 0.8em;
       }
 
+      .inverse ul {
+        list-style-type: none;
+      }
+
       .links {
         font-size: 0.8em;
       }
@@ -147,7 +151,7 @@ layout: false
 ]
 .right-column[
 
-- Templates are underpowered
+- Templates are underpowered.
   - Templates greatly served the purpose of generating HTML by combining data and markup in a clean way. But they are limiting.
   - UI and display logic is separated into templates and view models.
   - Templates represents the state of the UI at the beginning. Afterwards, we are on our own.
@@ -177,9 +181,26 @@ layout: false
 ]
 
 ---
+.left-column[
+  ## Things that make React very fast and efficient
+]
+.right-column[
+
+- Virtual DOM
+  - Javascript is super fast; dom mutations are the slowest part in the web applications.
+  - Whenever state changes, React recreates virtual dom and compares with the existing virtual dom. With intelligent heuristics it figures out the minimal changes needed to DOM and queues those changes for batch update.
+  - React's philosophy of Re-render everytime when data changes was made possible because of the underlying virtual dom implementation.
+
+- Batch DOM updates.
+
+- Synthetic Events.
+
+]
+
+---
 template: inverse
 
-## How do things work within React Component ?
+## React Component
 
 ---
 
@@ -259,266 +280,71 @@ Stock ticker dashboard using React (with mock data)
 ![screen shot 2014-07-22 at 10 27 09 pm](https://cloud.githubusercontent.com/assets/8048953/3668635/aad33632-1221-11e4-8c01-1b25b9ca6cc7.png)
 
 ---
-name: how
-
-.left-column[
-  ## How does it work?
-### - Markdown
-]
-.right-column[
-A Markdown-formatted chunk of text is transformed into individual slides by JavaScript running in the browser:
-
-```remark
-# Slide 1
-This is slide 1
-
----
-
-# Slide 2
-This is slide 2
-```
-
-.slides[
-  .first[
-  ### Slide 1
-  This is slide 1
-  ]
-  .second[
-  ### Slide 2
-  This is slide 2
-  ]
-]
-
-Regular Markdown rules apply with only a single exception:
-
-  - A line containing three dashes constitutes a new slide
-  (not a horizontal rule, `&lt;hr /&gt;`)
-
-Have a look at the [Markdown website](http://daringfireball.net/projects/markdown/) if you're not familiar with Markdown formatting.
-]
----
-.left-column[
-  ## How does it work?
-  ### - Markdown
-  ### - Inside HTML
-]
-.right-column[
-A simple HTML document is needed for hosting the styles, Markdown and the generated slides themselves:
-
-```xml
-<!DOCTYPE html>
-<html>
-  <head>
-    <style type="text/css">
-      /* Slideshow styles */
-    </style>
-  </head>
-  <body>
-*    <textarea id="source">
-      <!-- Slideshow Markdown -->
-    &lt;/textarea&gt;
-*    <script type="text/javascript" src="remark.js">
-    </script>
-    <script type="text/javascript">
-*      var slideshow = remark.create();
-    </script>
-  </body>
-</html>
-```
-
-You may download remark to have your slideshow not depend on any online resources, or reference the [latest version](http://remarkjs.com/downloads/remark-latest.min.js) online directly.
-]
----
 template: inverse
 
-## Of course, Markdown can only go so far.
----
-.left-column[
-  ## Markdown extensions
-]
-.right-column[
-To help out with slide layout and formatting, a few Markdown extensions have been included:
-
-- Slide properties, for naming, styling and templating slides
-
-- Content classes, for styling specific content
-
-- Syntax highlighting, supporting a range of languages
-]
-
----
-.left-column[
-  ## Markdown extensions
-  ### - Slide properties
-]
-.right-column[
-Initial lines containing key-value pairs are extracted as slide properties:
-
-```remark
-name: agenda
-class: middle, center
-
-# Agenda
-
-The name of this slide is {{ name }}.
-```
-
-Slide properties serve multiple purposes:
-
-* Naming and styling slides using properties `name` and `class`
-
-* Using slides as templates using properties `template` and `layout`
-
-* Expansion of `{{ property }}` expressions to property values
-
-See the [complete list](https://github.com/gnab/remark/wiki/Slide-Properties) of slide properties.
-]
----
-.left-column[
-  ## Markdown extensions
-  ### - Slide properties
-  ### - Content classes
-]
-.right-column[
-Any occurences of one or more dotted CSS class names followed by square brackets are replaced with the contents of the brackets with the specified classes applied:
-
-```remark
-.footnote[.red.bold[*] Important footnote]
-```
-
-Resulting HTML extract:
-
-```xml
-<span class="footnote">
-  <span class="red bold">*</span> Important footnote
-</span>
-```
-]
----
-.left-column[
-  ## Markdown extensions
-  ### - Slide properties
-  ### - Content classes
-  ### - Syntax Highlighting
-]
-.right-column[
-Code blocks can be syntax highlighted by specifying a language from the set of [supported languages](https://github.com/gnab/remark/wiki/Configuration-Options#wiki-highlighting).
-
-Using [GFM](http://github.github.com/github-flavored-markdown/) fenced code blocks you can easily specify highlighting language:
-
-.pull-left[
-
-<pre><code>```javascript
-function add(a, b)
-  return a + b
-end
-```</code></pre>
-]
-.pull-right[
-
-<pre><code>```ruby
-def add(a, b)
-  a + b
-end
-```</code></pre>
-]
-
-A number of highlighting [styles](https://github.com/gnab/remark/wiki/Configuration-Options#wiki-highlighting) are available, including several well-known themes from different editors and IDEs.
-
-]
----
-.left-column[
-  ## Presenter mode
-]
-.right-column[
-To help out with giving presentations, a presenter mode comprising the
-following features is provided:
-
-- Display of slide notes for the current slide, to help you remember
-  key points
-
-- Display of upcoming slide, to let you know what's coming
-
-- Cloning of slideshow for viewing on extended display
-]
----
-.left-column[
-  ## Presenter mode
-  ### - Inline notes
-]
-.right-column[
-Just like three dashes separate slides,
-three question marks separate slide content from slide notes:
-
-```
-Slide 1 content
-
-*???
-
-Slide 1 notes
+## Multiple components
 
 ---
 
-Slide 2 content
+Highlevel view of composite React Components:
 
-*???
+![screen shot 2014-07-20 at 3 34 37 pm](https://cloud.githubusercontent.com/assets/1994225/3638362/f6c5103a-1044-11e4-8766-681939ea9ad8.png)
 
-Slide 2 notes
-```
 
-Slide notes are also treated as Markdown, and will be converted in the
-same manner slide content is.
-
-Pressing __P__ will toggle presenter mode.
-]
-???
-Congratulations, you just toggled presenter mode!
-
-Now press __P__ to toggle it back off.
 ---
-.left-column[
-  ## Presenter mode
-  ### - Inline notes
-  ### - Cloned view
-]
-.right-column[
-Presenter mode of course makes no sense to the audience.
 
-Creating a cloned view of your slideshow lets you:
-
-- Move the cloned view to the extended display visible to the audience
-
-- Put the original slideshow in presenter mode
-
-- Navigate as usual, and the cloned view will automatically keep up with the original
-
-Pressing __C__ will open a cloned view of the current slideshow in a new
-browser window.
-]
----
 template: inverse
 
-## It's time to get started!
+## Multiple React Components (example)
+
 ---
-.left-column[
-  ## Getting started
-]
-.right-column[
-Getting up and running is done in only a few steps:
 
-1. Visit the [project site](http://github.com/gnab/remark)
+Stock ticker dashboard using React (with mock data)
 
-2. Follow the steps in the Getting Started section
+* [test url](https://guptag.github.io/js-frameworks/ReactJS/examples/multiple-components/index.html)
+* [source](https://github.com/guptag/js-frameworks/tree/master/ReactJS/src/examples/multiple-components)
+* [transformed script](https://guptag.github.io/js-frameworks/ReactJS/examples/multiple-components/index.js)
 
-For more information on using remark, please check out the [wiki](https://github.com/gnab/remark/wiki) pages.
-]
+![screen shot 2014-07-22 at 11 28 28 pm](https://cloud.githubusercontent.com/assets/1994225/3668975/4110d098-122a-11e4-9bb0-8b69b487261f.png)
+
 ---
-name: last-page
+
 template: inverse
 
-## That's all folks (for now)!
+## Component life cycle [(demo)](https://guptag.github.io/js-frameworks/ReactJS/examples/component-lifecycle/index.html)
 
-Slideshow created using [remark](http://github.com/gnab/remark).
+---
+
+template: inverse
+
+## Composite keys and node reconciliation [(demo)](https://guptag.github.io/js-frameworks/ReactJS/examples/component-keys/index.html)
+
+---
+
+template: inverse
+
+## Synthetic Events [(demo)](https://guptag.github.io/js-frameworks/ReactJS/examples/synthetic-events/index.html)
+
+---
+
+template: inverse
+
+  Rererences:
+
+  - [React: Rethinking Best Practices](http://www.slideshare.net/floydophone/react-preso-v2)
+  - [React's Diff Algorithm](http://calendar.perfplanet.com/2013/diff/)
+  - [Writing Good React Components](http://blog.whn.se/post/69621609605/writing-good-react-components)
+  - [The secrets of React's virtual dom](http://fluentconf.com/fluent2014/public/schedule/detail/32395)
+  - [The secrets of React's virtual dom](http://fluentconf.com/fluent2014/public/schedule/detail/32395)
+  - [React's official documentation](http://facebook.github.io/react/docs/getting-started.html)
+
+---
+
+template: inverse
+
+## Thank You
+
+
     </textarea>
     <script src="remark.min.js" type="text/javascript"></script>
     <script type="text/javascript">
