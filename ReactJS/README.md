@@ -3,6 +3,7 @@
 * https://guptag.github.io/js-frameworks/ReactJS/examples/component-keys/index.html
 * https://guptag.github.io/js-frameworks/ReactJS/examples/component-lifecycle/index.html
 * https://guptag.github.io/js-frameworks/ReactJS/examples/batch-updates/index.html
+* * https://guptag.github.io/js-frameworks/ReactJS/examples/synthetic-events/index.html
 
 ***
 
