@@ -3,9 +3,9 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="react,reactjs,slideshow,presentation" />
-    <meta name="description" content="A javascript library for building user interfaces." />
-    <title>ReactJS</title>
+    <meta name="keywords" content="remark,remarkjs,markdown,slideshow,presentation" />
+    <meta name="description" content="A simple, in-browser, markdown-driven slideshow tool." />
+    <title>Remark</title>
     <style type="text/css">
       @import url(http://fonts.googleapis.com/css?family=Droid+Serif);
       @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -27,7 +27,6 @@
         bottom: 3em;
       }
       li p { line-height: 1.25em; }
-      p img { width: 100%; text-align: center; }
       .red { color: #fa0000; }
       .large { font-size: 2em; }
       a, a > code {
@@ -128,59 +127,79 @@ name: inverse
 layout: true
 class: center, middle, inverse
 ---
-#React
-A javascript library for building user interfaces
-
+#remark
+[ri-mahrk]
+.footnote[Go to directly to [project site](https://github.com/gnab/remark)]
 ---
-#React is all about V in MVC
-  * Plays nicely with other frameworks.
+## What is it and why should I be using it?
 ---
 layout: false
 .left-column[
-  ## Motivations behind React
+  ## What is it?
 ]
 .right-column[
+  A simple, in-browser, Markdown-driven slideshow tool targeted at people who know their way around HTML and CSS, featuring:
 
-- Templates are underpowered
-  - Templates greatly served the purpose of generating HTML by combining data and markup in a clean way. But they are limiting.
-  - UI and display logic is separated into templates and view models.
-  - Templates represents the state of the UI at the beginning. Afterwards, we are on our own.
-  - Templates do not use the full power of javascript (#each, #if like constructs are limiting).
+- Markdown formatting, with smart extensions
 
-- Building user interfaces is hard.
-    - Lots of state.
-    - Random events (user actions, ajax callbacks, timer events) can change state in different timeframes.
-    - Keeping UI in sync with ever changing state often results in spaghetti and hard to debug code.
+- Presenter mode, with cloned slideshow view
 
+- Syntax highlighting, supporting a range of languages
+
+- Slide scaling, thus similar appearance on all devices / resolutions .red[*]
+
+- Touch support for smart phones and pads, i.e. swipe to navigate slides
+
+.footnote[.red[*] At least browsers try their best]
 ]
 ---
 .left-column[
-  ## React Components
+  ## What is it?
+  ## Why use it?
 ]
 .right-column[
+If your ideal slideshow creation workflow contains any of the following steps:
 
-- React approaches building user interfaces by breaking them into **components**.
+- Just write what's on your mind
 
-- Combines DOM representation and display logic into one unit.
+- Do some basic styling
 
-- React uses a real, full featured programming language to render views.
+- Easily collaborate with others
 
-- React components describes UI at any point of time.
+- Share with and show to everyone
 
-- Components are composable and reusable.
+Then remark might be perfect for your next.red[*] slideshow!
+
+.footnote[.red[*] You probably want to convert existing slideshows as well]
 ]
+---
+.left-column[
+  ## What is it?
+  ## Why use it?
+]
+.right-column[
+As the slideshow is expressed using Markdown, you may:
 
+- Focus on the content, expressing yourself in next to plain text not worrying what flashy graphics and disturbing effects to put where
+
+As the slideshow is actually an HTML document, you may:
+
+- Display it in any decent browser
+
+- Style it using regular CSS, just like any other HTML content
+
+- Use it offline!
+
+As the slideshow is contained in a plain file, you may:
+
+- Store it wherever you like; on your computer, hosted from your Dropbox, hosted on Github Pages alongside the stuff you're presenting...
+
+- Easily collaborate with others, keeping track of changes using your favourite SCM tool, like Git or Mercurial
+]
 ---
 template: inverse
 
-## How does the React Component look ?
-
----
-
-Anatomy of a React Component
-
-![screen shot 2014-07-20 at 9 39 55 am](https://cloud.githubusercontent.com/assets/1994225/3637583/7746cdc0-1013-11e4-8add-1eda07416538.png)
-
+## How does it work, then?
 ---
 name: how
 
