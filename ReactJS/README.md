@@ -1,5 +1,6 @@
-- Presentation
-  - https://guptag.github.io/js-frameworks/ReactJS/presentation/index.html
+- Presentation given at Full Stack Boulder meetup
+  - [video] https://www.youtube.com/watch?v=uRc2MYqx1pQ  
+  - [slides] https://guptag.github.io/js-frameworks/ReactJS/presentation/index.html
 
 - Examples
  - https://guptag.github.io/js-frameworks/ReactJS/examples/simple-component/index.html
