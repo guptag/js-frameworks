@@ -1,6 +1,6 @@
 (function () {
 
-    angular.module('app.core.controllers')
+    angular.module('app.common.controllers')
            .controller('ShellController', ShellController);
 
     ShellController.$inject = ['HeaderModel', '$timeout'];

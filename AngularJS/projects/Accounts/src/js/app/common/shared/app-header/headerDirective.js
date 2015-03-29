@@ -1,12 +1,12 @@
-angular.module('app.core.directives')
-  .directive('appHeader', function() {
+angular.module('app.common.directives')
+  .directive('appHeader', function(TemplatePaths) {
     return {
       restrict: 'E',
       scope: {
         headerModel: "="
       },
       bindToController: true,
-      templateUrl: 'js/app/core/shared/app-header/header.html',
+      templateUrl: TemplatePaths.Shared.Header,
       replace: true,
       controller: 'HeaderController',
       controllerAs: 'headerCtrl',

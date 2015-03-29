@@ -1,8 +1,8 @@
-angular.module('app.core.directives')
-  .directive('appShell', function() {
+angular.module('app.common.directives')
+  .directive('appShell', ['TemplatePaths', function(TemplatePaths) {
     return {
       restrict: 'E',
-      templateUrl: 'js/app/core/shared/app-shell/shell.html',
+      templateUrl: TemplatePaths.Shared.Shell,
       replace: true,
       controller: 'ShellController',
       controllerAs: 'shellCtrl',
@@ -11,4 +11,4 @@ angular.module('app.core.directives')
 
       }
     };
-  });
+  }]);

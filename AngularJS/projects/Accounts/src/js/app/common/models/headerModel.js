@@ -1,4 +1,4 @@
-angular.module('app.core.models')
+angular.module('app.common.models')
        .factory('HeaderModel', function () {
     /**
      * [HeaderModel description]
