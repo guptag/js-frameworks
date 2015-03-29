@@ -1,0 +1,11 @@
+{
+  "name": "AngularJS-Sample-Application",
+  "version": "0.0.1",
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "serve-static":"~1.9.2",
+    "connect":"~3.3.5"
+  }
+}
