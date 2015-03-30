@@ -9,19 +9,16 @@
 
         var shellCtrl = this;
 
-        shellCtrl.headerModel = new HeaderModel("Customer Orders", "Manage in style");
+        console.log("shell controller", this, arguments);
 
-        shellCtrl.test = {
-            name: "hello"
-        }
+        shellCtrl.headerModel = new HeaderModel(
+            "Customer Order Management System",
+            "Manage your customers and orders with ease"
+        );
 
-        shellCtrl.testVal = 5;
-
-        console.log("shell controller", shellCtrl.headerModel);
-
-        $timeout(function () {
+        /*$timeout(function () {
             shellCtrl.headerModel.title = "Updated Title";
-        }, 1000);
+        }, 1000);*/
     };
 
 })();

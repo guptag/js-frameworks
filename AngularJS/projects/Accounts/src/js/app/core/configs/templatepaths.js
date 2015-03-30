@@ -7,8 +7,10 @@
             Shell: "js/app/common/shared/app-shell/shell.html",
             Header: "js/app/common/shared/app-header/header.html"
         },
-        Customer: {
-
+        Customers: {
+            List: "js/app/components/customers/list/customerlist.html",
+            Edit: "js/app/components/customers/edit/editCustomer.html",
+            AddressDirective: "js/app/components/customers/shared/address.html"
         },
         Orders: {
 

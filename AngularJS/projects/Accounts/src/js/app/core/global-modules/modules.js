@@ -11,3 +11,13 @@ core.factory('_', function() {
 core.factory('$', function() {
   return window.jQuery;
 });
+
+// DB
+core.factory('CustomerRestAPI', function() {
+  return window.CustomerRestAPI;
+});
+
+// DB
+core.factory('OrderRestAPI', function() {
+  return window.OrderRestAPI;
+});

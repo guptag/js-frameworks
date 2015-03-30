@@ -1,0 +1,41 @@
+ <section>
+    <section ng-if="!editCtrl.isLoaded">
+        Loading...
+    </section>
+    <section ng-if="editCtrl.isLoaded">
+        <h3>Edit Customer:&nbsp;{{editCtrl.customerModel.companyName}}</h3>
+        <table>
+            <tr>
+                <td>Company Name</td>
+                <td><input type="text" size="50" ng-model="editCtrl.customerModel.companyName"></input></td>
+            </tr>
+            <tr>
+                <td>Ticker</td>
+                <td><input type="text" size="50" ng-model="editCtrl.customerModel.ticker"></input></td>
+            </tr>
+            <tr>
+                <td>Website</td>
+                <td><input type="text" size="50" ng-model="editCtrl.customerModel.website"></input></td>
+            </tr>
+            <tr>
+                <td>Primary Phone</td>
+                <td><input type="text" size="50" ng-model="editCtrl.customerModel.primaryPhone"></input></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <customer-address title="Primary Address" address="editCtrl.customerModel.primaryAddress"></customer-address>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <customer-address title="Secondary Address" address="editCtrl.customerModel.secondaryAddress"></customer-address>
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <div>
+            <button ng-click="editCtrl.submit()">{{editCtrl.isNew ? "Add New" : "Update"}}</button>&nbsp;&nbsp;
+            <button ng-click="editCtrl.cancel()">Cancel</button>
+        </div>
+    </section>
+</section>
