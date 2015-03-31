@@ -1,0 +1,20 @@
+html
+    box-sizing border-box
+
+body
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+
+*, *:before, *:after
+    box-sizing inherit
+
+.clearfix:before,
+.clearfix:after
+    content " "
+    display table
+
+.clearfix:after
+    clear both
+
+.hide
+    display none
