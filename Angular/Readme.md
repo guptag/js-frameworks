@@ -7,6 +7,7 @@
  * Deferred module loading   
  * Dependency Injection
  * Bindings
+ * Pipes
  * Parent/Child Component Communication
    
 ## Data-Modeling/Change Detection
