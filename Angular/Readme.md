@@ -10,12 +10,12 @@
  * Pipes
  * Parent/Child Component Communication
    
-## Data-Modeling/Change Detection
+## Unidirectional Data flow/Change Detection
  * Default vs OnPush
- * Redux vs mobx
- * ng-redux
- * immutable.js
- * rx events
+ * Redux (ng-redux) vs mobx (mobx-angular)
+ * Redux with immutable.js
+ * Redux with mori
+ * Redux Observables (redux-observable)
  
  ## Rxjs
   * Oberservables, Subscriptions
