@@ -2,6 +2,13 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
 
+/*import { createSelector } from 'reselect'
+const shopItemsSelector = (state: string[]) => state
+const subtotalSelector = createSelector(
+  shopItemsSelector,
+  items => items.reduce((acc, item) => acc + item, '')
+)*/
+
 import {
   addTodo,
   editTodo,
