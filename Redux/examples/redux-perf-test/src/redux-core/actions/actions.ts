@@ -16,7 +16,16 @@
 
 // https://github.com/reactjs/redux/issues/992
 
-// couldn't find an alternative to get rid of these double declarations
+import {ITickerData} from '../reducers/domain/tickers/tickersReducer';
+
+export type ADD_TICKER = "ADD_TICKER";
+export const ADD_TICKER:ADD_TICKER = "ADD_TICKER";
+export interface AddTickerAction {
+  type: ADD_TICKER,
+  ticker: string;
+  tickerData:ITickerData;
+}
+
 export type UPDATE_PRICE = "UPDATE_PRICE";
 export const UPDATE_PRICE:UPDATE_PRICE = "UPDATE_PRICE";
 export interface UpdatePriceAction {
@@ -70,8 +79,8 @@ export interface ToggleUpdateValuesFrequencyAction {
   frequency: number;
 }
 
-// won't scale well
-export type ReduxAction = UpdatePriceAction |
+export type ReduxAction = AddTickerAction |
+                          UpdatePriceAction |
                           UpdateVolumeAction |
                           ToggleAddTickerAction |
                           ToggleAddTickerFrequencyAction |
@@ -80,8 +89,16 @@ export type ReduxAction = UpdatePriceAction |
                           UpdateSectorAction;
 
 
-export const Actions = {
+export const actions = {
   ticker: {
+    createAddTickerAction: (ticker: string, tickerData: ITickerData): AddTickerAction  => {
+      return {
+        type: ADD_TICKER,
+        ticker: ticker,
+        tickerData: tickerData
+      }
+    },
+
     createUpdatePriceAction: (ticker: string, price: number, change: number): UpdatePriceAction  => {
       return {
         type: UPDATE_PRICE,

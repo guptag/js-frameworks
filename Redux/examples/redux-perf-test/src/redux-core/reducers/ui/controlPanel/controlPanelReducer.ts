@@ -13,8 +13,15 @@ export interface IConrolPanelState {
   updateValuesFrequency: number;
 }
 
+export const DefaultControlPanelState = {
+  addTickersEnabled: true,
+  addTickerFrequency: 25,
+  updateValuesEnabled: true,
+  updateValuesFrequency: 25
+}
+
 type IConrolPanelReducer = (state: IConrolPanelState, action: ReduxAction) => IConrolPanelState;
-export const controlPanelReducer: IConrolPanelReducer = (state: IConrolPanelState, action: ReduxAction): IConrolPanelState => {
+export const controlPanelReducer: IConrolPanelReducer = (state: IConrolPanelState = DefaultControlPanelState, action: ReduxAction): IConrolPanelState => {
   switch (action.type) {
     case TOGGLE_ADD_TICKERS:
       return {

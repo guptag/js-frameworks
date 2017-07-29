@@ -1,5 +1,6 @@
 import  {
   ReduxAction,
+  ADD_TICKER,
   UPDATE_VOLUME,
   UPDATE_PRICE,
   UPDATE_SECTOR
@@ -11,6 +12,7 @@ export interface ITickerData {
   change: number;
   sector: string;
   industry: string;
+  last: number;
   price: number;
   sma20: number;
   sma50: number;
@@ -19,13 +21,18 @@ export interface ITickerData {
   avgVol: number;
 }
 
-export interface ITickersState {
-  tickers: { [ticker: string]: ITickerData; };
-}
+export type ITickersState = { [ticker: string]: ITickerData; };
+
+export const DefaultTickersState: ITickersState = {};
 
 type ITickersReducer = (state: ITickersState, action: ReduxAction) => ITickersState;
-export const tickersReducer: ITickersReducer = (state: ITickersState, action: ReduxAction): ITickersState => {
+export const tickersReducer: ITickersReducer = (state: ITickersState = DefaultTickersState, action: ReduxAction): ITickersState => {
   switch (action.type) {
+    case ADD_TICKER:
+      return {
+        ...state,
+        [action.ticker]: action.tickerData
+      }
     case UPDATE_PRICE:
       return {
         ...state,
