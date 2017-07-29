@@ -3,6 +3,16 @@ import { assign } from 'lodash';
 
 import { Todo } from '../models/todo';
 
+export type ADD_TASK = 'ADD_TASK';
+
+
+export type AddTaskAction = {
+  type: ADD_TASK,
+  payload: {
+    title: string,
+  },
+};
+
 import {
   ADD_TODO,
   DELETE_TODO,

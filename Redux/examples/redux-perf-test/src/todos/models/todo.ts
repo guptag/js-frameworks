@@ -4,4 +4,4 @@ export type Todo = {
   completed: boolean;
 };
 
-export type IState = Todo[];
+export type ITodoList = Todo[];

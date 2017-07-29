@@ -8,7 +8,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "declaration": false,
-    "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": false,
     "jsx": "react",
     "lib": [
       "es2015",

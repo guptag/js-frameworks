@@ -1,1 +1,1 @@
-* Using this github project as a reference to TypeScript + Redux: https://github.com/jaysoo/todomvc-redux-react-typescript
+* Using this project as a reference for TypeScript + Redux Setup: https://github.com/jaysoo/todomvc-redux-react-typescript

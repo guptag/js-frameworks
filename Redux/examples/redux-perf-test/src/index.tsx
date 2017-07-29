@@ -3,8 +3,10 @@ import * as ReactDOM from 'react-dom';
 import { Store, createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-import App from './app/components/app';
-import rootReducer from './app/reducers';
+import App from './todos-app/components/app';
+import rootReducer from './todos-app/reducers';
+
+import appRootReducer from './redux-core/reducers/appRootReducer';
 
 const initialState = {};
 
