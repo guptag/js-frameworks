@@ -1,0 +1,19 @@
+<section>
+    <h3>Customers</h3>
+    <section ng-if="!listCtrl.isLoaded">
+        Loading...
+    </section>
+    <section ng-if="listCtrl.isLoaded">
+        <table class="customers-list">
+            <tr class="animate-repeat" ng-repeat="customerModel in listCtrl.customerList">
+              <td><a href='#/customers/edit/{{::customerModel.customerCode}}'>{{::customerModel.ticker}}</a></td>
+              <td>{{::customerModel.companyName}}</td>
+              <td>{{::customerModel.website}}</td>
+              <td>{{::customerModel.primaryPhone}}</td>
+              <td>{{::customerModel.formattedAddress(customerModel.primaryAddress)}}</td>
+            </tr>
+        </table>
+        <br/>
+        <a href="#/customers/add">Add New Customer</a>
+    </section>
+</section>

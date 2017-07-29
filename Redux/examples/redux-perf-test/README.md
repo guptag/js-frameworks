@@ -1,0 +1,1 @@
+* Using this project as a reference for TypeScript + Redux Setup: https://github.com/jaysoo/todomvc-redux-react-typescript
