@@ -17,11 +17,10 @@ class TickerList extends React.Component<ITickerListProps, null> {
     var tickerTiles = _.map(this.props.tickersHash, (value: ITickerData, key: string) => {
       return <TickerTile key={key} tickerData={value}></TickerTile>;
     });
-    
+
     return (
       <section className="ticker-list">
-          <h1>Ticker List</h1>
-          {tickerTiles}
+        {tickerTiles}
       </section>
     );
   }
