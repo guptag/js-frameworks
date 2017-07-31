@@ -11,7 +11,7 @@
     "setup": "npm install",
     "watch": "webpack --watch --config webpack.config.js",
     "build": "webpack --config webpack.config.js",
-    "server": "http-server . -p 9000 -o"
+    "server": "http-server . -c-1 -p 9000 -o"
   },
   "dependencies": {
     "classnames": "2.2.5",

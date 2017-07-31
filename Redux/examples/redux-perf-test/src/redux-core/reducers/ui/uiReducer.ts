@@ -1,17 +1,17 @@
 import { combineReducers } from 'redux';
-import {ReduxAction} from '../../actions/actions';
-import {controlPanelReducer, IConrolPanelState, DefaultControlPanelState} from './controlPanel/controlPanelReducer';
+import {AppAction} from '../../actions/actions';
+import {controlPanelReducer, IConrolPanelOptions, DefaultControlPanelOptions} from './controlPanel/controlPanelReducer';
 
 export interface IUIState {
-  controlPanel: IConrolPanelState
+  controlPanel: IConrolPanelOptions
 }
 
 export const DefaultUIState = {
-  controlPanel: DefaultControlPanelState
+  controlPanel: DefaultControlPanelOptions
 }
 
-type IUIReducer = (state: IUIState, action: ReduxAction) => IUIState;
-export const uiReducer: IUIReducer = (state: IUIState = DefaultUIState, action: ReduxAction) => {
+type IUIReducer = (state: IUIState, action: AppAction) => IUIState;
+export const uiReducer: IUIReducer = (state: IUIState = DefaultUIState, action: AppAction) => {
   return {
     controlPanel: controlPanelReducer(state.controlPanel, action)
   }

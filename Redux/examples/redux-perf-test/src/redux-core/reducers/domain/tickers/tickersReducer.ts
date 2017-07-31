@@ -1,5 +1,25 @@
+/*
+
+export function goodReducer(state: State = initialState, action: Action): State {
+  let partialState: Partial<State> | undefined;
+
+  if (action.type === INCREASE_COUNTER) {
+    partialState = {
+      counterTypoError: state.counter + 1, // Error: Object literal may only specify known properties, and 'counterTypoError' does not exist in type 'Partial<State>'. 
+    }; // now it's showing a typo error correctly 
+  }
+  if (action.type === CHANGE_BASE_CURRENCY) {
+    partialState = { // Error: Types of property 'baseCurrency' are incompatible. Type 'number' is not assignable to type 'string'.
+      baseCurrency: 5,
+    }; // type errors also works fine 
+  }
+
+  return partialState != null ? { ...state, ...partialState } : state;
+}
+*/
+
 import  {
-  ReduxAction,
+  AppAction,
   ADD_TICKER,
   UPDATE_VOLUME,
   UPDATE_PRICE,
@@ -21,12 +41,12 @@ export interface ITickerData {
   avgVol: number;
 }
 
-export type ITickersState = { [ticker: string]: ITickerData; };
+export type ITickersHash = { [ticker: string]: ITickerData; };
 
-export const DefaultTickersState: ITickersState = {};
+export const DefaultTickersState: ITickersHash = {};
 
-type ITickersReducer = (state: ITickersState, action: ReduxAction) => ITickersState;
-export const tickersReducer: ITickersReducer = (state: ITickersState = DefaultTickersState, action: ReduxAction): ITickersState => {
+type ITickersReducer = (state: ITickersHash, action: AppAction) => ITickersHash;
+export const tickersReducer: ITickersReducer = (state: ITickersHash = DefaultTickersState, action: AppAction): ITickersHash => {
   switch (action.type) {
     case ADD_TICKER:
       return {

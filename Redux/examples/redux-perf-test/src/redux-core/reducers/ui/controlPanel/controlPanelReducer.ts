@@ -1,44 +1,48 @@
 import  {
-  ReduxAction,
+  AppAction,
   TOGGLE_ADD_TICKERS,
   CHANGE_ADD_TICKER_FREQUENCY,
   TOGGLE_UPDATE_VALUES,
   CHANGE_UPDATE_VALUES_FREQUENCY
 } from '../../../actions/actions';
 
-export interface IConrolPanelState {
+export interface IConrolPanelOptions {
   addTickersEnabled: boolean;
   addTickerFrequency: number;
   updateValuesEnabled: boolean;
   updateValuesFrequency: number;
 }
 
-export const DefaultControlPanelState = {
+export const DefaultControlPanelOptions: IConrolPanelOptions = {
   addTickersEnabled: true,
-  addTickerFrequency: 25,
+  addTickerFrequency: 50,
   updateValuesEnabled: true,
-  updateValuesFrequency: 25
+  updateValuesFrequency: 50
 }
 
-type IConrolPanelReducer = (state: IConrolPanelState, action: ReduxAction) => IConrolPanelState;
-export const controlPanelReducer: IConrolPanelReducer = (state: IConrolPanelState = DefaultControlPanelState, action: ReduxAction): IConrolPanelState => {
+type IConrolPanelReducer = (state: IConrolPanelOptions, action: AppAction) => IConrolPanelOptions;
+export const controlPanelReducer: IConrolPanelReducer = (state: IConrolPanelOptions = DefaultControlPanelOptions, action: AppAction): IConrolPanelOptions => {
   switch (action.type) {
     case TOGGLE_ADD_TICKERS:
       return {
         ...state,
-        addTickersEnabled: state.addTickersEnabled
+        addTickersEnabled: !state.addTickersEnabled
       }
     case TOGGLE_UPDATE_VALUES:
       return {
         ...state,
-        updateValuesEnabled: state.updateValuesEnabled
+        updateValuesEnabled: !state.updateValuesEnabled
       }
     case CHANGE_ADD_TICKER_FREQUENCY:
-      return {
+    if (action.frequency > 300 ) {action.frequency = 300;} 
+    if (action.frequency < 10 ) {action.frequency = 10;}   
+    return {
         ...state,
         addTickerFrequency: action.frequency
       }
     case CHANGE_UPDATE_VALUES_FREQUENCY:
+       if (action.frequency > 300 ) {action.frequency = 300;} 
+       if (action.frequency < 10 ) {action.frequency = 10;}   
        return {
         ...state,
         updateValuesFrequency: action.frequency

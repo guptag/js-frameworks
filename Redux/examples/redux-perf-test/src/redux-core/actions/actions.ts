@@ -1,18 +1,12 @@
-/*export const ActionTypes = {
-  tickers: {
-    UPDATE_PRICE: "UPDATE_PRICE",
-    UPDATE_VOLUME: "UPDATE_VOLUME",
-    UPDATE_PE: "UPDATE_PE",
-    ADD_TICKER: "ADD_TICKER",
-    REMOVE_TICKER: "REMOVE_TICKER"
-  },
-  controlPanel: {
-    TOGGLE_ADD_TICKER: "TOGGLE_ADD_TICKERS",
-    CHANGE_ADD_TICKER_FREQUENCY: "CHANGE_ADD_TICKER_FREQUENCY",
-    TOGGLE_UPDATE_TICKER: "TOGGLE_UPDATE_TICKERS",
-    CHANGE_UPDATE_TICKER_FREQUENCY: "CHANGE_UPDATE_TICKER_FREQUENCY",
-  }
-}; */
+/*
+
+export const INCREASE_COUNTER = 'INCREASE_COUNTER';
+export const CHANGE_BASE_CURRENCY = 'CHANGE_BASE_CURRENCY';
+
+type Action = { type: typeof INCREASE_COUNTER }
+| { type: typeof CHANGE_BASE_CURRENCY, payload: string };
+
+*/
 
 // https://github.com/reactjs/redux/issues/992
 
@@ -60,7 +54,7 @@ export interface ToggleAddTickerAction {
 
 export type CHANGE_ADD_TICKER_FREQUENCY = "CHANGE_ADD_TICKER_FREQUENCY";
 export const CHANGE_ADD_TICKER_FREQUENCY:CHANGE_ADD_TICKER_FREQUENCY = "CHANGE_ADD_TICKER_FREQUENCY";
-export interface ToggleAddTickerFrequencyAction {
+export interface ChangeAddTickerFrequencyAction {
   type: CHANGE_ADD_TICKER_FREQUENCY,
   frequency: number;
 }
@@ -74,19 +68,19 @@ export interface ToggleUpdateValuesAction {
 
 export type CHANGE_UPDATE_VALUES_FREQUENCY = "CHANGE_UPDATE_VALUES_FREQUENCY";
 export const CHANGE_UPDATE_VALUES_FREQUENCY:CHANGE_UPDATE_VALUES_FREQUENCY = "CHANGE_UPDATE_VALUES_FREQUENCY";
-export interface ToggleUpdateValuesFrequencyAction {
+export interface ChangeUpdateValuesFrequencyAction {
   type: CHANGE_UPDATE_VALUES_FREQUENCY,
   frequency: number;
 }
 
-export type ReduxAction = AddTickerAction |
-                          UpdatePriceAction |
-                          UpdateVolumeAction |
-                          ToggleAddTickerAction |
-                          ToggleAddTickerFrequencyAction |
-                          ToggleUpdateValuesAction |
-                          ToggleUpdateValuesFrequencyAction |
-                          UpdateSectorAction;
+export type AppAction = AddTickerAction |
+                        UpdatePriceAction |
+                        UpdateVolumeAction |
+                        ToggleAddTickerAction |
+                        ChangeAddTickerFrequencyAction |
+                        ToggleUpdateValuesAction |
+                        ChangeUpdateValuesFrequencyAction |
+                        UpdateSectorAction;
 
 
 export const actions = {
@@ -132,7 +126,7 @@ export const actions = {
       }
     },
 
-    createAddTickerFrequencyAction: (frequency: number): ToggleAddTickerFrequencyAction => {
+    createChangeAddTickerFrequencyAction: (frequency: number): ChangeAddTickerFrequencyAction => {
       return  {
         type: CHANGE_ADD_TICKER_FREQUENCY,
         frequency: frequency
@@ -145,7 +139,7 @@ export const actions = {
       }
     },
 
-    createUpdateValuesFrequencyAction: (frequency: number): ToggleUpdateValuesFrequencyAction => {
+    createChangeUpdatesFrequencyAction: (frequency: number): ChangeUpdateValuesFrequencyAction => {
       return  {
         type: CHANGE_UPDATE_VALUES_FREQUENCY,
         frequency: frequency

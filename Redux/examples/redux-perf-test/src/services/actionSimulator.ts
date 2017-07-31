@@ -7,13 +7,9 @@ class ActionSimulator {
   tickerDataFromServer;
   newTickerIndexToAdd: number;
 
-  //remove
-  //public appStore;
-
   constructor() {
     this.tickerDataFromServer = (<any>window).tickerData || []; //for simulation 
     this.newTickerIndexToAdd = -1;
-    //this.appStore = appStore;
   }
 
   private addTicker() {
@@ -59,7 +55,7 @@ class ActionSimulator {
       
       switch (actionIndex) {
         case 1: 
-          const currentPrice: number = appStore.getState().domain.tickers[ticker].price;
+          const currentPrice: number = appStore.getState().domain.tickersHash[ticker].price;
           const newPrice: number = currentPrice + (multiplier * (currentPrice * changePercent) / 100);
           const newPriceChange: number = newPrice - <number>tickerDataItem.Price;
           appStore.dispatch(actions.ticker.createUpdatePriceAction(<string>tickerDataItem.Ticker, newPrice, newPriceChange));
@@ -72,7 +68,7 @@ class ActionSimulator {
           break; 
 
         case 3:
-          const currentVol: number = appStore.getState().domain.tickers[ticker].price;
+          const currentVol: number = appStore.getState().domain.tickersHash[ticker].price;
           const newVol: number = currentVol + (multiplier * (currentVol * changePercent) / 100);
           appStore.dispatch(actions.ticker.createUpdateVolumeAction(<string>tickerDataItem.Ticker, newVol));
           break; 
@@ -87,29 +83,21 @@ class ActionSimulator {
   }
 
   startAddingTickers() {
-    if (appStore.getState().ui.controlPanel.addTickersEnabled) {
-      appStore.dispatch(actions.controlPanel.createToggleAddTickerAction());
-      this.scheduleAddTicker();
-    }
+    this.scheduleAddTicker();
   }
 
   stopAddingTickers() {
     this.clearAddTickerTimerId && clearTimeout(this.clearAddTickerTimerId);
     this.clearAddTickerTimerId = null;
-    appStore.getState().ui.controlPanel.addTickersEnabled && appStore.dispatch(actions.controlPanel.createToggleAddTickerAction());
   }
 
-  startUpdateTickers() {
-    if (appStore.getState().ui.controlPanel.updateValuesEnabled) {
-      appStore.dispatch(actions.controlPanel.createToggleUpdateValuesAction());
-      this.scheduleUpdateTicker();
-    }
+  startUpdatingTickers() {
+    this.scheduleUpdateTicker();
   }
 
-  stopUpdateTickers() {
+  stopUpdatingTickers() {
     this.clearUpdateTickerTimerId && clearTimeout(this.clearUpdateTickerTimerId);
     this.clearUpdateTickerTimerId = null;
-    appStore.getState().ui.controlPanel.updateValuesEnabled && appStore.dispatch(actions.controlPanel.createToggleUpdateValuesAction());
   }
 }
 

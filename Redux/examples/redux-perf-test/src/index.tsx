@@ -13,11 +13,13 @@ import actionSimulator from './services/actionSimulator';
 
 //const store: Store<any> = createStore(rootReducer, initialState);
 
-/*ReactDOM.render(
+import App from './ui/components/app';
+
+ReactDOM.render(
   <Provider store={appStore}>
     <App />
   </Provider>,
   document.getElementById('app')
-); */
+); 
 
 window["actionSimulator"] = actionSimulator;
