@@ -3,14 +3,20 @@ import * as React from 'react';
 import Sector from './Sector';
 import Price from './Price';
 import Volume from './Volume';
+import { IAppState } from '../../../redux-core/reducers/appReducer';
 import { ITickerData } from '../../../redux-core/reducers/domain/tickers/tickersReducer';
+import { connect } from 'react-redux';
 
-interface ITickerListProps {
+interface ITickerTileOwnProps {
+  ticker: string;
+}
+
+interface IMapToStateProps {
   tickerData: ITickerData;
 }
 
-class TickerTile extends React.Component<ITickerListProps, null> {
-  shouldComponentUpdate (nextProps:ITickerListProps) {
+class TickerTile extends React.Component<ITickerTileOwnProps & IMapToStateProps, null> {
+  shouldComponentUpdate (nextProps: ITickerTileOwnProps & IMapToStateProps) {
     return this.props.tickerData !== nextProps.tickerData;
   }
 
@@ -27,4 +33,9 @@ class TickerTile extends React.Component<ITickerListProps, null> {
   }
 }
 
-export default TickerTile;
+const mapStateToProps = (state: IAppState, ownProps: ITickerTileOwnProps): ITickerTileOwnProps & IMapToStateProps => ({
+  tickerData: state.domain.tickersHash[ownProps.ticker],
+  ticker: ownProps.ticker
+});
+
+export default connect(mapStateToProps, null)(TickerTile);
