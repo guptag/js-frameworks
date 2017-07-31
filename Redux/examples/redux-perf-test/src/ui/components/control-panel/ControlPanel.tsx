@@ -42,6 +42,10 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
     });
   }
 
+  shouldComponentUpdate (nextProps:IStateToProps & IDispatchToProps) {
+    return this.props.settings !== nextProps.settings;
+  }
+
   render() {
     return (
       <section className="control-panel">

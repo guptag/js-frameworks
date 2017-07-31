@@ -5,6 +5,10 @@ interface ISectorNameProps {
 }
 
 class SectorName extends React.Component<ISectorNameProps, null> {
+  shouldComponentUpdate (nextProps:ISectorNameProps) {
+    return this.props.name !== nextProps.name;
+  }
+
   render() {
     return (
       <section className="sector">

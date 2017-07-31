@@ -118,11 +118,19 @@ class ActionSimulator {
   endPerf() {
     if (!this.perfTracking) { return; }
     Perf.stop();
+
+    console.log("Inclusive");
     Perf.printInclusive();
+
+    console.log("Exclusive");
     Perf.printExclusive();
+
+    console.log("Wasted");
     Perf.printWasted();
+
+    /*console.log("Dom Operations");
     Perf.printOperations();
-    this.perfTracking = false;
+    this.perfTracking = false;*/
   }
 }
 

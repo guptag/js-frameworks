@@ -107,7 +107,27 @@ body {
   margin: 0;
   height: 100vh;
   overflow-y: auto;
-  padding-right: 300px
+  margin-right: 300px
+}
+
+.ticker-list::-webkit-scrollbar {
+  height: 200px;
+  overflow: auto;
+  float: left;
+  margin: 0 10px;
+  width: 5px;
+}
+
+.ticker-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.ticker-list::-webkit-scrollbar-track {
+  background: #ddd;
+}
+
+.ticker-list::-webkit-scrollbar-thumb {
+  background: #666;
 }
 
 .ticker-tile {
@@ -122,6 +142,10 @@ body {
   font-size: 1em;
 }
 
-.changed {
-  background-color: yellow;
+.price-changed {
+  background-color: #ffff54;
+}
+
+.vol-changed {
+  background-color: #72c3de;
 }

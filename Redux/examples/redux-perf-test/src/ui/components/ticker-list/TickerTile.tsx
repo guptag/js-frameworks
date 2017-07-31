@@ -11,7 +11,7 @@ interface ITickerListProps {
 
 class TickerTile extends React.Component<ITickerListProps, null> {
   shouldComponentUpdate (nextProps:ITickerListProps) {
-    return this.props !== nextProps;
+    return this.props.tickerData !== nextProps.tickerData;
   }
 
   render() {

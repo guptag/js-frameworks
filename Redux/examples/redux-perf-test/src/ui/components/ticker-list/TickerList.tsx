@@ -13,6 +13,10 @@ interface ITickerListProps {
 }
 
 class TickerList extends React.Component<ITickerListProps, null> {
+  /*shouldComponentUpdate (nextProps:ITickerListProps) {
+    return (Object.keys(this.props.tickersHash).length !== Object.keys(nextProps.tickersHash).length);
+  }*/
+
   render() {
     var tickerTiles = _.map(this.props.tickersHash, (value: ITickerData, key: string) => {
       return <TickerTile key={key} tickerData={value}></TickerTile>;
