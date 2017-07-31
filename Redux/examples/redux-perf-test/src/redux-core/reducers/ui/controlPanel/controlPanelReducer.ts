@@ -34,14 +34,14 @@ export const controlPanelReducer: IConrolPanelReducer = (state: IConrolPanelOpti
         updateValuesEnabled: !state.updateValuesEnabled
       }
     case CHANGE_ADD_TICKER_FREQUENCY:
-    if (action.frequency > 1000 ) {action.frequency = 1000;}
+    if (action.frequency > 300 ) {action.frequency = 300;}
     if (action.frequency < 10 ) {action.frequency = 10;}
     return {
         ...state,
         addTickerFrequency: action.frequency
       }
     case CHANGE_UPDATE_VALUES_FREQUENCY:
-       if (action.frequency > 1000 ) {action.frequency = 1000;}
+       if (action.frequency > 300 ) {action.frequency = 300;}
        if (action.frequency < 10 ) {action.frequency = 10;}
        return {
         ...state,
