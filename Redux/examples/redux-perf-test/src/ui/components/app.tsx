@@ -11,7 +11,6 @@ const subtotalSelector = createSelector(
 import ControlPanel from './control-panel/ControlPanel';
 import TickerList from './ticker-list/TickerList';
 
-
 interface IAppProps {
   dispatch: Dispatch<{}>;
 }

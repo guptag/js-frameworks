@@ -2,43 +2,39 @@
   "name": "redux-perf-test",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "engines": {
-    "node": ">=7.0.0"
-  },
   "scripts": {
     "clean": "rimraf dist",
     "setup": "npm install",
     "watch": "webpack --watch --config webpack.config.js",
     "build": "webpack --config webpack.config.js",
-    "server": "http-server . -c-1 -p 9000 -o"
+    "start": "http-server . -c-1 -p 9000 -o"
   },
   "dependencies": {
     "classnames": "2.2.5",
-    "lodash": "^4.17.4",
+    "lodash": "4.17.4",
     "normalizr": "3.2.3",
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-redux": "5.0.5",
     "redux": "3.7.2",
     "redux-actions": "2.2.1",
-    "redux-batched-actions": "^0.2.0",
+    "redux-batched-actions": "0.2.0",
     "redux-thunk": "2.2.0",
     "reselect": "3.0.1",
     "react-addons-perf": "15.4.2"
   },
   "devDependencies": {
     "@types/classnames": "2.2.0",
-    "@types/lodash": "^4.14.44",
+    "@types/lodash": "4.14.71",
     "@types/react": "15.0.15",
     "@types/react-dom": "0.14.23",
     "@types/react-redux": "4.4.46",
-    "@types/redux": "^3.6.31",
+    "@types/redux": "3.6.31",
     "@types/redux-actions": "1.2.3",
     "awesome-typescript-loader": "3.2.2",
     "http-server": "0.10.0",
     "path": "0.12.7",
-    "rimraf": "^2.5.4",
+    "rimraf": "2.5.4",
     "source-map-loader": "0.1.5",
     "typescript": "2.3.2",
     "webpack": "3.4.1"
