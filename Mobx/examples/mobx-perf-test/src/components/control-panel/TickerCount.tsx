@@ -2,17 +2,18 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import {observer} from 'mobx-react';
 
-import { tickerDataModel, ITickerData } from '../../models/TickerDataModel';
-
 interface ITickerCountProps {
   count: number;
 }
 
-@observer
 class TickerCount extends React.Component<ITickerCountProps, null> {
+  shouldComponentUpdate(newProps: ITickerCountProps) {
+    return this.props.count !== newProps.count;
+  }
+
   render() {
     return (
-      <span>{tickerDataModel.tickerHash.keys.length}</span>
+      <span>{this.props.count}</span>
     );
   }
 }

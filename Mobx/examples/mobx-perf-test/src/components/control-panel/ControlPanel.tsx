@@ -73,7 +73,7 @@ class ControlPanel extends React.Component<IControlPanelProps, null> {
             </div>
             <div className="tickers">
               <h6>Tickers</h6>
-              <div id="stats_ticker_count"><TickerCount count={this.props.tickerDataModel.tickerHash.keys.length}></TickerCount></div>
+              <div id="stats_ticker_count"><TickerCount count={this.props.tickerDataModel.tickerHash.size}></TickerCount></div>
             </div>
           </section>
           <section className="add-tickers action">

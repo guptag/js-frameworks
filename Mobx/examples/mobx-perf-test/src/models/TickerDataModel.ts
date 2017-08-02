@@ -1,4 +1,4 @@
-import {observable, action, ObservableMap} from 'mobx';
+import {observable, action, ObservableMap, computed} from 'mobx';
 
 export interface ITickerData {
   ticker: string;
@@ -34,17 +34,21 @@ class TickerDataModel implements ITickerModel {
   }
 
   @action public updatePrice(ticker: string, price: number, change: number): void {
-    let tickerData: ITickerData = this.tickerHash[ticker];
+    let tickerData: ITickerData = this.tickerHash.get(ticker);
     if (tickerData) {
-      tickerData.price = price;
-      tickerData.change = change;
+      Object.assign(tickerData, {
+        price: price,
+        change: change
+      });
     }
   }
 
   @action public updateVolume(ticker: string, volume: number): void {
-    let tickerData: ITickerData = this.tickerHash[ticker];
+    let tickerData: ITickerData = this.tickerHash.get(ticker);
     if (tickerData) {
-      tickerData.volume = volume;
+      Object.assign(tickerData, {
+        volume: volume
+      });
     }
   }
 }

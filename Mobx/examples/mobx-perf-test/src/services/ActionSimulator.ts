@@ -58,7 +58,7 @@ class ActionSimulator {
 
       switch (actionIndex) {
         case 1:
-          const currentPrice: number = tickerDataModel.tickerHash[ticker].price;
+          const currentPrice: number = tickerDataModel.tickerHash.get(ticker).price;
           const newPrice: number = currentPrice + (multiplier * (currentPrice * changePercent) / 100);
           const newPriceChange: number = newPrice - <number>tickerDataItem.Price;
           tickerDataModel.updatePrice(ticker, newPrice, newPriceChange);
@@ -71,7 +71,7 @@ class ActionSimulator {
           break;*/
 
         case 2:
-          const currentVol: number = tickerDataModel.tickerHash[ticker].volume;
+          const currentVol: number = tickerDataModel.tickerHash.get(ticker).volume;
           const newVol: number = Math.floor(currentVol + (multiplier * (currentVol * changePercent) / 100));
           tickerDataModel.updateVolume(ticker, newVol);
           break;
