@@ -5,7 +5,6 @@ import { Store, createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 import appStore from './redux-core/store/appStore';
-import actionSimulator from './services/actionSimulator';
 
 import App from './ui/components/app';
 
@@ -15,5 +14,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('app')
 );
-
-window["actionSimulator"] = actionSimulator;

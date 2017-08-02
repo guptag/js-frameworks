@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import TickerTile from './TickerTile';
 
 import { IAppState } from '../../../redux-core/reducers/appReducer';
-import { ITickersHash, ITickerData } from '../../../redux-core/reducers/domain/tickers/tickersReducer';
+import { ITickerHash, ITickerData } from '../../../redux-core/reducers/domain/tickers/tickersReducer';
 
 interface ITickerListProps {
-  tickersHash: ITickersHash;
+  tickersHash: ITickerHash;
 }
 
 class TickerList extends React.Component<ITickerListProps, null> {

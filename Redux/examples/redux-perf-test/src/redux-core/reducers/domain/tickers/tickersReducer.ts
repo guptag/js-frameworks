@@ -41,12 +41,12 @@ export interface ITickerData {
   avgVol: number;
 }
 
-export type ITickersHash = { [ticker: string]: ITickerData; };
+export type ITickerHash = { [ticker: string]: ITickerData; };
 
-export const DefaultTickersState: ITickersHash = {};
+export const DefaultTickersState: ITickerHash = {};
 
-type ITickersReducer = (state: ITickersHash, action: AppAction) => ITickersHash;
-export const tickersReducer: ITickersReducer = (state: ITickersHash = DefaultTickersState, action: AppAction): ITickersHash => {
+type ITickersReducer = (state: ITickerHash, action: AppAction) => ITickerHash;
+export const tickersReducer: ITickersReducer = (state: ITickerHash = DefaultTickersState, action: AppAction): ITickerHash => {
   switch (action.type) {
     case ADD_TICKER:
       return {
