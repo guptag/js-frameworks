@@ -1,1 +1,0 @@
-* Todo app with React/Redux/Typescript: https://github.com/jaysoo/todomvc-redux-react-typescript
