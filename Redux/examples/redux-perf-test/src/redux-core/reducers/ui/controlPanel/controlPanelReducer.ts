@@ -1,23 +1,23 @@
 import  {
   AppAction,
   TOGGLE_ADD_TICKERS,
-  CHANGE_ADD_TICKER_FREQUENCY,
+  CHANGE_ADD_TICKER_DELAY,
   TOGGLE_UPDATE_VALUES,
-  CHANGE_UPDATE_VALUES_FREQUENCY
+  CHANGE_UPDATE_VALUES_DELAY
 } from '../../../actions/actions';
 
 export interface IConrolPanelOptions {
   addTickersEnabled: boolean;
-  addTickerFrequency: number;
+  addTickerDelayMsec: number;
   updateValuesEnabled: boolean;
-  updateValuesFrequency: number;
+  updateValuesDelayMsec: number;
 }
 
 export const DefaultControlPanelOptions: IConrolPanelOptions = {
   addTickersEnabled: true,
-  addTickerFrequency: 50,
+  addTickerDelayMsec: 40,
   updateValuesEnabled: true,
-  updateValuesFrequency: 50
+  updateValuesDelayMsec: 20
 }
 
 type IConrolPanelReducer = (state: IConrolPanelOptions, action: AppAction) => IConrolPanelOptions;
@@ -26,26 +26,24 @@ export const controlPanelReducer: IConrolPanelReducer = (state: IConrolPanelOpti
     case TOGGLE_ADD_TICKERS:
       return {
         ...state,
-        addTickersEnabled: !state.addTickersEnabled
+        addTickersEnabled: action.enable
       }
     case TOGGLE_UPDATE_VALUES:
       return {
         ...state,
-        updateValuesEnabled: !state.updateValuesEnabled
+        updateValuesEnabled: action.enable
       }
-    case CHANGE_ADD_TICKER_FREQUENCY:
-    if (action.frequency > 300 ) {action.frequency = 300;}
-    if (action.frequency < 10 ) {action.frequency = 10;}
+    case CHANGE_ADD_TICKER_DELAY:
+    if (action.delayMS < 20 ) {action.delayMS = 20;}
     return {
         ...state,
-        addTickerFrequency: action.frequency
+        addTickerDelayMsec: action.delayMS
       }
-    case CHANGE_UPDATE_VALUES_FREQUENCY:
-       if (action.frequency > 300 ) {action.frequency = 300;}
-       if (action.frequency < 10 ) {action.frequency = 10;}
+    case CHANGE_UPDATE_VALUES_DELAY:
+       if (action.delayMS < 10 ) {action.delayMS = 10;}
        return {
         ...state,
-        updateValuesFrequency: action.frequency
+        updateValuesDelayMsec: action.delayMS
       }
     default:
       return state;

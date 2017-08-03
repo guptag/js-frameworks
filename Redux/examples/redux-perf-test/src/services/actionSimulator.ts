@@ -9,7 +9,11 @@ class ActionSimulator {
   clearUpdateTickerTimerId: number;
   tickerDataFromServer;
   newTickerIndexToAdd: number;
-  perfTracking: boolean;
+
+  currentAddTickerDelay: number;
+  currentUpdateTickerDelay: number;
+
+  measuringPerf: boolean;
 
   constructor() {
     this.tickerDataFromServer = (<any>window).tickerData || []; //for simulation
@@ -19,7 +23,10 @@ class ActionSimulator {
   private addTicker() {
     if (this.newTickerIndexToAdd < this.tickerDataFromServer.length - 1) {
       this.newTickerIndexToAdd++;
+
       var tickerItem = this.tickerDataFromServer[this.newTickerIndexToAdd];
+      if (!tickerItem) { return; }
+
       appStore.dispatch(actions.ticker.createAddTickerAction((<string>tickerItem.Ticker), {
         ticker: <string>tickerItem.Ticker,
         company: <string>tickerItem.Company,
@@ -35,14 +42,15 @@ class ActionSimulator {
         avgVol: <number>tickerItem.AvgVol
       }));
 
-      this.clearAddTickerTimerId && this.scheduleAddTicker();
+      // UI state changed, reconfigure the timer
+      if (this.currentAddTickerDelay !== appStore.getState().ui.controlPanel.addTickerDelayMsec) {
+        this.clearAddTicker();
+        this.scheduleAddTicker();
+      }
     } else {
       this.stopAddingTickers();
+      appStore.dispatch(actions.controlPanel.createToggleAddTickerAction(false));
     }
-  }
-
-  private scheduleAddTicker() {
-    this.clearAddTickerTimerId = setTimeout(() => this.addTicker(), 1000 / (appStore.getState().ui.controlPanel.addTickerFrequency || 25));
   }
 
   private upDateTickerData() {
@@ -55,7 +63,7 @@ class ActionSimulator {
       const tickerDataItem = (<any>window).tickerData[randomTickerIndex];
       const ticker = (<string>tickerDataItem.Ticker);
       let multiplier = Math.random() > 0.5 ? 1 : -1;
-      let changePercent: number = Math.floor(Math.random() * 4); //0 - 3
+      let changePercent: number = Math.floor(Math.random() * 5); //0 - 4
 
       switch (actionIndex) {
         case 1:
@@ -65,12 +73,6 @@ class ActionSimulator {
           appStore.dispatch(actions.ticker.createUpdatePriceAction(<string>tickerDataItem.Ticker, newPrice, newPriceChange));
           break;
 
-       /* case 2:
-          const newSectorIndex = Math.floor(Math.random() * 5); // 0 -4
-          const newSector = ["Technology", "Materials", "Energy", "Utilities", "Industrials"][newSectorIndex];
-          appStore.dispatch(actions.ticker.createUpdateSectorAction(<string>tickerDataItem.Ticker, newSector));
-          break;*/
-
         case 2:
           const currentVol: number = appStore.getState().domain.tickersHash[ticker].volume;
           const newVol: number = Math.floor(currentVol + (multiplier * (currentVol * changePercent) / 100));
@@ -79,11 +81,31 @@ class ActionSimulator {
       }
     })(randomActionIndex, randomTickerIndex);
 
-    this.clearUpdateTickerTimerId && this.scheduleUpdateTicker();
+     // UI state changed, reconfigure the timer
+    if (this.currentUpdateTickerDelay !== appStore.getState().ui.controlPanel.updateValuesDelayMsec) {
+      this.clearUpdateTicker();
+      this.scheduleUpdateTicker();
+    }
+  }
+
+  private scheduleAddTicker() {
+    this.currentAddTickerDelay = appStore.getState().ui.controlPanel.addTickerDelayMsec || 100;
+    this.clearAddTickerTimerId = setInterval(() => this.addTicker(), this.currentAddTickerDelay);
+  }
+
+  private clearAddTicker() {
+    this.clearAddTickerTimerId && clearInterval(this.clearAddTickerTimerId);
+    this.clearAddTickerTimerId = null;
   }
 
   private scheduleUpdateTicker() {
-    this.clearUpdateTickerTimerId = setTimeout(() => this.upDateTickerData(), 1000 / (appStore.getState().ui.controlPanel.updateValuesFrequency || 25));
+    this.currentUpdateTickerDelay = appStore.getState().ui.controlPanel.updateValuesDelayMsec || 100;
+    this.clearUpdateTickerTimerId = setInterval(() => this.upDateTickerData(), this.currentUpdateTickerDelay);
+  }
+
+  private clearUpdateTicker() {
+    this.clearUpdateTickerTimerId && clearInterval(this.clearUpdateTickerTimerId);
+    this.clearUpdateTickerTimerId = null;
   }
 
   startAddingTickers() {
@@ -92,8 +114,7 @@ class ActionSimulator {
   }
 
   stopAddingTickers() {
-    this.clearAddTickerTimerId && clearTimeout(this.clearAddTickerTimerId);
-    this.clearAddTickerTimerId = null;
+    this.clearAddTicker();
     this.endPerf();
   }
 
@@ -103,20 +124,22 @@ class ActionSimulator {
   }
 
   stopUpdatingTickers() {
-    this.clearUpdateTickerTimerId && clearTimeout(this.clearUpdateTickerTimerId);
-    this.clearUpdateTickerTimerId = null;
+    this.clearUpdateTicker();
     this.endPerf();
   }
 
   startPerf() {
-    if (!this.perfTracking) {
+    // eanble for debugging; will impact perf/memory numbers
+
+    /*if (!this.measuringPerf) {
+      this.measuringPerf = true;
       Perf.start();
-      this.perfTracking = true;
-    }
+   }*/
   }
 
   endPerf() {
-    if (!this.perfTracking) { return; }
+    /*this.measuringPerf = false;
+
     Perf.stop();
 
     console.log("Inclusive");
@@ -126,11 +149,10 @@ class ActionSimulator {
     Perf.printExclusive();
 
     console.log("Wasted");
-    Perf.printWasted();
+    Perf.printWasted();*/
 
-    /*console.log("Dom Operations");
-    Perf.printOperations();
-    this.perfTracking = false;*/
+    //console.log("Dom Operations");
+    //Perf.printOperations();
   }
 }
 

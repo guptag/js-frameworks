@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { IAppState } from '../../../redux-core/reducers/appReducer';
 import { IConrolPanelOptions } from '../../../redux-core/reducers/ui/controlPanel/controlPanelReducer';
 import { actions, AppAction } from '../../../redux-core/actions/actions';
-import ActionSimulator from '../../../services/actionSimulator';
+import ActionSimulator from '../../../services/ActionSimulator';
 
 import TickerCount from './TickerCount';
 
@@ -19,8 +19,8 @@ interface IDispatchToProps {
   onStopAddTickers: () => void;
   onUpdateTickers: () => void;
   onStopUpdateTickers: () => void;
-  onChangeAddTickerFrequency: (frequency: number) => void,
-  onChangeUpdateTickerFrequency: (frequency: number) => void
+  onChangeAddTickerDelay: (frequency: number) => void,
+  onChangeUpdateTickerDelay: (frequency: number) => void
 }
 
 
@@ -69,21 +69,21 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
             <button onClick={this.props.onAddTickers} disabled={!this.props.settings.addTickersEnabled}>Start</button>
             <button onClick={this.props.onStopAddTickers} disabled={this.props.settings.addTickersEnabled}>Stop</button>
             <div className="frequency">
-              <span className="sub-title noselect">Adds per sec:&nbsp;</span>
-              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerFrequency(this.props.settings.addTickerFrequency - 25)}></i>
-              <span  className="noselect">{this.props.settings.addTickerFrequency}</span>
-              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerFrequency(this.props.settings.addTickerFrequency + 25)}></i>
+              <span className="sub-title noselect">Add Interval:&nbsp;</span>
+              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerDelay(this.props.settings.addTickerDelayMsec - 20)}></i>
+              <span  className="noselect">{this.props.settings.addTickerDelayMsec}ms</span>
+              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerDelay(this.props.settings.addTickerDelayMsec + 20)}></i>
             </div>
           </section>
           <section className="update-prices action">
-            <div  className="title">Change Values</div>
+            <div  className="title">Update Values</div>
             <button onClick={this.props.onUpdateTickers} disabled={!this.props.settings.updateValuesEnabled}>Start</button>
             <button onClick={this.props.onStopUpdateTickers} disabled={this.props.settings.updateValuesEnabled}>Stop</button>
             <div className="frequency">
-              <span className="sub-title noselect">Changes per sec:&nbsp;</span>
-              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerFrequency(this.props.settings.updateValuesFrequency - 25)}></i>
-              <span className="noselect">{this.props.settings.updateValuesFrequency}</span>
-              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerFrequency(this.props.settings.updateValuesFrequency + 25)}></i>
+              <span className="sub-title noselect">Update Interval:&nbsp;</span>
+              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerDelay(this.props.settings.updateValuesDelayMsec - 10)}></i>
+              <span className="noselect">{this.props.settings.updateValuesDelayMsec}ms</span>
+              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerDelay(this.props.settings.updateValuesDelayMsec + 10)}></i>
             </div>
           </section>
       </section>
@@ -97,23 +97,23 @@ const mapStateToProps = (state: IAppState): IStateToProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<AppAction>): IDispatchToProps => ({
   onAddTickers: () => {
-    dispatch(actions.controlPanel.createToggleAddTickerAction());
+    dispatch(actions.controlPanel.createToggleAddTickerAction(false));
     ActionSimulator.startAddingTickers();
   },
   onStopAddTickers: () => {
-    dispatch(actions.controlPanel.createToggleAddTickerAction());
+    dispatch(actions.controlPanel.createToggleAddTickerAction(true));
     ActionSimulator.stopAddingTickers();
   },
   onUpdateTickers: () => {
-    dispatch(actions.controlPanel.createToggleUpdateValuesAction());
+    dispatch(actions.controlPanel.createToggleUpdateValuesAction(false));
     ActionSimulator.startUpdatingTickers();
   },
   onStopUpdateTickers: () => {
-    dispatch(actions.controlPanel.createToggleUpdateValuesAction());
+    dispatch(actions.controlPanel.createToggleUpdateValuesAction(true));
     ActionSimulator.stopUpdatingTickers();
   },
-  onChangeAddTickerFrequency: (frequency: number) => dispatch(actions.controlPanel.createChangeAddTickerFrequencyAction(frequency)),
-  onChangeUpdateTickerFrequency: (frequency: number) => dispatch(actions.controlPanel.createChangeUpdatesFrequencyAction(frequency))
+  onChangeAddTickerDelay: (frequency: number) => dispatch(actions.controlPanel.createChangeAddTickerDelayAction(frequency)),
+  onChangeUpdateTickerDelay: (frequency: number) => dispatch(actions.controlPanel.createChangeUpdatesDelayAction(frequency))
 });
 
 export default connect<IStateToProps, IDispatchToProps, {}>(mapStateToProps, mapDispatchToProps, null, {})(ControlPanel);

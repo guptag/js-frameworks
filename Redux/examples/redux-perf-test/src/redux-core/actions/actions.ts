@@ -48,38 +48,40 @@ export interface UpdateSectorAction {
 export type TOGGLE_ADD_TICKERS = "TOGGLE_ADD_TICKERS";
 export const TOGGLE_ADD_TICKERS:TOGGLE_ADD_TICKERS = "TOGGLE_ADD_TICKERS";
 export interface ToggleAddTickerAction {
-  type: TOGGLE_ADD_TICKERS
+  type: TOGGLE_ADD_TICKERS;
+  enable: boolean
 }
 
 
-export type CHANGE_ADD_TICKER_FREQUENCY = "CHANGE_ADD_TICKER_FREQUENCY";
-export const CHANGE_ADD_TICKER_FREQUENCY:CHANGE_ADD_TICKER_FREQUENCY = "CHANGE_ADD_TICKER_FREQUENCY";
-export interface ChangeAddTickerFrequencyAction {
-  type: CHANGE_ADD_TICKER_FREQUENCY,
-  frequency: number;
+export type CHANGE_ADD_TICKER_DELAY = "CHANGE_ADD_TICKER_DELAY";
+export const CHANGE_ADD_TICKER_DELAY:CHANGE_ADD_TICKER_DELAY = "CHANGE_ADD_TICKER_DELAY";
+export interface ChangeAddTickerDelayAction {
+  type: CHANGE_ADD_TICKER_DELAY,
+  delayMS: number;
 }
 
 
 export type TOGGLE_UPDATE_VALUES = "TOGGLE_UPDATE_VALUES";
 export const TOGGLE_UPDATE_VALUES:TOGGLE_UPDATE_VALUES = "TOGGLE_UPDATE_VALUES";
 export interface ToggleUpdateValuesAction {
-  type: TOGGLE_UPDATE_VALUES
+  type: TOGGLE_UPDATE_VALUES;
+  enable: boolean;
 }
 
-export type CHANGE_UPDATE_VALUES_FREQUENCY = "CHANGE_UPDATE_VALUES_FREQUENCY";
-export const CHANGE_UPDATE_VALUES_FREQUENCY:CHANGE_UPDATE_VALUES_FREQUENCY = "CHANGE_UPDATE_VALUES_FREQUENCY";
-export interface ChangeUpdateValuesFrequencyAction {
-  type: CHANGE_UPDATE_VALUES_FREQUENCY,
-  frequency: number;
+export type CHANGE_UPDATE_VALUES_DELAY = "CHANGE_UPDATE_VALUES_DELAY";
+export const CHANGE_UPDATE_VALUES_DELAY:CHANGE_UPDATE_VALUES_DELAY = "CHANGE_UPDATE_VALUES_DELAY";
+export interface ChangeUpdateValuesDelayAction {
+  type: CHANGE_UPDATE_VALUES_DELAY,
+  delayMS: number;
 }
 
 export type AppAction = AddTickerAction |
                         UpdatePriceAction |
                         UpdateVolumeAction |
                         ToggleAddTickerAction |
-                        ChangeAddTickerFrequencyAction |
+                        ChangeAddTickerDelayAction |
                         ToggleUpdateValuesAction |
-                        ChangeUpdateValuesFrequencyAction |
+                        ChangeUpdateValuesDelayAction |
                         UpdateSectorAction;
 
 
@@ -120,29 +122,31 @@ export const actions = {
   },
 
   controlPanel: {
-    createToggleAddTickerAction: (): ToggleAddTickerAction => {
+    createToggleAddTickerAction: (enable: boolean): ToggleAddTickerAction => {
       return  {
-        type: TOGGLE_ADD_TICKERS
+        type: TOGGLE_ADD_TICKERS,
+        enable: enable
       }
     },
 
-    createChangeAddTickerFrequencyAction: (frequency: number): ChangeAddTickerFrequencyAction => {
+    createChangeAddTickerDelayAction: (delayMS: number): ChangeAddTickerDelayAction => {
       return  {
-        type: CHANGE_ADD_TICKER_FREQUENCY,
-        frequency: frequency
+        type: CHANGE_ADD_TICKER_DELAY,
+        delayMS: delayMS
       }
     },
 
-    createToggleUpdateValuesAction: (): ToggleUpdateValuesAction => {
+    createToggleUpdateValuesAction: (enable: boolean): ToggleUpdateValuesAction => {
       return  {
-        type: TOGGLE_UPDATE_VALUES
+        type: TOGGLE_UPDATE_VALUES,
+        enable: enable
       }
     },
 
-    createChangeUpdatesFrequencyAction: (frequency: number): ChangeUpdateValuesFrequencyAction => {
+    createChangeUpdatesDelayAction: (delayMS: number): ChangeUpdateValuesDelayAction => {
       return  {
-        type: CHANGE_UPDATE_VALUES_FREQUENCY,
-        frequency: frequency
+        type: CHANGE_UPDATE_VALUES_DELAY,
+        delayMS: delayMS
       }
     }
   }

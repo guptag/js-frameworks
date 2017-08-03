@@ -18,7 +18,7 @@ class TickerList extends React.Component<ITickerListProps, null> {
   }
 
   render() {
-    console.log("tickerlist");
+    console.log("tickerlist render");
     var tickerTiles = _.map(this.props.tickersHash, (value: ITickerData, key: string) => {
       return <TickerTile key={key} ticker={key}></TickerTile>;
     });
