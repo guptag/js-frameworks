@@ -6,24 +6,29 @@
   height: 100vh;
   background-color: #bad6ce;
   padding: 10px 0 0 10px;
+  font-family: Calibri, Cambria,"Times New Roman",Times,serif;
+  font-size: 1em;
 
   h1 {
-    font-size: 16px;
+    font-size: 1.2em;
   }
 
-  .stats > div{
-    padding: 20px 15px 0 0;
-    float: left;
+  .stats {
+    & > div{
+      padding: 10px 15px 0 0;
+      float: left;
+    }
   }
 
-  .counts .dom, .counts .tickers {
+  .counts .dom,
+  .counts .tickers {
     margin: 20px 0 0 0;
-    padding: 5px 0 5px 0;
+    padding: 2px 0 5px 0;
     text-align: center;
     float: left;
     width: 80px;
     height: 50px;
-    font-size: 1em;
+    font-size: 1.2em;
     background-color: black;
     color:#13DFE2;
   }
@@ -33,13 +38,23 @@
     color:lightgreen;
   }
 
+  .sub-title {
+    font-size: 1.1em;
+  }
+
   .action {
-    margin: 20px 0 0 0;
+    padding: 10px 0;
+    border-bottom: 1px dashed #a0a0a0;
+    width: 200px;
+
+    &.add-tickers {
+      margin-top: 10px;
+    }
 
     .title {
       font-size: 1em;
       font-weight: bold;
-      margin: 10px 0;
+      margin: 3px 0 10px 0;
     }
 
     button {
