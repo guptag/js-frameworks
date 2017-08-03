@@ -8,16 +8,16 @@ import  {
 
 export interface IConrolPanelOptions {
   addTickersEnabled: boolean;
-  addTickerDelayMsec: number;
+  addTickerIntervalMSec: number;
   updateValuesEnabled: boolean;
-  updateValuesDelayMsec: number;
+  updateValuesIntervalMSec: number;
 }
 
 export const DefaultControlPanelOptions: IConrolPanelOptions = {
   addTickersEnabled: true,
-  addTickerDelayMsec: 40,
+  addTickerIntervalMSec: 40,
   updateValuesEnabled: true,
-  updateValuesDelayMsec: 20
+  updateValuesIntervalMSec: 20
 }
 
 type IConrolPanelReducer = (state: IConrolPanelOptions, action: AppAction) => IConrolPanelOptions;
@@ -37,13 +37,13 @@ export const controlPanelReducer: IConrolPanelReducer = (state: IConrolPanelOpti
     if (action.delayMS < 20 ) {action.delayMS = 20;}
     return {
         ...state,
-        addTickerDelayMsec: action.delayMS
+        addTickerIntervalMSec: action.delayMS
       }
     case CHANGE_UPDATE_VALUES_DELAY:
        if (action.delayMS < 10 ) {action.delayMS = 10;}
        return {
         ...state,
-        updateValuesDelayMsec: action.delayMS
+        updateValuesIntervalMSec: action.delayMS
       }
     default:
       return state;

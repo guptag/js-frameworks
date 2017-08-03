@@ -31,31 +31,31 @@ class ControlPanel extends React.Component<IControlPanelProps, null> {
   }
 
   onAddTickers() {
-    this.props.controlPanelModel.toggleAddTickersEnabled();
+    this.props.controlPanelModel.toggleAddTickers(false);
     ActionSimulator.startAddingTickers();
   }
 
   onStopAddTickers() {
-    this.props.controlPanelModel.toggleAddTickersEnabled();
+    this.props.controlPanelModel.toggleAddTickers(true);
     ActionSimulator.stopAddingTickers();
   }
 
   onUpdateTickers() {
-    this.props.controlPanelModel.toggleUpdateValuesEnabled();
+    this.props.controlPanelModel.toggleUpdateValues(false);
     ActionSimulator.startUpdatingTickers();
   }
 
   onStopUpdateTickers() {
-    this.props.controlPanelModel.toggleUpdateValuesEnabled();
+    this.props.controlPanelModel.toggleUpdateValues(true);
     ActionSimulator.stopUpdatingTickers();
   }
 
   onChangeAddTickerFrequency(frequency: number) {
-    this.props.controlPanelModel.changeAddTickerFrequency(frequency);
+    this.props.controlPanelModel.changeAddTickerInterval(frequency);
   }
 
   onChangeUpdateTickerFrequency(frequency: number) {
-    this.props.controlPanelModel.changeUpdateTickerFrequency(frequency);
+    this.props.controlPanelModel.changeUpdateTickerInterval(frequency);
   }
 
   render() {
@@ -81,10 +81,10 @@ class ControlPanel extends React.Component<IControlPanelProps, null> {
             <button onClick={() => this.onAddTickers()} disabled={!this.props.controlPanelModel.options.addTickersEnabled}>Start</button>
             <button onClick={() => this.onStopAddTickers()} disabled={this.props.controlPanelModel.options.addTickersEnabled}>Stop</button>
             <div className="frequency">
-              <span className="sub-title noselect">Adds per sec:&nbsp;</span>
-              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.onChangeAddTickerFrequency(this.props.controlPanelModel.options.addTickerFrequency - 25)}></i>
-              <span  className="noselect">{this.props.controlPanelModel.options.addTickerFrequency}</span>
-              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.onChangeAddTickerFrequency(this.props.controlPanelModel.options.addTickerFrequency + 25)}></i>
+              <span className="sub-title noselect">Add Interval:&nbsp;</span>
+              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.onChangeAddTickerFrequency(this.props.controlPanelModel.options.addTickerIntervalMSec - 20)}></i>
+              <span  className="noselect">{this.props.controlPanelModel.options.addTickerIntervalMSec}ms</span>
+              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.onChangeAddTickerFrequency(this.props.controlPanelModel.options.addTickerIntervalMSec + 20)}></i>
             </div>
           </section>
           <section className="update-prices action">
@@ -92,10 +92,10 @@ class ControlPanel extends React.Component<IControlPanelProps, null> {
             <button onClick={() => this.onUpdateTickers()} disabled={!this.props.controlPanelModel.options.updateValuesEnabled}>Start</button>
             <button onClick={() => this.onStopUpdateTickers()} disabled={this.props.controlPanelModel.options.updateValuesEnabled}>Stop</button>
             <div className="frequency">
-              <span className="sub-title noselect">Changes per sec:&nbsp;</span>
-              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.onChangeUpdateTickerFrequency(this.props.controlPanelModel.options.updateValuesFrequency - 25)}></i>
-              <span className="noselect">{this.props.controlPanelModel.options.updateValuesFrequency}</span>
-              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.onChangeUpdateTickerFrequency(this.props.controlPanelModel.options.updateValuesFrequency + 25)}></i>
+              <div  className="title">Update Values</div>
+              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.onChangeUpdateTickerFrequency(this.props.controlPanelModel.options.updateValueIntervalMSec - 10)}></i>
+              <span className="noselect">{this.props.controlPanelModel.options.updateValueIntervalMSec}ms</span>
+              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.onChangeUpdateTickerFrequency(this.props.controlPanelModel.options.updateValueIntervalMSec + 10)}></i>
             </div>
           </section>
       </section>

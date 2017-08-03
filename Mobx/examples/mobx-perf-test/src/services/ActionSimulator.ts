@@ -9,7 +9,10 @@ class ActionSimulator {
   clearUpdateTickerTimerId: number;
   tickerDataFromServer;
   newTickerIndexToAdd: number;
+
   perfTracking: boolean;
+  currentAddTickerInterval: number;
+  currentUpdateTickerInterval: number;
 
   constructor() {
     this.tickerDataFromServer = (<any>window).tickerData || []; //for simulation
@@ -34,19 +37,21 @@ class ActionSimulator {
         volume: <number>tickerItem.Volume || 0,
         avgVol: <number>tickerItem.AvgVol
       });
-      // this.clearAddTickerTimerId && this.scheduleAddTicker();
+
+      // UI state changed, reconfigure the timer
+      if (this.currentAddTickerInterval !== controlPanelModel.options.addTickerIntervalMSec) {
+        this.clearAddTicker();
+        this.scheduleAddTicker();
+      }
     } else {
       this.stopAddingTickers();
+      controlPanelModel.toggleAddTickers(false);
     }
-  }
-
-  private scheduleAddTicker() {
-    this.clearAddTickerTimerId = setInterval(() => this.addTicker(), 1000 / (controlPanelModel.options.addTickerFrequency || 25));
   }
 
   private upDateTickerData() {
     const randomActionIndex: number = Math.floor(Math.random() * 2) + 1 ; // 1-2
-    const randomTickerIndex: number = this.newTickerIndexToAdd > -1 ? (Math.floor(Math.random() * (this.newTickerIndexToAdd - 1) + 1)) : -1;
+    const randomTickerIndex: number = this.newTickerIndexToAdd > -1 ? Math.floor(Math.random() * (this.newTickerIndexToAdd + 1)) : -1;
 
     if (randomTickerIndex === -1) { return; }
 
@@ -72,11 +77,31 @@ class ActionSimulator {
       }
     })(randomActionIndex, randomTickerIndex);
 
-    //this.clearUpdateTickerTimerId && this.scheduleUpdateTicker();
+     // UI state changed, reconfigure the timer
+    if (this.currentUpdateTickerInterval !== controlPanelModel.options.updateValueIntervalMSec) {
+      this.clearUpdateTicker();
+      this.scheduleUpdateTicker();
+    }
+  }
+
+  private scheduleAddTicker() {
+    this.currentAddTickerInterval = controlPanelModel.options.addTickerIntervalMSec || 100;
+    this.clearAddTickerTimerId = setInterval(() => this.addTicker(), this.currentAddTickerInterval);
+  }
+
+  private clearAddTicker() {
+    this.clearAddTickerTimerId && clearInterval(this.clearAddTickerTimerId);
+    this.clearAddTickerTimerId = null;
   }
 
   private scheduleUpdateTicker() {
-    this.clearUpdateTickerTimerId = setInterval(() => this.upDateTickerData(), 1000 / (controlPanelModel.options.updateValuesFrequency || 25));
+    this.currentUpdateTickerInterval = controlPanelModel.options.updateValueIntervalMSec || 100;
+    this.clearUpdateTickerTimerId = setInterval(() => this.upDateTickerData(), this.currentUpdateTickerInterval);
+  }
+
+  private clearUpdateTicker() {
+    this.clearUpdateTickerTimerId && clearInterval(this.clearUpdateTickerTimerId);
+    this.clearUpdateTickerTimerId = null;
   }
 
   startAddingTickers() {
@@ -85,8 +110,7 @@ class ActionSimulator {
   }
 
   stopAddingTickers() {
-    this.clearAddTickerTimerId && clearInterval(this.clearAddTickerTimerId);
-    this.clearAddTickerTimerId = null;
+    this.clearAddTicker();
     this.endPerf();
   }
 
@@ -96,20 +120,19 @@ class ActionSimulator {
   }
 
   stopUpdatingTickers() {
-    this.clearUpdateTickerTimerId && clearInterval(this.clearUpdateTickerTimerId);
-    this.clearUpdateTickerTimerId = null;
+    this.clearUpdateTicker();
     this.endPerf();
   }
 
   startPerf() {
-    if (!this.perfTracking) {
+    /*if (!this.perfTracking) {
       Perf.start();
       this.perfTracking = true;
-    }
+    }*/
   }
 
   endPerf() {
-    if (!this.perfTracking) { return; }
+    /*if (!this.perfTracking) { return; }
     this.perfTracking = false;
     Perf.stop();
 
@@ -120,7 +143,7 @@ class ActionSimulator {
     Perf.printExclusive();
 
     console.log("Wasted");
-    Perf.printWasted();
+    Perf.printWasted();*/
 
     /*console.log("Dom Operations");
     Perf.printOperations(); */

@@ -10,8 +10,8 @@ class ActionSimulator {
   tickerDataFromServer;
   newTickerIndexToAdd: number;
 
-  currentAddTickerDelay: number;
-  currentUpdateTickerDelay: number;
+  currentAddTickerInterval: number;
+  currentUpdateTickerInterval: number;
 
   measuringPerf: boolean;
 
@@ -43,7 +43,7 @@ class ActionSimulator {
       }));
 
       // UI state changed, reconfigure the timer
-      if (this.currentAddTickerDelay !== appStore.getState().ui.controlPanel.addTickerDelayMsec) {
+      if (this.currentAddTickerInterval !== appStore.getState().ui.controlPanel.addTickerIntervalMSec) {
         this.clearAddTicker();
         this.scheduleAddTicker();
       }
@@ -55,7 +55,7 @@ class ActionSimulator {
 
   private upDateTickerData() {
     const randomActionIndex: number = Math.floor(Math.random() * 2) + 1 ; // 1-2
-    const randomTickerIndex: number = this.newTickerIndexToAdd > -1 ? (Math.floor(Math.random() * (this.newTickerIndexToAdd - 1) + 1)) : -1;
+    const randomTickerIndex: number = this.newTickerIndexToAdd > -1 ? Math.floor(Math.random() * (this.newTickerIndexToAdd + 1)) : -1;
 
     if (randomTickerIndex === -1) { return; }
 
@@ -82,15 +82,15 @@ class ActionSimulator {
     })(randomActionIndex, randomTickerIndex);
 
      // UI state changed, reconfigure the timer
-    if (this.currentUpdateTickerDelay !== appStore.getState().ui.controlPanel.updateValuesDelayMsec) {
+    if (this.currentUpdateTickerInterval !== appStore.getState().ui.controlPanel.updateValuesIntervalMSec) {
       this.clearUpdateTicker();
       this.scheduleUpdateTicker();
     }
   }
 
   private scheduleAddTicker() {
-    this.currentAddTickerDelay = appStore.getState().ui.controlPanel.addTickerDelayMsec || 100;
-    this.clearAddTickerTimerId = setInterval(() => this.addTicker(), this.currentAddTickerDelay);
+    this.currentAddTickerInterval = appStore.getState().ui.controlPanel.addTickerIntervalMSec || 100;
+    this.clearAddTickerTimerId = setInterval(() => this.addTicker(), this.currentAddTickerInterval);
   }
 
   private clearAddTicker() {
@@ -99,8 +99,8 @@ class ActionSimulator {
   }
 
   private scheduleUpdateTicker() {
-    this.currentUpdateTickerDelay = appStore.getState().ui.controlPanel.updateValuesDelayMsec || 100;
-    this.clearUpdateTickerTimerId = setInterval(() => this.upDateTickerData(), this.currentUpdateTickerDelay);
+    this.currentUpdateTickerInterval = appStore.getState().ui.controlPanel.updateValuesIntervalMSec || 100;
+    this.clearUpdateTickerTimerId = setInterval(() => this.upDateTickerData(), this.currentUpdateTickerInterval);
   }
 
   private clearUpdateTicker() {

@@ -70,9 +70,9 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
             <button onClick={this.props.onStopAddTickers} disabled={this.props.settings.addTickersEnabled}>Stop</button>
             <div className="frequency">
               <span className="sub-title noselect">Add Interval:&nbsp;</span>
-              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerDelay(this.props.settings.addTickerDelayMsec - 20)}></i>
-              <span  className="noselect">{this.props.settings.addTickerDelayMsec}ms</span>
-              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerDelay(this.props.settings.addTickerDelayMsec + 20)}></i>
+              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerDelay(this.props.settings.addTickerIntervalMSec - 20)}></i>
+              <span  className="noselect">{this.props.settings.addTickerIntervalMSec}ms</span>
+              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerDelay(this.props.settings.addTickerIntervalMSec + 20)}></i>
             </div>
           </section>
           <section className="update-prices action">
@@ -81,9 +81,9 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
             <button onClick={this.props.onStopUpdateTickers} disabled={this.props.settings.updateValuesEnabled}>Stop</button>
             <div className="frequency">
               <span className="sub-title noselect">Update Interval:&nbsp;</span>
-              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerDelay(this.props.settings.updateValuesDelayMsec - 10)}></i>
-              <span className="noselect">{this.props.settings.updateValuesDelayMsec}ms</span>
-              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerDelay(this.props.settings.updateValuesDelayMsec + 10)}></i>
+              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerDelay(this.props.settings.updateValuesIntervalMSec - 10)}></i>
+              <span className="noselect">{this.props.settings.updateValuesIntervalMSec}ms</span>
+              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerDelay(this.props.settings.updateValuesIntervalMSec + 10)}></i>
             </div>
           </section>
       </section>

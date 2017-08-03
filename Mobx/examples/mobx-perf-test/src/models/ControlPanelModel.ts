@@ -2,45 +2,43 @@ import {observable, action} from 'mobx';
 
 export interface IConrolPanelOptions {
   addTickersEnabled: boolean;
-  addTickerFrequency: number;
+  addTickerIntervalMSec: number;
   updateValuesEnabled: boolean;
-  updateValuesFrequency: number;
+  updateValueIntervalMSec: number;
 }
 
 export interface IControlPanelModel {
-  toggleAddTickersEnabled(): void;
-  toggleUpdateValuesEnabled(): void;
-  changeAddTickerFrequency(frequency: number): void;
-  changeUpdateTickerFrequency(frequency: number): void;
+  toggleAddTickers(enable: boolean): void;
+  toggleUpdateValues(enable: boolean): void;
+  changeAddTickerInterval(interval: number): void;
+  changeUpdateTickerInterval(interval: number): void;
   options:IConrolPanelOptions;
 }
 
 class ControlPanelModel implements IControlPanelModel {
   @observable public options:IConrolPanelOptions = {
     addTickersEnabled: true,
-    addTickerFrequency: 25,
+    addTickerIntervalMSec: 40,
     updateValuesEnabled: true,
-    updateValuesFrequency: 25
+    updateValueIntervalMSec: 20
   };
 
-  @action public toggleAddTickersEnabled(): void {
-   this.options.addTickersEnabled = !this.options.addTickersEnabled;
+  @action public toggleAddTickers(enable: boolean): void {
+   this.options.addTickersEnabled = enable;
   }
 
-  @action public toggleUpdateValuesEnabled(): void {
-    this.options.updateValuesEnabled = !this.options.updateValuesEnabled;
+  @action public toggleUpdateValues(enable: boolean): void {
+    this.options.updateValuesEnabled = enable;
   }
 
-  @action public changeAddTickerFrequency(frequency: number): void {
-    if (frequency < 10) { frequency = 10;}
-    if (frequency > 300) { frequency = 300;}
-    this.options.addTickerFrequency = frequency;
+  @action public changeAddTickerInterval(interval: number): void {
+    if (interval < 20) { interval = 20;}
+    this.options.addTickerIntervalMSec = interval;
   }
 
-  @action public changeUpdateTickerFrequency(frequency: number): void {
-    if (frequency < 10) { frequency = 10;}
-    if (frequency > 300) { frequency = 300;}
-    this.options.updateValuesFrequency = frequency;
+  @action public changeUpdateTickerInterval(interval: number): void {
+    if (interval < 10) { interval = 10;}
+    this.options.updateValueIntervalMSec = interval;
   }
 }
 
