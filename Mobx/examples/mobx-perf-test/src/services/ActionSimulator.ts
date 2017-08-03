@@ -34,14 +34,14 @@ class ActionSimulator {
         volume: <number>tickerItem.Volume || 0,
         avgVol: <number>tickerItem.AvgVol
       });
-      this.clearAddTickerTimerId && this.scheduleAddTicker();
+      // this.clearAddTickerTimerId && this.scheduleAddTicker();
     } else {
       this.stopAddingTickers();
     }
   }
 
   private scheduleAddTicker() {
-    this.clearAddTickerTimerId = setTimeout(() => this.addTicker(), 1000 / (controlPanelModel.options.addTickerFrequency || 25));
+    this.clearAddTickerTimerId = setInterval(() => this.addTicker(), 1000 / (controlPanelModel.options.addTickerFrequency || 25));
   }
 
   private upDateTickerData() {
@@ -64,12 +64,6 @@ class ActionSimulator {
           tickerDataModel.updatePrice(ticker, newPrice, newPriceChange);
           break;
 
-       /* case 2:
-          const newSectorIndex = Math.floor(Math.random() * 5); // 0 -4
-          const newSector = ["Technology", "Materials", "Energy", "Utilities", "Industrials"][newSectorIndex];
-          appStore.dispatch(actions.ticker.createUpdateSectorAction(<string>tickerDataItem.Ticker, newSector));
-          break;*/
-
         case 2:
           const currentVol: number = tickerDataModel.tickerHash.get(ticker).volume;
           const newVol: number = Math.floor(currentVol + (multiplier * (currentVol * changePercent) / 100));
@@ -78,11 +72,11 @@ class ActionSimulator {
       }
     })(randomActionIndex, randomTickerIndex);
 
-    this.clearUpdateTickerTimerId && this.scheduleUpdateTicker();
+    //this.clearUpdateTickerTimerId && this.scheduleUpdateTicker();
   }
 
   private scheduleUpdateTicker() {
-    this.clearUpdateTickerTimerId = setTimeout(() => this.upDateTickerData(), 1000 / (controlPanelModel.options.updateValuesFrequency || 25));
+    this.clearUpdateTickerTimerId = setInterval(() => this.upDateTickerData(), 1000 / (controlPanelModel.options.updateValuesFrequency || 25));
   }
 
   startAddingTickers() {
@@ -91,7 +85,7 @@ class ActionSimulator {
   }
 
   stopAddingTickers() {
-    this.clearAddTickerTimerId && clearTimeout(this.clearAddTickerTimerId);
+    this.clearAddTickerTimerId && clearInterval(this.clearAddTickerTimerId);
     this.clearAddTickerTimerId = null;
     this.endPerf();
   }
@@ -102,7 +96,7 @@ class ActionSimulator {
   }
 
   stopUpdatingTickers() {
-    this.clearUpdateTickerTimerId && clearTimeout(this.clearUpdateTickerTimerId);
+    this.clearUpdateTickerTimerId && clearInterval(this.clearUpdateTickerTimerId);
     this.clearUpdateTickerTimerId = null;
     this.endPerf();
   }
@@ -116,6 +110,7 @@ class ActionSimulator {
 
   endPerf() {
     if (!this.perfTracking) { return; }
+    this.perfTracking = false;
     Perf.stop();
 
     console.log("Inclusive");
@@ -128,8 +123,7 @@ class ActionSimulator {
     Perf.printWasted();
 
     /*console.log("Dom Operations");
-    Perf.printOperations();
-    this.perfTracking = false;*/
+    Perf.printOperations(); */
   }
 }
 

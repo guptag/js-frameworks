@@ -38,7 +38,8 @@ body {
   color: #333;
   margin: 0;
   padding: 0;
+
 }
 
-@import './components/control-panel/controlPanel.scss';
-@import './components/ticker-list/tickerList.scss';
+@import './ui/components/control-panel/controlPanel.scss';
+@import './ui/components/ticker-list/tickerList.scss';
