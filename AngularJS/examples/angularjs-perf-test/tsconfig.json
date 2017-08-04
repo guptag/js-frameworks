@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noResolve": false,
+    "removeComments": false,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "declaration": false,
+    "emitDecoratorMetadata": false,
+    "jsx": "react",
+    "lib": [
+      "es2015",
+      "dom"]
+  },
+  "types": [
+    "node"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    /* ... */
+  }
+}
