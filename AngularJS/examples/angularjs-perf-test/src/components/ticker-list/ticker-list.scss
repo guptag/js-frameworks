@@ -1,0 +1,48 @@
+.ticker-list {
+  padding: 0 0 0 2px;
+  margin: 0;
+  height: 100vh;
+  overflow-y: auto;
+  margin-right: 300px;
+
+  &::-webkit-scrollbar {
+    height: 200px;
+    overflow: auto;
+    float: left;
+    margin: 0 10px;
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #ddd;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #666;
+  }
+
+  .ticker-tile {
+    float: left;
+    font-size: 0.7em;
+    width: 100px;
+    height: 60px;
+    padding: 2px;
+  }
+
+  .ticker-tile h1 {
+    font-size: 1em;
+  }
+
+  .price-changed {
+    background-color: #ffff54;
+  }
+
+  .vol-changed {
+    background-color: #72c3de;
+  }
+}
+

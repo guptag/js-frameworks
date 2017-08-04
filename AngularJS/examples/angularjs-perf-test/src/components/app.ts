@@ -2,15 +2,14 @@ export interface IAppController {
 };
 
 class AppController implements IAppController  {
-    constructor(private $scope: ng.IScope) {
-        console.log('hello hello');
-    }
+  constructor() {
+  }
 }
 
-AppController.$inject = ['$scope'];
+AppController.$inject = [];
 
 angular.module('perfTest')
-        .controller('AppController', AppController);
+  .controller('AppController', AppController);
 
 
 

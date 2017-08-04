@@ -8,7 +8,7 @@ import * as html from './components/app.html';
 
 angular.module('perfTest', ['ngRoute', 'ngSanitize', 'ngAnimate'])
   .config(['$routeProvider', '$sceDelegateProvider',
-  
+
   function($routeProvider, $sceDelegateProvider) {
 
     $sceDelegateProvider.resourceUrlWhitelist(['**']);
@@ -17,7 +17,7 @@ angular.module('perfTest', ['ngRoute', 'ngSanitize', 'ngAnimate'])
         when('/', {
             templateUrl: "components/app.html",
             controller: 'AppController',
-            controllerAs: 'appCtrl'
+            controllerAs: '$ctrl'
         }).
         otherwise({redirectTo: '/'});
 }])
@@ -30,10 +30,14 @@ window.onload = function() {
 };
 
 import './components/control-panel/control-panel';
-import './components/control-panel/ticker-count';
 import './components/ticker-list/price';
 import './components/ticker-list/sector-name';
 import './components/ticker-list/ticker-list';
 import './components/ticker-list/ticker-tile';
-import './components/ticker-list/price';
+import './components/ticker-list/ticker-count';
+import './components/ticker-list/volume';
+
+import './services/controlPanelService';
+import './services/actionSimulator';
+import './services/tickerDataService';
 import './components/app';

@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box;
+}
+
+h1, h6 {
+  margin: 0 0 4px 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                        supported by Chrome and Opera */
+}
+
+body {
+  font-family: 'Lucida Grande', verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  background-color: #e6ecf1;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+@import './components/control-panel/control-panel.scss';
+@import './components/ticker-list/ticker-list.scss';
