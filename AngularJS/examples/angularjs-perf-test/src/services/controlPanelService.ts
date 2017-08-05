@@ -16,9 +16,9 @@ export interface IControlPanelService {
 class ControlPanelService implements IControlPanelService {
   public options:IConrolPanelOptions = {
     addTickersEnabled: true,
-    addTickerIntervalMSec: 40,
+    addTickerIntervalMSec: 10,
     updateValuesEnabled: true,
-    updateValueIntervalMSec: 20
+    updateValueIntervalMSec: 10
   };
 
   constructor() {
@@ -34,12 +34,12 @@ class ControlPanelService implements IControlPanelService {
   }
 
   changeAddTickerInterval(interval: number): void {
-    if (interval < 20) { interval = 20;}
+    if (interval < 5) { interval = 5;}
     this.options.addTickerIntervalMSec = interval;
   }
 
   public changeUpdateTickerInterval(interval: number): void {
-    if (interval < 10) { interval = 10;}
+    if (interval < 5) { interval = 5;}
     this.options.updateValueIntervalMSec = interval;
   }
 }

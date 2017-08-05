@@ -92,7 +92,7 @@ class ControlPanel extends React.Component<IControlPanelProps, null> {
             <button onClick={() => this.onUpdateTickers()} disabled={!this.props.controlPanelModel.options.updateValuesEnabled}>Start</button>
             <button onClick={() => this.onStopUpdateTickers()} disabled={this.props.controlPanelModel.options.updateValuesEnabled}>Stop</button>
             <div className="frequency">
-              <div  className="title">Update Values</div>
+              <span  className="sub-title noselect">Update Interval:&nbsp;</span>
               <i className="fa fa-minus" aria-hidden="true" onClick={() => this.onChangeUpdateTickerFrequency(this.props.controlPanelModel.options.updateValueIntervalMSec - 10)}></i>
               <span className="noselect">{this.props.controlPanelModel.options.updateValueIntervalMSec}ms</span>
               <i className="fa fa-plus" aria-hidden="true" onClick={() => this.onChangeUpdateTickerFrequency(this.props.controlPanelModel.options.updateValueIntervalMSec + 10)}></i>

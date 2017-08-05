@@ -20,9 +20,9 @@
       <button ng-click="$ctrl.stopAddingTickers()" ng-disabled="$ctrl.controlPanelService.options.addTickersEnabled">Stop</button>
       <div class="frequency">
         <span class="sub-title noselect">Add Interval:&nbsp;</span>
-        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.controlPanelService.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec - 20)"></i>
+        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.controlPanelService.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec - 5)"></i>
         <span  class="noselect">{{$ctrl.controlPanelService.options.addTickerIntervalMSec}}ms</span>
-        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.controlPanelService.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec + 20)"></i>
+        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.controlPanelService.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec + 5)"></i>
       </div>
     </section>
     <section class="update-prices action">
@@ -31,9 +31,9 @@
       <button ng-click="$ctrl.stopUpdatingTickers()" ng-disabled="$ctrl.controlPanelService.options.updateValuesEnabled">Stop</button>
       <div class="frequency">
         <span  class="sub-title noselect">Update Interval:&nbsp;</span>
-        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.controlPanelService.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec - 20)"></i>
+        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.controlPanelService.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec - 5)"></i>
         <span class="noselect">{{$ctrl.controlPanelService.options.updateValueIntervalMSec}}ms</span>
-        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.controlPanelService.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec + 20)"></i>
+        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.controlPanelService.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec + 5)"></i>
       </div>
     </section>
 </section>

@@ -27,7 +27,7 @@ class VolumeController implements IVolumeController  {
   }
 }
 
-VolumeController.$inject = ['$scope'];
+VolumeController.$inject = ['$scope', '$timeout'];
 
 angular.module('perfTest')
         .component('volume', {
