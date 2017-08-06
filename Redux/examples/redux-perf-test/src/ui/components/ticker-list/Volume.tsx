@@ -38,7 +38,7 @@ class Volume extends React.Component<IVolumeProps, IVolumeState> {
   render() {
     return (
       <div className={`volume ${this.state.volChanged ? 'vol-changed' : ''}`}>
-        V:{this.props.volume.toFixed(0)}
+        V:&nbsp;{this.props.volume.toFixed(0)}
       </div>
     );
   }

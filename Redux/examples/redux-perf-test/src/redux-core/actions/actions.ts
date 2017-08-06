@@ -10,14 +10,27 @@ type Action = { type: typeof INCREASE_COUNTER }
 
 // https://github.com/reactjs/redux/issues/992
 
-import {ITickerData} from '../reducers/domain/tickers/tickersReducer';
+import {ITickerData, ITickerList} from '../reducers/domain/tickers/tickersReducer';
+
+export type REPLACE_TICKER = "REPLACE_TICKER";
+export const REPLACE_TICKER:REPLACE_TICKER = "REPLACE_TICKER";
+export interface ReplaceTickerAction {
+  type: REPLACE_TICKER,
+  tickerData: ITickerData[];
+}
 
 export type ADD_TICKER = "ADD_TICKER";
 export const ADD_TICKER:ADD_TICKER = "ADD_TICKER";
 export interface AddTickerAction {
   type: ADD_TICKER,
-  ticker: string;
-  tickerData:ITickerData;
+  tickersToAdd: ITickerData[];
+}
+
+export type DELETE_TICKER = "DELETE_TICKER";
+export const DELETE_TICKER:DELETE_TICKER = "DELETE_TICKER";
+export interface DeleteTickerAction {
+  type: DELETE_TICKER,
+  tickersToDelete: ITickerList
 }
 
 export type UPDATE_PRICE = "UPDATE_PRICE";
@@ -37,12 +50,11 @@ export interface UpdateVolumeAction {
   volume: number;
 }
 
-export type UPDATE_SECTOR = "UPDATE_SECTOR";
-export const UPDATE_SECTOR:UPDATE_SECTOR = "UPDATE_SECTOR";
-export interface UpdateSectorAction {
-  type: UPDATE_SECTOR,
-  ticker: string;
-  sector: string;
+export type TOGGLE_REPLACE_TICKERS = "TOGGLE_REPLACE_TICKERS";
+export const TOGGLE_REPLACE_TICKERS:TOGGLE_REPLACE_TICKERS = "TOGGLE_REPLACE_TICKERS";
+export interface ToggleReplaceTickerAction {
+  type: TOGGLE_REPLACE_TICKERS;
+  enable: boolean
 }
 
 export type TOGGLE_ADD_TICKERS = "TOGGLE_ADD_TICKERS";
@@ -52,11 +64,32 @@ export interface ToggleAddTickerAction {
   enable: boolean
 }
 
+export type TOGGLE_DELETE_TICKERS = "TOGGLE_DELETE_TICKERS";
+export const TOGGLE_DELETE_TICKERS:TOGGLE_DELETE_TICKERS = "TOGGLE_DELETE_TICKERS";
+export interface ToggleDeleteTickerAction {
+  type: TOGGLE_DELETE_TICKERS;
+  enable: boolean
+}
+
+export type CHANGE_REPLACE_TICKER_DELAY = "CHANGE_REPLACE_TICKER_DELAY";
+export const CHANGE_REPLACE_TICKER_DELAY:CHANGE_REPLACE_TICKER_DELAY = "CHANGE_REPLACE_TICKER_DELAY";
+export interface ChangeReplaceTickerDelayAction {
+  type: CHANGE_REPLACE_TICKER_DELAY,
+  delayMS: number;
+}
+
 
 export type CHANGE_ADD_TICKER_DELAY = "CHANGE_ADD_TICKER_DELAY";
 export const CHANGE_ADD_TICKER_DELAY:CHANGE_ADD_TICKER_DELAY = "CHANGE_ADD_TICKER_DELAY";
 export interface ChangeAddTickerDelayAction {
   type: CHANGE_ADD_TICKER_DELAY,
+  delayMS: number;
+}
+
+export type CHANGE_DELETE_TICKER_DELAY = "CHANGE_DELETE_TICKER_DELAY";
+export const CHANGE_DELETE_TICKER_DELAY:CHANGE_DELETE_TICKER_DELAY = "CHANGE_DELETE_TICKER_DELAY";
+export interface ChangeDeleteTickerDelayAction {
+  type: CHANGE_DELETE_TICKER_DELAY,
   delayMS: number;
 }
 
@@ -75,22 +108,40 @@ export interface ChangeUpdateValuesDelayAction {
   delayMS: number;
 }
 
-export type AppAction = AddTickerAction |
+export type AppAction = ReplaceTickerAction |
+                        AddTickerAction |
+                        DeleteTickerAction |
                         UpdatePriceAction |
                         UpdateVolumeAction |
+                        ToggleReplaceTickerAction |
+                        ChangeReplaceTickerDelayAction |
                         ToggleAddTickerAction |
                         ChangeAddTickerDelayAction |
+                        ToggleDeleteTickerAction |
+                        ChangeDeleteTickerDelayAction |
                         ToggleUpdateValuesAction |
-                        ChangeUpdateValuesDelayAction |
-                        UpdateSectorAction;
+                        ChangeUpdateValuesDelayAction;
 
 
 export const actions = {
   ticker: {
-    createAddTickerAction: (ticker: string, tickerData: ITickerData): AddTickerAction  => {
+    createAddTickerAction: (tickersToAdd: ITickerData[]): AddTickerAction  => {
       return {
         type: ADD_TICKER,
-        ticker: ticker,
+        tickersToAdd: tickersToAdd
+      }
+    },
+
+    createDeleteTickerAction: (tickersToDelete: ITickerList): DeleteTickerAction  => {
+      return {
+        type: DELETE_TICKER,
+        tickersToDelete: tickersToDelete
+      }
+    },
+
+    createReplaceTickerAction: (tickerData: ITickerData[]): ReplaceTickerAction  => {
+      return {
+        type: REPLACE_TICKER,
         tickerData: tickerData
       }
     },
@@ -110,14 +161,6 @@ export const actions = {
         ticker: ticker,
         volume: volume
       }
-    },
-
-    createUpdateSectorAction: (ticker: string, sector: string): UpdateSectorAction  => {
-      return {
-        type: UPDATE_SECTOR,
-        sector: sector,
-        ticker: ticker
-      }
     }
   },
 
@@ -129,10 +172,17 @@ export const actions = {
       }
     },
 
-    createChangeAddTickerDelayAction: (delayMS: number): ChangeAddTickerDelayAction => {
+    createToggleReplaceTickerAction: (enable: boolean): ToggleReplaceTickerAction => {
       return  {
-        type: CHANGE_ADD_TICKER_DELAY,
-        delayMS: delayMS
+        type: TOGGLE_REPLACE_TICKERS,
+        enable: enable
+      }
+    },
+
+    createToggleDeleteTickerAction: (enable: boolean): ToggleDeleteTickerAction => {
+      return  {
+        type: TOGGLE_DELETE_TICKERS,
+        enable: enable
       }
     },
 
@@ -140,6 +190,27 @@ export const actions = {
       return  {
         type: TOGGLE_UPDATE_VALUES,
         enable: enable
+      }
+    },
+
+    createChangeReplaceTickerDelayAction: (delayMS: number): ChangeReplaceTickerDelayAction => {
+      return  {
+        type: CHANGE_REPLACE_TICKER_DELAY,
+        delayMS: delayMS
+      }
+    },
+
+    createChangeAddTickerDelayAction: (delayMS: number): ChangeAddTickerDelayAction => {
+      return  {
+        type: CHANGE_ADD_TICKER_DELAY,
+        delayMS: delayMS
+      }
+    },
+
+    createChangeDeleteTickerDelayAction: (delayMS: number): ChangeDeleteTickerDelayAction => {
+      return  {
+        type: CHANGE_DELETE_TICKER_DELAY,
+        delayMS: delayMS
       }
     },
 

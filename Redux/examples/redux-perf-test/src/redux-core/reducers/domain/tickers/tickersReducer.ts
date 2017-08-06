@@ -18,12 +18,15 @@ export function goodReducer(state: State = initialState, action: Action): State 
 }
 */
 
+import * as _ from "lodash";
+
 import  {
   AppAction,
   ADD_TICKER,
+  DELETE_TICKER,
+  REPLACE_TICKER,
   UPDATE_VOLUME,
-  UPDATE_PRICE,
-  UPDATE_SECTOR
+  UPDATE_PRICE
 } from '../../../actions/actions';
 
 export interface ITickerData {
@@ -31,7 +34,6 @@ export interface ITickerData {
   company: string;
   change: number;
   sector: string;
-  industry: string;
   last: number;
   price: number;
   sma20: number;
@@ -41,41 +43,70 @@ export interface ITickerData {
   avgVol: number;
 }
 
+export type ITickerList = string[];
 export type ITickerHash = { [ticker: string]: ITickerData; };
 
-export const DefaultTickersState: ITickerHash = {};
+export interface ITickerState {
+  tickerList: ITickerList;
+  tickerHash: ITickerHash;
+}
 
-type ITickersReducer = (state: ITickerHash, action: AppAction) => ITickerHash;
-export const tickersReducer: ITickersReducer = (state: ITickerHash = DefaultTickersState, action: AppAction): ITickerHash => {
+export const DefaultTickersState = {
+  tickerList: [],
+  tickerHash: {}
+};
+
+type ITickersReducer = (state: ITickerState, action: AppAction) => ITickerState;
+export const tickersReducer: ITickersReducer = (state: ITickerState = DefaultTickersState, action: AppAction): ITickerState => {
   switch (action.type) {
+    case REPLACE_TICKER: 
+      return {
+        tickerList: _.map(action.tickerData, data => data.ticker),
+        tickerHash: Object.assign({}, 
+          ..._.map(action.tickerData, data => <ITickerHash>{ [data.ticker]: data })
+        )
+      };
+
     case ADD_TICKER:
       return {
-        ...state,
-        [action.ticker]: action.tickerData
+        tickerList: [...state.tickerList, ..._.map(action.tickersToAdd, data => data.ticker)],
+        tickerHash: Object.assign({}, 
+          state.tickerHash,
+          ..._.map(action.tickersToAdd, data => <ITickerHash>{ [data.ticker]: data })
+        )
       }
+
+    case DELETE_TICKER:
+      return {
+        tickerList: _.without(state.tickerList, ...action.tickersToDelete),
+        tickerHash: Object.assign({}, 
+          state.tickerHash,
+          ..._.map(action.tickersToDelete, ticker => <ITickerHash>{ [ticker]: null })
+        )
+      }
+      
     case UPDATE_PRICE:
       return {
-        ...state,
-        [action.ticker]: {
-          ...state[action.ticker],
-          change: action.change,
-          price: action.price
+        tickerList: state.tickerList,
+        tickerHash: {
+          ...state.tickerHash,
+          [action.ticker]: {
+            ...state.tickerHash[action.ticker],
+            change: action.change,
+            price: action.price
+          }
         }
       };
+
     case UPDATE_VOLUME:
       return {
-        ...state,
-        [action.ticker]: {
-          ...state[action.ticker],
-          volume: action.volume
-        }
-      };
-    case UPDATE_SECTOR:
-      return {
-        ...state,
-        [action.ticker]: {
-          ...state[action.ticker],
-          sector: action.sector
+        tickerList: state.tickerList,
+        tickerHash: {
+          ...state.tickerHash,
+          [action.ticker]: {
+            ...state.tickerHash[action.ticker],
+            volume: action.volume
+          }
         }
       };
     default:

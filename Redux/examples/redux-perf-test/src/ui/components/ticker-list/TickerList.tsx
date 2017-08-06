@@ -6,21 +6,21 @@ import { connect } from 'react-redux';
 import TickerTile from './TickerTile';
 
 import { IAppState } from '../../../redux-core/reducers/appReducer';
-import { ITickerHash, ITickerData } from '../../../redux-core/reducers/domain/tickers/tickersReducer';
+import { ITickerList, ITickerData } from '../../../redux-core/reducers/domain/tickers/tickersReducer';
 
 interface ITickerListProps {
-  tickersHash: ITickerHash;
+  tickerlist: ITickerList;
 }
 
 class TickerList extends React.Component<ITickerListProps, null> {
-  shouldComponentUpdate (nextProps:ITickerListProps) {
-    return (Object.keys(this.props.tickersHash).length !== Object.keys(nextProps.tickersHash).length);
+  shouldComponentUpdate (nextProps: ITickerListProps) {
+    return this.props.tickerlist !== nextProps.tickerlist;
   }
 
   render() {
     console.log("tickerlist render");
-    var tickerTiles = _.map(this.props.tickersHash, (value: ITickerData, key: string) => {
-      return <TickerTile key={key} ticker={key}></TickerTile>;
+    var tickerTiles = _.map(this.props.tickerlist, (ticker: string) => {
+      return <TickerTile key={ticker} ticker={ticker}></TickerTile>;
     });
 
     return (
@@ -33,7 +33,7 @@ class TickerList extends React.Component<ITickerListProps, null> {
 
 // Apply sort/filter here
 const mapStateToProps = (state: IAppState): ITickerListProps => ({
-  tickersHash: state.domain.tickersHash
+  tickerlist: state.domain.tickersState.tickerList
 });
 
 export default connect(mapStateToProps, null)(TickerList);

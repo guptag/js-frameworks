@@ -38,7 +38,7 @@ class Price extends React.Component<IPriceProps, IPriceState> {
   render() {
     return (
       <div className={`price ${this.state.priceChanged ? 'price-changed' : ''}`}>
-        P:{this.props.price.toFixed(2)}(<span className="change">{this.props.change.toFixed(2)}</span>)
+        P:&nbsp;{this.props.price.toFixed(2)}(<span className="change">{this.props.change.toFixed(2)}</span>)
       </div>
     );
   }

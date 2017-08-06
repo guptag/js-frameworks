@@ -7,7 +7,7 @@ import { IConrolPanelOptions } from '../../../redux-core/reducers/ui/controlPane
 import { actions, AppAction } from '../../../redux-core/actions/actions';
 import ActionSimulator from '../../../services/ActionSimulator';
 
-import TickerCount from './TickerCount';
+import TickerCount from '../ticker-list/TickerCount';
 
 
 interface IStateToProps {
@@ -15,11 +15,17 @@ interface IStateToProps {
 }
 
 interface IDispatchToProps {
+  onReplaceTickers: () => void;
+  onStopReplaceTickers: () => void;
   onAddTickers: () => void;
   onStopAddTickers: () => void;
+  onDeleteTickers: () => void;
+  onStopDeleteTickers: () => void;
   onUpdateTickers: () => void;
   onStopUpdateTickers: () => void;
+  onChangeReplaceTickerDelay: (frequency: number) => void,
   onChangeAddTickerDelay: (frequency: number) => void,
+  onChangeDeleteTickerDelay: (frequency: number) => void,
   onChangeUpdateTickerDelay: (frequency: number) => void
 }
 
@@ -55,35 +61,57 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
             <div id="stats_ms" className="ms"></div>
           </section>
           <section className="counts clearfix">
-            <div className="dom">
-              <h6>DOM Count</h6>
-              <div id="stats_dom_count"></div>
-            </div>
             <div className="tickers">
               <h6>Tickers</h6>
               <div id="stats_ticker_count"><TickerCount></TickerCount></div>
             </div>
+            <div className="dom">
+              <h6>DOM Count</h6>
+              <div id="stats_dom_count"></div>
+            </div>
           </section>
           <section className="add-tickers action">
-            <div className="title">Add Tickers</div>
+            <div className="title">Simulate Switching views</div>
+            <button onClick={this.props.onReplaceTickers} disabled={!this.props.settings.replaceTickersEnabled}>Start</button>
+            <button onClick={this.props.onStopReplaceTickers} disabled={this.props.settings.replaceTickersEnabled}>Stop</button>
+            <div className="frequency">
+              <span className="sub-title noselect">Interval:&nbsp;</span>
+              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeReplaceTickerDelay(this.props.settings.replaceTickerIntervalMSec - 50)}></i>
+              <span  className="noselect">{this.props.settings.replaceTickerIntervalMSec}ms</span>
+              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeReplaceTickerDelay(this.props.settings.replaceTickerIntervalMSec + 50)}></i>
+            </div>
+          </section>
+          <section className="add-tickers action">
+            <div className="title">Simulate Adds</div>
             <button onClick={this.props.onAddTickers} disabled={!this.props.settings.addTickersEnabled}>Start</button>
             <button onClick={this.props.onStopAddTickers} disabled={this.props.settings.addTickersEnabled}>Stop</button>
             <div className="frequency">
-              <span className="sub-title noselect">Add Interval:&nbsp;</span>
-              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerDelay(this.props.settings.addTickerIntervalMSec - 20)}></i>
+              <span className="sub-title noselect">Interval:&nbsp;</span>
+              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerDelay(this.props.settings.addTickerIntervalMSec - 50)}></i>
               <span  className="noselect">{this.props.settings.addTickerIntervalMSec}ms</span>
-              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerDelay(this.props.settings.addTickerIntervalMSec + 20)}></i>
+              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeAddTickerDelay(this.props.settings.addTickerIntervalMSec + 50)}></i>
             </div>
           </section>
           <section className="update-prices action">
-            <div  className="title">Update Values</div>
+            <div  className="title">Simulate Updates</div>
             <button onClick={this.props.onUpdateTickers} disabled={!this.props.settings.updateValuesEnabled}>Start</button>
             <button onClick={this.props.onStopUpdateTickers} disabled={this.props.settings.updateValuesEnabled}>Stop</button>
             <div className="frequency">
-              <span className="sub-title noselect">Update Interval:&nbsp;</span>
-              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerDelay(this.props.settings.updateValuesIntervalMSec - 10)}></i>
+              <span className="sub-title noselect">Interval:&nbsp;</span>
+              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerDelay(this.props.settings.updateValuesIntervalMSec - 5)}></i>
               <span className="noselect">{this.props.settings.updateValuesIntervalMSec}ms</span>
-              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerDelay(this.props.settings.updateValuesIntervalMSec + 10)}></i>
+              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeUpdateTickerDelay(this.props.settings.updateValuesIntervalMSec + 5)}></i>
+            </div>
+          </section>
+          <section className="delete-prices action">
+            <div  className="title">Simulate Deletes</div>
+            <button onClick={this.props.onDeleteTickers} disabled={!this.props.settings.deleteTickersEnabled}>Start</button>
+            <button onClick={this.props.onStopDeleteTickers} disabled={this.props.settings.deleteTickersEnabled}>Stop</button>
+            <div className="frequency">
+              <span className="sub-title noselect">Interval:&nbsp;</span>
+              <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeDeleteTickerDelay(this.props.settings.deleteTickerIntervalMSec - 50)}></i>
+              <span className="noselect">{this.props.settings.deleteTickerIntervalMSec}ms</span>
+              <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeDeleteTickerDelay(this.props.settings.deleteTickerIntervalMSec + 50)}></i>
             </div>
           </section>
       </section>
@@ -96,6 +124,14 @@ const mapStateToProps = (state: IAppState): IStateToProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AppAction>): IDispatchToProps => ({
+  onReplaceTickers: () => {
+    dispatch(actions.controlPanel.createToggleReplaceTickerAction(false));
+    ActionSimulator.startReplacingTickers();
+  },
+  onStopReplaceTickers: () => {
+    dispatch(actions.controlPanel.createToggleReplaceTickerAction(true));
+    ActionSimulator.stopReplacingTickers();
+  },
   onAddTickers: () => {
     dispatch(actions.controlPanel.createToggleAddTickerAction(false));
     ActionSimulator.startAddingTickers();
@@ -103,6 +139,14 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>): IDispatchToProps => 
   onStopAddTickers: () => {
     dispatch(actions.controlPanel.createToggleAddTickerAction(true));
     ActionSimulator.stopAddingTickers();
+  },
+  onDeleteTickers: () => {
+    dispatch(actions.controlPanel.createToggleDeleteTickerAction(false));
+    ActionSimulator.startDeletingTickers();
+  },
+  onStopDeleteTickers: () => {
+    dispatch(actions.controlPanel.createToggleDeleteTickerAction(true));
+    ActionSimulator.stopDeletingTickers();
   },
   onUpdateTickers: () => {
     dispatch(actions.controlPanel.createToggleUpdateValuesAction(false));
@@ -112,8 +156,22 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>): IDispatchToProps => 
     dispatch(actions.controlPanel.createToggleUpdateValuesAction(true));
     ActionSimulator.stopUpdatingTickers();
   },
-  onChangeAddTickerDelay: (frequency: number) => dispatch(actions.controlPanel.createChangeAddTickerDelayAction(frequency)),
-  onChangeUpdateTickerDelay: (frequency: number) => dispatch(actions.controlPanel.createChangeUpdatesDelayAction(frequency))
+  onChangeReplaceTickerDelay: (frequency: number) => {
+    dispatch(actions.controlPanel.createChangeReplaceTickerDelayAction(frequency));
+    ActionSimulator.resetReplaceTickerInterval();
+  },
+  onChangeAddTickerDelay: (frequency: number) => {
+    dispatch(actions.controlPanel.createChangeAddTickerDelayAction(frequency));
+    ActionSimulator.resetAddTickerInterval();
+  },
+  onChangeDeleteTickerDelay: (frequency: number) => {
+    dispatch(actions.controlPanel.createChangeDeleteTickerDelayAction(frequency));
+    ActionSimulator.resetDeleteTickerInterval();
+  },
+  onChangeUpdateTickerDelay: (frequency: number) => {
+    dispatch(actions.controlPanel.createChangeUpdatesDelayAction(frequency));
+    ActionSimulator.resetUpdateTickerInterval();
+  }
 });
 
 export default connect<IStateToProps, IDispatchToProps, {}>(mapStateToProps, mapDispatchToProps, null, {})(ControlPanel);

@@ -1,19 +1,19 @@
 import { combineReducers } from 'redux';
 import {AppAction} from '../../actions/actions';
-import {tickersReducer, ITickerHash, DefaultTickersState} from './tickers/tickersReducer';
+import {tickersReducer, ITickerState, DefaultTickersState} from './tickers/tickersReducer';
 
 export interface IDomainState {
-  tickersHash: ITickerHash
+  tickersState: ITickerState
 }
 
 export const DefaultDomainState: IDomainState = {
-  tickersHash: DefaultTickersState
+  tickersState: DefaultTickersState
 };
 
 type IDomainReducer = (state: IDomainState, action: AppAction) => IDomainState;
 export const domainReducer: IDomainReducer = (state: IDomainState = DefaultDomainState, action: AppAction) => {
   return {
-    tickersHash: tickersReducer(state.tickersHash, action)
+    tickersState: tickersReducer(state.tickersState, action)
   }
 }
 
