@@ -94,7 +94,11 @@ class ActionSimulator implements IActionSimulator {
     const randomActionIndex: number = Math.floor(Math.random() * 2) + 1 ; // 1-2
     const randomTickerIndex: number = this.tickerDataService.tickerList.length > 0 ? Math.floor(Math.random() * this.tickerDataService.tickerList.length) : -1;
 
-    if (randomTickerIndex === -1) { return; }
+    if (randomTickerIndex === -1) { 
+      this.stopUpdatingTickers();
+      this.controlPanelService.toggleUpdateValues(true);
+      return;
+    }
 
     var dispatchUpdateAction = ((actionIndex, randomTickerIndex) => {
       const ticker = this.tickerDataService.tickerList[randomTickerIndex];

@@ -1,7 +1,8 @@
 node_modules/**
 dist/**
-*.d.ts
 **/*.d.ts
+!shim.d.ts
+!html-parser.d.ts
 npm-debug.log
 *.log
 .DS_Store
