@@ -33,7 +33,7 @@
     color:#13DFE2;
   }
 
-  .counts .tickers {
+  .counts .dom {
     margin-left: 15px;
     color:lightgreen;
   }
@@ -47,7 +47,7 @@
     border-bottom: 1px dashed #a0a0a0;
     width: 200px;
 
-    &.add-tickers {
+    &.replace-tickers {
       margin-top: 10px;
     }
 

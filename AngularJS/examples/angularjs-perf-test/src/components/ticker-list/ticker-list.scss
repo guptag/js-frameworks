@@ -29,15 +29,24 @@
     float: left;
     font-size: 0.7em;
     width: 100px;
-    height: 60px;
+    height: 100px;
     padding: 2px;
   }
 
-  .ticker-tile h1 {
+  .ticker-tile h1.ticker {
     font-size: 1em;
+    padding-left: 6px;
+
+    &.up {
+      border-left: 5px solid rgb(27, 188, 155);
+    }
+
+    &.down {
+      border-left: 5px solid rgb(234, 85, 55);
+    }
   }
 
-  .price-changed {
+  .price-changed, .sma-changed {
     background-color: #ffff54;
   }
 

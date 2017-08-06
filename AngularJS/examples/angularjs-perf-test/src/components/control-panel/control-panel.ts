@@ -8,6 +8,14 @@ export interface IControlPanelController {
   stopAddingTickers(): void;
   startUpdatingTickers(): void;
   stopUpdatingTickers(): void;
+  startReplacingTickers(): void;
+  stopReplacingTickers(): void;
+  startDeletingTickers(): void;
+  stopDeletingTickers(): void;
+  changeAddTickerInterval(newInterval: number): void;
+  changeUpdateTickerInterval(newInterval: number): void;
+  changeReplaceTickerInterval(newInterval: number): void;
+  changeDeleteTickerInterval(newInterval: number): void;
 };
 
 class ControlPanelController implements IControlPanelController  {
@@ -16,6 +24,21 @@ class ControlPanelController implements IControlPanelController  {
     private controlPanelService: IControlPanelService,
     private tickerDataService: ITickerDataService,
     private actionSimulator: IActionSimulator) {
+  }
+
+  startReplacingTickers() {
+    this.controlPanelService.toggleReplaceTickers(false);
+    this.actionSimulator.startReplacingTickers();
+  }
+
+  stopReplacingTickers() {
+    this.controlPanelService.toggleReplaceTickers(true);
+    this.actionSimulator.stopReplacingTickers();
+  }
+
+  changeReplaceTickerInterval(newInterval: number) {
+    this.controlPanelService.changeReplaceTickerInterval(newInterval);
+    this.actionSimulator.resetReplaceTickerInterval();
   }
 
   startAddingTickers() {
@@ -28,6 +51,26 @@ class ControlPanelController implements IControlPanelController  {
     this.actionSimulator.stopAddingTickers();
   }
 
+  changeAddTickerInterval(newInterval: number) {
+    this.controlPanelService.changeAddTickerInterval(newInterval);
+    this.actionSimulator.resetAddTickerInterval();
+  }
+
+  startDeletingTickers() {
+    this.controlPanelService.toggleDeleteTickers(false);
+    this.actionSimulator.startDeletingTickers();
+  }
+
+  stopDeletingTickers() {
+    this.controlPanelService.toggleDeleteTickers(true);
+    this.actionSimulator.stopDeletingTickers();
+  }
+
+  changeDeleteTickerInterval(newInterval: number) {
+    this.controlPanelService.changeAddTickerInterval(newInterval);
+    this.actionSimulator.resetAddTickerInterval();
+  }
+
   startUpdatingTickers() {
     this.controlPanelService.toggleUpdateValues(false);
     this.actionSimulator.startUpdatingTickers();
@@ -36,6 +79,11 @@ class ControlPanelController implements IControlPanelController  {
   stopUpdatingTickers() {
     this.controlPanelService.toggleUpdateValues(true);
     this.actionSimulator.stopUpdatingTickers();
+  }
+
+  changeUpdateTickerInterval(newInterval: number) {
+    this.controlPanelService.changeUpdateTickerInterval(newInterval);
+    this.actionSimulator.resetUpdateTickerInterval();
   }
 }
 

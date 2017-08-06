@@ -36,6 +36,7 @@ import './components/ticker-list/ticker-list';
 import './components/ticker-list/ticker-tile';
 import './components/ticker-list/ticker-count';
 import './components/ticker-list/volume';
+import './components/ticker-list/sma';
 
 import './services/controlPanelService';
 import './services/actionSimulator';

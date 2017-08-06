@@ -1,9 +1,10 @@
+import * as _ from 'lodash';
+
 export interface ITickerData {
   ticker: string;
   company: string;
   change: number;
   sector: string;
-  industry: string;
   last: number;
   price: number;
   sma20: number;
@@ -17,27 +18,45 @@ export type ITickerHash = { [ticker: string]: ITickerData; };
 
 export interface ITickerDataService {
   addTicker(tickerData: ITickerData): void;
+  removeTicker(ticker: string): void;
+  addTicker(tickerData: ITickerData): void;
   updatePrice(ticker: string, price: number, change: number): void;
   updateVolume(ticker: string, volumne: number);
-  getTickerCount(): number
+  clearAllData(): void;
+  getTickerCount(): number;
   tickerHash:ITickerHash;
+  tickerList: string[];
 }
 
 class TickerDataService implements ITickerDataService {
   public tickerHash:ITickerHash = {};
+  public tickerList: string[] = [];
 
   constructor() {
 
   }
 
   getTickerCount(): number {
-    return Object.keys(this.tickerHash).length;
+    return this.tickerList.length;
   }
 
   addTicker(tickerData: ITickerData): void {
     if (!this.tickerHash[tickerData.ticker]) {
       this.tickerHash[tickerData.ticker] = tickerData;
+      this.tickerList.push(tickerData.ticker);
     }
+  }
+
+  removeTicker(ticker: string): void {
+    if (this.tickerHash[ticker]) {
+      delete this.tickerHash[ticker];
+      _.pull(this.tickerList, ticker);
+    }
+  }
+
+  clearAllData(): void {
+    this.tickerList = [];
+    this.tickerHash = {};
   }
 
   updatePrice(ticker: string, price: number, change: number): void {
