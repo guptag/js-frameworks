@@ -120,7 +120,7 @@ class ActionSimulator implements IActionSimulator {
   }
 
   private scheduleAddTicker() {
-    this.clearAddTickerPromise = this.$interval(() => this.addTickers(10), this.controlPanelService.options.addTickerIntervalMSec || 100);
+    this.clearAddTickerPromise = this.$interval(() => this.addTickers(50), this.controlPanelService.options.addTickerIntervalMSec || 100);
   }
 
   private clearAddTicker() {
@@ -138,7 +138,7 @@ class ActionSimulator implements IActionSimulator {
   }
 
   private scheduleDeleteTicker() {
-    this.clearDeleteTickerPromise = this.$interval(() => this.deleteTickers(10), this.controlPanelService.options.deleteTickerIntervalMSec || 100);
+    this.clearDeleteTickerPromise = this.$interval(() => this.deleteTickers(50), this.controlPanelService.options.deleteTickerIntervalMSec || 100);
   }
 
   private clearDeleteTicker() {
