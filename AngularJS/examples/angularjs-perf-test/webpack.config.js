@@ -1,5 +1,6 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin({
     filename: "index.css"
@@ -50,7 +51,15 @@ module.exports = {
   },
 
   plugins: [
-    extractSass
+    extractSass,
+    new CopyWebpackPlugin([
+        { from: 'external/stats.js', to: '.' /* output */},
+        { from: 'external/stocks.json', to: '.' },
+        { from: 'external/font-awesome/font-awesome.css', to: './styles' },
+        { from: 'external/font-awesome/fonts', to: './styles/fonts' },
+        { from: 'external/favicon.ico', to: '.' },
+        { from: 'index.html', to: '.' }
+    ])
   ],
 
   externals: {
