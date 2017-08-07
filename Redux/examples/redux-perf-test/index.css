@@ -1,0 +1,128 @@
+* {
+  box-sizing: border-box; }
+
+h1, h6 {
+  margin: 0 0 4px 0;
+  padding: 0; }
+
+html,
+body {
+  height: 100%; }
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both; }
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                        supported by Chrome and Opera */ }
+
+body {
+  font-family: 'Lucida Grande', verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  background-color: #e6ecf1;
+  color: #333;
+  margin: 0;
+  padding: 0; }
+
+.control-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: #bad6ce;
+  padding: 10px 0 0 10px;
+  font-family: Calibri, Cambria,"Times New Roman",Times,serif;
+  font-size: 1em; }
+  .control-panel h1 {
+    font-size: 1.2em; }
+  .control-panel .stats > div {
+    padding: 10px 15px 0 0;
+    float: left; }
+  .control-panel .counts .dom,
+  .control-panel .counts .tickers {
+    margin: 20px 0 0 0;
+    padding: 2px 0 5px 0;
+    text-align: center;
+    float: left;
+    width: 80px;
+    height: 50px;
+    font-size: 1.2em;
+    background-color: black;
+    color: #13DFE2; }
+  .control-panel .counts .dom {
+    margin-left: 15px;
+    color: lightgreen; }
+  .control-panel .sub-title {
+    font-size: 1.1em; }
+  .control-panel .action {
+    padding: 10px 0;
+    border-bottom: 1px dashed #a0a0a0;
+    width: 200px; }
+    .control-panel .action.replace-tickers {
+      margin-top: 10px; }
+    .control-panel .action .title {
+      font-size: 1em;
+      font-weight: bold;
+      margin: 3px 0 10px 0; }
+    .control-panel .action button {
+      margin: 0 10px 0 0;
+      width: 60px; }
+    .control-panel .action .frequency {
+      margin: 10px 0 0 0;
+      font-size: 0.9em; }
+    .control-panel .action .frequency i.fa {
+      padding: 0 10px; }
+
+.ticker-list {
+  padding: 0 0 0 2px;
+  margin: 0;
+  height: 100vh;
+  overflow-y: auto;
+  margin-right: 300px; }
+  .ticker-list::-webkit-scrollbar {
+    height: 200px;
+    overflow: auto;
+    float: left;
+    margin: 0 10px;
+    width: 5px; }
+  .ticker-list::-webkit-scrollbar {
+    width: 5px; }
+  .ticker-list::-webkit-scrollbar-track {
+    background: #ddd; }
+  .ticker-list::-webkit-scrollbar-thumb {
+    background: #666; }
+  .ticker-list .ticker-tile {
+    float: left;
+    font-size: 0.7em;
+    width: 100px;
+    height: 100px;
+    padding: 2px; }
+  .ticker-list .ticker-tile h1.ticker {
+    font-size: 1em;
+    padding-left: 6px; }
+    .ticker-list .ticker-tile h1.ticker.up {
+      border-left: 5px solid #1bbc9b; }
+    .ticker-list .ticker-tile h1.ticker.down {
+      border-left: 5px solid #ea5537; }
+  .ticker-list .price-changed, .ticker-list .sma-changed {
+    background-color: #ffff54; }
+  .ticker-list .vol-changed {
+    background-color: #72c3de; }
+
+/*# sourceMappingURL=index.css.map*/
