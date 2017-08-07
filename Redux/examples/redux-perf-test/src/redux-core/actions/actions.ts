@@ -11,6 +11,7 @@ type Action = { type: typeof INCREASE_COUNTER }
 // https://github.com/reactjs/redux/issues/992
 
 import {ITickerData, ITickerList} from '../reducers/domain/tickers/tickersReducer';
+import {ControlPanelActionType} from '../config/config';
 
 export type REPLACE_TICKER = "REPLACE_TICKER";
 export const REPLACE_TICKER:REPLACE_TICKER = "REPLACE_TICKER";
@@ -50,24 +51,11 @@ export interface UpdateVolumeAction {
   volume: number;
 }
 
-export type TOGGLE_REPLACE_TICKERS = "TOGGLE_REPLACE_TICKERS";
-export const TOGGLE_REPLACE_TICKERS:TOGGLE_REPLACE_TICKERS = "TOGGLE_REPLACE_TICKERS";
-export interface ToggleReplaceTickerAction {
-  type: TOGGLE_REPLACE_TICKERS;
-  enable: boolean
-}
-
-export type TOGGLE_ADD_TICKERS = "TOGGLE_ADD_TICKERS";
-export const TOGGLE_ADD_TICKERS:TOGGLE_ADD_TICKERS = "TOGGLE_ADD_TICKERS";
-export interface ToggleAddTickerAction {
-  type: TOGGLE_ADD_TICKERS;
-  enable: boolean
-}
-
-export type TOGGLE_DELETE_TICKERS = "TOGGLE_DELETE_TICKERS";
-export const TOGGLE_DELETE_TICKERS:TOGGLE_DELETE_TICKERS = "TOGGLE_DELETE_TICKERS";
-export interface ToggleDeleteTickerAction {
-  type: TOGGLE_DELETE_TICKERS;
+export type TOGGLE_CONTROLPANEL_ACTION = "TOGGLE_CONTROLPANEL_ACTION";
+export const TOGGLE_CONTROLPANEL_ACTION:TOGGLE_CONTROLPANEL_ACTION = "TOGGLE_CONTROLPANEL_ACTION";
+export interface ToggleControlPanelAction {
+  type: TOGGLE_CONTROLPANEL_ACTION;
+  controlPanelActionType: ControlPanelActionType;
   enable: boolean
 }
 
@@ -94,13 +82,6 @@ export interface ChangeDeleteTickerDelayAction {
 }
 
 
-export type TOGGLE_UPDATE_VALUES = "TOGGLE_UPDATE_VALUES";
-export const TOGGLE_UPDATE_VALUES:TOGGLE_UPDATE_VALUES = "TOGGLE_UPDATE_VALUES";
-export interface ToggleUpdateValuesAction {
-  type: TOGGLE_UPDATE_VALUES;
-  enable: boolean;
-}
-
 export type CHANGE_UPDATE_VALUES_DELAY = "CHANGE_UPDATE_VALUES_DELAY";
 export const CHANGE_UPDATE_VALUES_DELAY:CHANGE_UPDATE_VALUES_DELAY = "CHANGE_UPDATE_VALUES_DELAY";
 export interface ChangeUpdateValuesDelayAction {
@@ -113,13 +94,10 @@ export type AppAction = ReplaceTickerAction |
                         DeleteTickerAction |
                         UpdatePriceAction |
                         UpdateVolumeAction |
-                        ToggleReplaceTickerAction |
                         ChangeReplaceTickerDelayAction |
-                        ToggleAddTickerAction |
+                        ToggleControlPanelAction |
                         ChangeAddTickerDelayAction |
-                        ToggleDeleteTickerAction |
                         ChangeDeleteTickerDelayAction |
-                        ToggleUpdateValuesAction |
                         ChangeUpdateValuesDelayAction;
 
 
@@ -165,30 +143,10 @@ export const actions = {
   },
 
   controlPanel: {
-    createToggleAddTickerAction: (enable: boolean): ToggleAddTickerAction => {
+    createToggleAction: (actionType: ControlPanelActionType, enable: boolean): ToggleControlPanelAction => {
       return  {
-        type: TOGGLE_ADD_TICKERS,
-        enable: enable
-      }
-    },
-
-    createToggleReplaceTickerAction: (enable: boolean): ToggleReplaceTickerAction => {
-      return  {
-        type: TOGGLE_REPLACE_TICKERS,
-        enable: enable
-      }
-    },
-
-    createToggleDeleteTickerAction: (enable: boolean): ToggleDeleteTickerAction => {
-      return  {
-        type: TOGGLE_DELETE_TICKERS,
-        enable: enable
-      }
-    },
-
-    createToggleUpdateValuesAction: (enable: boolean): ToggleUpdateValuesAction => {
-      return  {
-        type: TOGGLE_UPDATE_VALUES,
+        type: TOGGLE_CONTROLPANEL_ACTION,
+        controlPanelActionType: actionType,
         enable: enable
       }
     },

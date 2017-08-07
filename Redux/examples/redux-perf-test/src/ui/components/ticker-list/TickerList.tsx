@@ -18,7 +18,6 @@ class TickerList extends React.Component<ITickerListProps, null> {
   }
 
   render() {
-    console.log("tickerlist render");
     var tickerTiles = _.map(this.props.tickerlist, (ticker: string) => {
       return <TickerTile key={ticker} ticker={ticker}></TickerTile>;
     });
@@ -31,7 +30,6 @@ class TickerList extends React.Component<ITickerListProps, null> {
   }
 }
 
-// Apply sort/filter here
 const mapStateToProps = (state: IAppState): ITickerListProps => ({
   tickerlist: state.domain.tickersState.tickerList
 });

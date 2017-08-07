@@ -1,14 +1,14 @@
 import  {
   AppAction,
-  TOGGLE_REPLACE_TICKERS,
+  ToggleControlPanelAction,
+  TOGGLE_CONTROLPANEL_ACTION,
   CHANGE_REPLACE_TICKER_DELAY,
-  TOGGLE_ADD_TICKERS,
   CHANGE_ADD_TICKER_DELAY,
-  TOGGLE_DELETE_TICKERS,
   CHANGE_DELETE_TICKER_DELAY,
-  TOGGLE_UPDATE_VALUES,
   CHANGE_UPDATE_VALUES_DELAY
 } from '../../../actions/actions';
+
+import { ControlPanelActionType, ControlPanelDefaults } from '../../../config/config';
 
 export interface IConrolPanelOptions {
   addTickersEnabled: boolean;
@@ -32,29 +32,36 @@ export const DefaultControlPanelOptions: IConrolPanelOptions = {
   updateValuesIntervalMSec: 10
 }
 
-type IConrolPanelReducer = (state: IConrolPanelOptions, action: AppAction) => IConrolPanelOptions;
-export const controlPanelReducer: IConrolPanelReducer = (state: IConrolPanelOptions = DefaultControlPanelOptions, action: AppAction): IConrolPanelOptions => {
-  switch (action.type) {
-    case TOGGLE_REPLACE_TICKERS:
+function handleToggleControlPanelAction(state: IConrolPanelOptions, action: ToggleControlPanelAction): IConrolPanelOptions {
+  switch (action.controlPanelActionType) {
+    case ControlPanelActionType.Replace:
       return {
         ...state,
         replaceTickersEnabled: action.enable
       }
-    case TOGGLE_ADD_TICKERS:
+    case ControlPanelActionType.Add:
       return {
         ...state,
         addTickersEnabled: action.enable
       }
-    case TOGGLE_DELETE_TICKERS:
+    case ControlPanelActionType.Delete:
       return {
         ...state,
         deleteTickersEnabled: action.enable
       }
-    case TOGGLE_UPDATE_VALUES:
+    case ControlPanelActionType.Update:
       return {
         ...state,
         updateValuesEnabled: action.enable
       }
+  }
+}
+
+type IConrolPanelReducer = (state: IConrolPanelOptions, action: AppAction) => IConrolPanelOptions;
+export const controlPanelReducer: IConrolPanelReducer = (state: IConrolPanelOptions = DefaultControlPanelOptions, action: AppAction): IConrolPanelOptions => {
+  switch (action.type) {
+    case TOGGLE_CONTROLPANEL_ACTION:
+      return handleToggleControlPanelAction(state, <ToggleControlPanelAction>action);
     case CHANGE_REPLACE_TICKER_DELAY:
       if (action.delayMS < 50 ) {action.delayMS = 50;}
       return {
