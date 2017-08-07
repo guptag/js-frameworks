@@ -54,9 +54,9 @@ class ActionSimulator implements IActionSimulator {
             sector: <string>tickerItem.Sector,
             last: <number>tickerItem.Price || 0,
             price: <number>tickerItem.Price || 0,
-            sma20: Math.abs(<number>tickerItem.SMA20),
-            sma50: Math.abs(<number>tickerItem.SMA50),
-            sma200: Math.abs(<number>tickerItem.SMA200),
+            sma20: Math.abs(<number>tickerItem.SMA20 || 0),
+            sma50: Math.abs(<number>tickerItem.SMA50 || 0),
+            sma200: Math.abs(<number>tickerItem.SMA200 || 0),
             volume: <number>tickerItem.Volume || 0,
             avgVol: <number>tickerItem.AvgVol
           });
