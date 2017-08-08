@@ -6,7 +6,7 @@
   height: 100vh;
   background-color: #bad6ce;
   padding: 10px 0 0 10px;
-  font-family: Calibri, Cambria,"Times New Roman",Times,serif;
+  font-family: 'Lucida Grande', verdana, sans-serif;
   font-size: 1em;
 
   h1 {
@@ -52,7 +52,7 @@
     }
 
     .title {
-      font-size: 1em;
+      font-size: 0.85em;
       font-weight: bold;
       margin: 3px 0 10px 0;
     }
@@ -64,7 +64,7 @@
 
     .frequency {
       margin: 10px 0 0 0;
-      font-size: 0.9em;
+      font-size: 0.85em;
     }
 
     .frequency i.fa {

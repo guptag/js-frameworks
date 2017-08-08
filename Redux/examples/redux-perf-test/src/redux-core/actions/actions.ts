@@ -1,223 +1,136 @@
-/*
-
-export const INCREASE_COUNTER = 'INCREASE_COUNTER';
-export const CHANGE_BASE_CURRENCY = 'CHANGE_BASE_CURRENCY';
-
-type Action = { type: typeof INCREASE_COUNTER }
-| { type: typeof CHANGE_BASE_CURRENCY, payload: string };
-
-*/
-
-// https://github.com/reactjs/redux/issues/992
-
 import {ITickerData, ITickerList} from '../reducers/domain/tickers/tickersReducer';
+import {ControlPanelActionType} from '../config/config';
 
-export type REPLACE_TICKER = "REPLACE_TICKER";
-export const REPLACE_TICKER:REPLACE_TICKER = "REPLACE_TICKER";
-export interface ReplaceTickerAction {
-  type: REPLACE_TICKER,
+export type Action<T, P> = {
+  type: T,
+  payload: P
+};
+
+export type ReplaceTickerAction = Action<typeof REPLACE_TICKERS, ReplaceTickerPayload>;
+export const REPLACE_TICKERS = "REPLACE_TICKERS";
+export interface ReplaceTickerPayload {
   tickerData: ITickerData[];
 }
 
-export type ADD_TICKER = "ADD_TICKER";
-export const ADD_TICKER:ADD_TICKER = "ADD_TICKER";
-export interface AddTickerAction {
-  type: ADD_TICKER,
+export type AddTickerAction = Action<typeof ADD_TICKERS, AddTickerPayload>;
+export const ADD_TICKERS = "ADD_TICKERS";
+export interface AddTickerPayload {
   tickersToAdd: ITickerData[];
 }
 
-export type DELETE_TICKER = "DELETE_TICKER";
-export const DELETE_TICKER:DELETE_TICKER = "DELETE_TICKER";
-export interface DeleteTickerAction {
-  type: DELETE_TICKER,
+export type DeleteTickerAction = Action<typeof DELETE_TICKERS, DeleteTickerPayload>;
+export const DELETE_TICKERS = "DELETE_TICKERS";
+export interface DeleteTickerPayload {
   tickersToDelete: ITickerList
 }
 
-export type UPDATE_PRICE = "UPDATE_PRICE";
-export const UPDATE_PRICE:UPDATE_PRICE = "UPDATE_PRICE";
-export interface UpdatePriceAction {
-  type: UPDATE_PRICE,
+export type UpdatePriceAction = Action<typeof UPDATE_PRICE, UpdatePricePayload>;
+export const UPDATE_PRICE = "UPDATE_PRICE";
+export interface UpdatePricePayload {
   ticker: string;
   price: number;
   change: number;
 }
 
-export type UPDATE_VOLUME = "UPDATE_VOLUME";
-export const UPDATE_VOLUME:UPDATE_VOLUME = "UPDATE_VOLUME";
-export interface UpdateVolumeAction {
-  type: UPDATE_VOLUME,
+export type UpdateVolumeAction = Action<typeof UPDATE_VOLUME, UpdateVolumePayload>;
+export const UPDATE_VOLUME = "UPDATE_VOLUME";
+export interface UpdateVolumePayload {
   ticker: string;
   volume: number;
 }
 
-export type TOGGLE_REPLACE_TICKERS = "TOGGLE_REPLACE_TICKERS";
-export const TOGGLE_REPLACE_TICKERS:TOGGLE_REPLACE_TICKERS = "TOGGLE_REPLACE_TICKERS";
-export interface ToggleReplaceTickerAction {
-  type: TOGGLE_REPLACE_TICKERS;
+export type ControlPanelToggleAction = Action<typeof CONTROLPANEL_TOGGLE_ACTION, ControlPanelTogglePayload>;
+export const CONTROLPANEL_TOGGLE_ACTION = "CONTROLPANEL_TOGGLE_ACTION";
+export interface ControlPanelTogglePayload {
+  controlPanelActionType: ControlPanelActionType;
   enable: boolean
 }
 
-export type TOGGLE_ADD_TICKERS = "TOGGLE_ADD_TICKERS";
-export const TOGGLE_ADD_TICKERS:TOGGLE_ADD_TICKERS = "TOGGLE_ADD_TICKERS";
-export interface ToggleAddTickerAction {
-  type: TOGGLE_ADD_TICKERS;
-  enable: boolean
-}
-
-export type TOGGLE_DELETE_TICKERS = "TOGGLE_DELETE_TICKERS";
-export const TOGGLE_DELETE_TICKERS:TOGGLE_DELETE_TICKERS = "TOGGLE_DELETE_TICKERS";
-export interface ToggleDeleteTickerAction {
-  type: TOGGLE_DELETE_TICKERS;
-  enable: boolean
-}
-
-export type CHANGE_REPLACE_TICKER_DELAY = "CHANGE_REPLACE_TICKER_DELAY";
-export const CHANGE_REPLACE_TICKER_DELAY:CHANGE_REPLACE_TICKER_DELAY = "CHANGE_REPLACE_TICKER_DELAY";
-export interface ChangeReplaceTickerDelayAction {
-  type: CHANGE_REPLACE_TICKER_DELAY,
-  delayMS: number;
-}
-
-
-export type CHANGE_ADD_TICKER_DELAY = "CHANGE_ADD_TICKER_DELAY";
-export const CHANGE_ADD_TICKER_DELAY:CHANGE_ADD_TICKER_DELAY = "CHANGE_ADD_TICKER_DELAY";
-export interface ChangeAddTickerDelayAction {
-  type: CHANGE_ADD_TICKER_DELAY,
-  delayMS: number;
-}
-
-export type CHANGE_DELETE_TICKER_DELAY = "CHANGE_DELETE_TICKER_DELAY";
-export const CHANGE_DELETE_TICKER_DELAY:CHANGE_DELETE_TICKER_DELAY = "CHANGE_DELETE_TICKER_DELAY";
-export interface ChangeDeleteTickerDelayAction {
-  type: CHANGE_DELETE_TICKER_DELAY,
-  delayMS: number;
-}
-
-
-export type TOGGLE_UPDATE_VALUES = "TOGGLE_UPDATE_VALUES";
-export const TOGGLE_UPDATE_VALUES:TOGGLE_UPDATE_VALUES = "TOGGLE_UPDATE_VALUES";
-export interface ToggleUpdateValuesAction {
-  type: TOGGLE_UPDATE_VALUES;
-  enable: boolean;
-}
-
-export type CHANGE_UPDATE_VALUES_DELAY = "CHANGE_UPDATE_VALUES_DELAY";
-export const CHANGE_UPDATE_VALUES_DELAY:CHANGE_UPDATE_VALUES_DELAY = "CHANGE_UPDATE_VALUES_DELAY";
-export interface ChangeUpdateValuesDelayAction {
-  type: CHANGE_UPDATE_VALUES_DELAY,
-  delayMS: number;
+export type ControlPanelChangeIntervalAction = Action<typeof CONTROLPANEL_CHANGE_INTERVAL, ControlPanelChangeIntervalPayload>;
+export const CONTROLPANEL_CHANGE_INTERVAL = "CONTROLPANEL_CHANGE_INTERVAL";
+export interface ControlPanelChangeIntervalPayload {
+  controlPanelActionType: ControlPanelActionType,
+  increment: boolean;
 }
 
 export type AppAction = ReplaceTickerAction |
-                        AddTickerAction |
-                        DeleteTickerAction |
-                        UpdatePriceAction |
-                        UpdateVolumeAction |
-                        ToggleReplaceTickerAction |
-                        ChangeReplaceTickerDelayAction |
-                        ToggleAddTickerAction |
-                        ChangeAddTickerDelayAction |
-                        ToggleDeleteTickerAction |
-                        ChangeDeleteTickerDelayAction |
-                        ToggleUpdateValuesAction |
-                        ChangeUpdateValuesDelayAction;
+                               AddTickerAction |
+                               DeleteTickerAction |
+                               UpdatePriceAction |
+                               UpdateVolumeAction |
+                               ControlPanelToggleAction |
+                               ControlPanelChangeIntervalAction;
 
 
 export const actions = {
   ticker: {
     createAddTickerAction: (tickersToAdd: ITickerData[]): AddTickerAction  => {
       return {
-        type: ADD_TICKER,
-        tickersToAdd: tickersToAdd
+        type: ADD_TICKERS,
+        payload: {
+          tickersToAdd: tickersToAdd
+        }
       }
     },
 
     createDeleteTickerAction: (tickersToDelete: ITickerList): DeleteTickerAction  => {
       return {
-        type: DELETE_TICKER,
-        tickersToDelete: tickersToDelete
+        type: DELETE_TICKERS,
+        payload: {
+          tickersToDelete: tickersToDelete
+        }
       }
     },
 
     createReplaceTickerAction: (tickerData: ITickerData[]): ReplaceTickerAction  => {
       return {
-        type: REPLACE_TICKER,
-        tickerData: tickerData
+        type: REPLACE_TICKERS,
+        payload: {
+          tickerData: tickerData
+        }
       }
     },
 
     createUpdatePriceAction: (ticker: string, price: number, change: number): UpdatePriceAction  => {
       return {
         type: UPDATE_PRICE,
-        ticker: ticker,
-        price: price,
-        change: change
+        payload: {
+          ticker: ticker,
+          price: price,
+          change: change
+        }
       }
     },
 
     createUpdateVolumeAction: (ticker: string, volume: number): UpdateVolumeAction  => {
       return {
         type: UPDATE_VOLUME,
-        ticker: ticker,
-        volume: volume
+        payload: {
+          ticker: ticker,
+          volume: volume
+        }
       }
     }
   },
 
   controlPanel: {
-    createToggleAddTickerAction: (enable: boolean): ToggleAddTickerAction => {
+    createToggleAction: (controlPanelActionType: ControlPanelActionType, enable: boolean): ControlPanelToggleAction => {
       return  {
-        type: TOGGLE_ADD_TICKERS,
-        enable: enable
+        type: CONTROLPANEL_TOGGLE_ACTION,
+        payload: {
+          controlPanelActionType: controlPanelActionType,
+          enable: enable
+        }
       }
     },
 
-    createToggleReplaceTickerAction: (enable: boolean): ToggleReplaceTickerAction => {
+    createChangeIntervalAction: (controlPanelActionType: ControlPanelActionType, increment: boolean): ControlPanelChangeIntervalAction => {
       return  {
-        type: TOGGLE_REPLACE_TICKERS,
-        enable: enable
-      }
-    },
-
-    createToggleDeleteTickerAction: (enable: boolean): ToggleDeleteTickerAction => {
-      return  {
-        type: TOGGLE_DELETE_TICKERS,
-        enable: enable
-      }
-    },
-
-    createToggleUpdateValuesAction: (enable: boolean): ToggleUpdateValuesAction => {
-      return  {
-        type: TOGGLE_UPDATE_VALUES,
-        enable: enable
-      }
-    },
-
-    createChangeReplaceTickerDelayAction: (delayMS: number): ChangeReplaceTickerDelayAction => {
-      return  {
-        type: CHANGE_REPLACE_TICKER_DELAY,
-        delayMS: delayMS
-      }
-    },
-
-    createChangeAddTickerDelayAction: (delayMS: number): ChangeAddTickerDelayAction => {
-      return  {
-        type: CHANGE_ADD_TICKER_DELAY,
-        delayMS: delayMS
-      }
-    },
-
-    createChangeDeleteTickerDelayAction: (delayMS: number): ChangeDeleteTickerDelayAction => {
-      return  {
-        type: CHANGE_DELETE_TICKER_DELAY,
-        delayMS: delayMS
-      }
-    },
-
-    createChangeUpdatesDelayAction: (delayMS: number): ChangeUpdateValuesDelayAction => {
-      return  {
-        type: CHANGE_UPDATE_VALUES_DELAY,
-        delayMS: delayMS
+        type: CONTROLPANEL_CHANGE_INTERVAL,
+        payload: {
+          controlPanelActionType: controlPanelActionType,
+          increment: increment
+        }
       }
     }
   }

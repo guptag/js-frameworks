@@ -1,14 +1,12 @@
 import  {
   AppAction,
-  TOGGLE_REPLACE_TICKERS,
-  CHANGE_REPLACE_TICKER_DELAY,
-  TOGGLE_ADD_TICKERS,
-  CHANGE_ADD_TICKER_DELAY,
-  TOGGLE_DELETE_TICKERS,
-  CHANGE_DELETE_TICKER_DELAY,
-  TOGGLE_UPDATE_VALUES,
-  CHANGE_UPDATE_VALUES_DELAY
+  ControlPanelToggleAction,
+  ControlPanelChangeIntervalAction,
+  CONTROLPANEL_TOGGLE_ACTION,
+  CONTROLPANEL_CHANGE_INTERVAL
 } from '../../../actions/actions';
+
+import { ControlPanelActionType, ControlPanelDefaults } from '../../../config/config';
 
 export interface IConrolPanelOptions {
   addTickersEnabled: boolean;
@@ -23,62 +21,82 @@ export interface IConrolPanelOptions {
 
 export const DefaultControlPanelOptions: IConrolPanelOptions = {
   replaceTickersEnabled: true,
-  replaceTickerIntervalMSec: 500,
+  replaceTickerIntervalMSec: ControlPanelDefaults.ReplaceTickerIntervalMSec,
   addTickersEnabled: true,
-  addTickerIntervalMSec: 100,
+  addTickerIntervalMSec: ControlPanelDefaults.AddTickerIntervalMSec,
   deleteTickersEnabled: true,
-  deleteTickerIntervalMSec: 100,
+  deleteTickerIntervalMSec: ControlPanelDefaults.DeleteTickerIntervalMSec,
   updateValuesEnabled: true,
-  updateValuesIntervalMSec: 10
+  updateValuesIntervalMSec: ControlPanelDefaults.UpdateValuesIntervalMSec
+}
+
+function handleControlPanelToggleAction(state: IConrolPanelOptions, action: ControlPanelToggleAction): IConrolPanelOptions {
+  switch (action.payload.controlPanelActionType) {
+    case ControlPanelActionType.Replace:
+      return {
+        ...state,
+        replaceTickersEnabled: action.payload.enable
+      }
+    case ControlPanelActionType.Add:
+      return {
+        ...state,
+        addTickersEnabled: action.payload.enable
+      }
+    case ControlPanelActionType.Delete:
+      return {
+        ...state,
+        deleteTickersEnabled: action.payload.enable
+      }
+    case ControlPanelActionType.Update:
+      return {
+        ...state,
+        updateValuesEnabled: action.payload.enable
+      }
+  }
+}
+
+function handleControlPanelChangeIntervalAction(state: IConrolPanelOptions, action: ControlPanelChangeIntervalAction): IConrolPanelOptions {
+  let interval:number;
+
+  switch (action.payload.controlPanelActionType) {
+    case ControlPanelActionType.Replace:
+      interval = state.replaceTickerIntervalMSec + (action.payload.increment ? 1 : -1) * ControlPanelDefaults.ReplaceIncrementMsec;
+      if (interval < ControlPanelDefaults.ReplaceMinIntervalMsec ) {interval = ControlPanelDefaults.ReplaceMinIntervalMsec;}
+      return {
+          ...state,
+          replaceTickerIntervalMSec: interval
+        }
+    case ControlPanelActionType.Add:
+      interval = state.addTickerIntervalMSec + (action.payload.increment ? 1 : -1) * ControlPanelDefaults.AddIncrementMsec;
+      if (interval < ControlPanelDefaults.AddMinIntervalMsec ) { interval = ControlPanelDefaults.AddMinIntervalMsec;}
+      return {
+          ...state,
+          addTickerIntervalMSec: interval
+        }
+    case ControlPanelActionType.Delete:
+      interval = state.deleteTickerIntervalMSec + (action.payload.increment ? 1 : -1) * ControlPanelDefaults.DeleteIncrementMsec;
+      if (interval < ControlPanelDefaults.DeleteMinIntervalMsec ) { interval = ControlPanelDefaults.DeleteMinIntervalMsec;}
+      return {
+          ...state,
+          deleteTickerIntervalMSec: interval
+        }
+    case ControlPanelActionType.Update:
+      interval = state.updateValuesIntervalMSec + (action.payload.increment ? 1 : -1) * ControlPanelDefaults.UpdateIncrementMsec;
+      if (interval < ControlPanelDefaults.UpdateMinIntervalMsec ) { interval = ControlPanelDefaults.UpdateMinIntervalMsec;}
+       return {
+        ...state,
+        updateValuesIntervalMSec: interval
+      }
+  }
 }
 
 type IConrolPanelReducer = (state: IConrolPanelOptions, action: AppAction) => IConrolPanelOptions;
 export const controlPanelReducer: IConrolPanelReducer = (state: IConrolPanelOptions = DefaultControlPanelOptions, action: AppAction): IConrolPanelOptions => {
   switch (action.type) {
-    case TOGGLE_REPLACE_TICKERS:
-      return {
-        ...state,
-        replaceTickersEnabled: action.enable
-      }
-    case TOGGLE_ADD_TICKERS:
-      return {
-        ...state,
-        addTickersEnabled: action.enable
-      }
-    case TOGGLE_DELETE_TICKERS:
-      return {
-        ...state,
-        deleteTickersEnabled: action.enable
-      }
-    case TOGGLE_UPDATE_VALUES:
-      return {
-        ...state,
-        updateValuesEnabled: action.enable
-      }
-    case CHANGE_REPLACE_TICKER_DELAY:
-      if (action.delayMS < 50 ) {action.delayMS = 50;}
-      return {
-          ...state,
-          replaceTickerIntervalMSec: action.delayMS
-        }
-    case CHANGE_ADD_TICKER_DELAY:
-      if (action.delayMS < 50 ) {action.delayMS = 50;}
-      return {
-          ...state,
-          addTickerIntervalMSec: action.delayMS
-        }
-    case CHANGE_DELETE_TICKER_DELAY:
-      if (action.delayMS < 50 ) {action.delayMS = 50;}
-      return {
-          ...state,
-          deleteTickerIntervalMSec: action.delayMS
-        }
-    case CHANGE_UPDATE_VALUES_DELAY:
-       if (action.delayMS < 5 ) {action.delayMS = 5;}
-       return {
-        ...state,
-        updateValuesIntervalMSec: action.delayMS
-      }
+    case CONTROLPANEL_TOGGLE_ACTION:
+      return handleControlPanelToggleAction(state, <ControlPanelToggleAction>action);
+    case CONTROLPANEL_CHANGE_INTERVAL:
+      return handleControlPanelChangeIntervalAction(state, <ControlPanelChangeIntervalAction>action);
     default:
       return state;
   }

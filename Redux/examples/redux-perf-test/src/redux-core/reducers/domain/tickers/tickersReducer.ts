@@ -22,9 +22,9 @@ import * as _ from "lodash";
 
 import  {
   AppAction,
-  ADD_TICKER,
-  DELETE_TICKER,
-  REPLACE_TICKER,
+  ADD_TICKERS,
+  DELETE_TICKERS,
+  REPLACE_TICKERS,
   UPDATE_VOLUME,
   UPDATE_PRICE
 } from '../../../actions/actions';
@@ -59,41 +59,41 @@ export const DefaultTickersState = {
 type ITickersReducer = (state: ITickerState, action: AppAction) => ITickerState;
 export const tickersReducer: ITickersReducer = (state: ITickerState = DefaultTickersState, action: AppAction): ITickerState => {
   switch (action.type) {
-    case REPLACE_TICKER: 
+    case REPLACE_TICKERS:
       return {
-        tickerList: _.map(action.tickerData, data => data.ticker),
-        tickerHash: Object.assign({}, 
-          ..._.map(action.tickerData, data => <ITickerHash>{ [data.ticker]: data })
+        tickerList: _.map(action.payload.tickerData, data => data.ticker),
+        tickerHash: Object.assign({},
+          ..._.map(action.payload.tickerData, data => <ITickerHash>{ [data.ticker]: data })
         )
       };
 
-    case ADD_TICKER:
+    case ADD_TICKERS:
       return {
-        tickerList: [...state.tickerList, ..._.map(action.tickersToAdd, data => data.ticker)],
-        tickerHash: Object.assign({}, 
+        tickerList: [...state.tickerList, ..._.map(action.payload.tickersToAdd, data => data.ticker)],
+        tickerHash: Object.assign({},
           state.tickerHash,
-          ..._.map(action.tickersToAdd, data => <ITickerHash>{ [data.ticker]: data })
+          ..._.map(action.payload.tickersToAdd, data => <ITickerHash>{ [data.ticker]: data })
         )
       }
 
-    case DELETE_TICKER:
+    case DELETE_TICKERS:
       return {
-        tickerList: _.without(state.tickerList, ...action.tickersToDelete),
-        tickerHash: Object.assign({}, 
+        tickerList: _.without(state.tickerList, ...action.payload.tickersToDelete),
+        tickerHash: Object.assign({},
           state.tickerHash,
-          ..._.map(action.tickersToDelete, ticker => <ITickerHash>{ [ticker]: null })
+          ..._.map(action.payload.tickersToDelete, ticker => <ITickerHash>{ [ticker]: null })
         )
       }
-      
+
     case UPDATE_PRICE:
       return {
         tickerList: state.tickerList,
         tickerHash: {
           ...state.tickerHash,
-          [action.ticker]: {
-            ...state.tickerHash[action.ticker],
-            change: action.change,
-            price: action.price
+          [action.payload.ticker]: {
+            ...state.tickerHash[action.payload.ticker],
+            change: action.payload.change,
+            price: action.payload.price
           }
         }
       };
@@ -103,9 +103,9 @@ export const tickersReducer: ITickersReducer = (state: ITickerState = DefaultTic
         tickerList: state.tickerList,
         tickerHash: {
           ...state.tickerHash,
-          [action.ticker]: {
-            ...state.tickerHash[action.ticker],
-            volume: action.volume
+          [action.payload.ticker]: {
+            ...state.tickerHash[action.payload.ticker],
+            volume: action.payload.volume
           }
         }
       };
