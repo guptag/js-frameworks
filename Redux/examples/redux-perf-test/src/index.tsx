@@ -8,6 +8,7 @@ import appStore from './redux-core/store/appStore';
 
 import App from './ui/components/app';
 
+
 ReactDOM.render(
   <Provider store={appStore}>
     <App />

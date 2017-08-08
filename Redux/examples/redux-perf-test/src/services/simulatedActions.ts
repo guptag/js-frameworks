@@ -14,6 +14,9 @@ export interface ISimulatedAction {
 }
 
 
+/**
+ * Simulates Add Tickers
+ */
 export class AddTickerAction implements ISimulatedAction {
   private clearAddTickerTimerId: number;
 
@@ -43,9 +46,14 @@ export class AddTickerAction implements ISimulatedAction {
   }
 
   private addTickers() {
+    // already at the end, clear the data and start
+    if (this.serverDataManager.hasReachedEnd()) {
+      this.appStore.dispatch(actions.ticker.createReplaceTickerAction([]));
+      this.serverDataManager.resetIndex();
+    }
+
     var newTickers: ITickerData[] = this.serverDataManager.getNewTickers(ActionDefaults.AddActionTickerCount);
     this.appStore.dispatch(actions.ticker.createAddTickerAction(newTickers));
-
 
     // reached the end, reset the buttons
     if (this.serverDataManager.hasReachedEnd()) {
@@ -53,13 +61,13 @@ export class AddTickerAction implements ISimulatedAction {
       this.appStore.dispatch(actions.controlPanel.createToggleAction(ControlPanelActionType.Add, true));
 
       this.cbWhenReachedEnd && this.cbWhenReachedEnd();
-
-      //this.stopAction(ControlPanelActionType.Replace);
-      //appStore.dispatch(actions.controlPanel.createToggleAction(ControlPanelActionType.Replace, true));
     }
   }
 }
 
+/**
+ * Simulates Replace Tickers
+ */
 export class ReplaceTickerAction implements ISimulatedAction {
   private clearReplaceTickerTimerId:number
   constructor(
@@ -101,12 +109,14 @@ export class ReplaceTickerAction implements ISimulatedAction {
     if (this.serverDataManager.hasReachedEnd()) {
       this.clearAction();
       this.appStore.dispatch(actions.controlPanel.createToggleAction(ControlPanelActionType.Replace, true));
-
       this.cbWhenReachedEnd && this.cbWhenReachedEnd();
     }
   }
 }
 
+/**
+ * Simulates Delete Tickers
+ */
 export class DeleteTickerAction implements ISimulatedAction {
   private clearDeleteTickerTimerId: number;
   constructor(
@@ -143,6 +153,9 @@ export class DeleteTickerAction implements ISimulatedAction {
   }
 }
 
+/**
+ * Simulates Update Tickers
+ */
 export class UpdateTickerAction implements ISimulatedAction {
   private clearUpdateTickerTimerId: number;
 

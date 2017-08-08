@@ -30,11 +30,16 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
     var statsMs = new window["Stats"]();
     statsMs.showPanel(1);
 
+    var statsMemory = new window["Stats"]();
+    statsMemory.showPanel(2);
+
     document.getElementById("stats_rps").appendChild(statsRps.dom);
     document.getElementById("stats_ms").appendChild(statsMs.dom);
+    document.getElementById("stats_memory").appendChild(statsMemory.dom);
     requestAnimationFrame(function loop() {
       statsRps.update();
       statsMs.update();
+      statsMemory.update();
       document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
       requestAnimationFrame(loop)
     });
@@ -49,8 +54,9 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
       <section className="control-panel">
           <h1>React/Redux Perf Test</h1>
           <section className="stats clearfix">
-            <div id="stats_rps" className="rps"></div>
-            <div id="stats_ms" className="ms"></div>
+            <div id="stats_rps" className="rps" title="Frames rendered in the last second(fps). App is more responsive when fps is higher."></div>
+            <div id="stats_ms" className="ms" title="Time to render the last frame (msec). Lower values are better."></div>
+            <div id="stats_memory" className="mem" title="Allocated memory in MB. Run Chrome with --enable-precise-memory-info"></div>
           </section>
           <section className="counts clearfix">
             <div className="tickers">

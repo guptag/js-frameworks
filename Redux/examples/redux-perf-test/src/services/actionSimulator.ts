@@ -4,7 +4,7 @@ import appStore  from '../redux-core/store/appStore';
 import { ControlPanelActionType, ControlPanelDefaults, ActionDefaults } from "../redux-core/config/config";
 import { actions } from '../redux-core/actions/actions';
 import { ServerDataManager, IServerDataManager} from './serverDataManager';
-import { ISimulatedAction, ReplaceTickerAction, AddTickerAction, UpdateTickerAction, DeleteTickerAction } from './simatedActions';
+import { ISimulatedAction, ReplaceTickerAction, AddTickerAction, UpdateTickerAction, DeleteTickerAction } from './simulatedActions';
 
 declare function require(name:string);
 var Perf = require('react-addons-perf');

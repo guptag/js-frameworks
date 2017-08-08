@@ -31,26 +31,26 @@ export const DefaultControlPanelOptions: IConrolPanelOptions = {
 }
 
 function handleControlPanelToggleAction(state: IConrolPanelOptions, action: ControlPanelToggleAction): IConrolPanelOptions {
-  switch (action.controlPanelActionType) {
+  switch (action.payload.controlPanelActionType) {
     case ControlPanelActionType.Replace:
       return {
         ...state,
-        replaceTickersEnabled: action.enable
+        replaceTickersEnabled: action.payload.enable
       }
     case ControlPanelActionType.Add:
       return {
         ...state,
-        addTickersEnabled: action.enable
+        addTickersEnabled: action.payload.enable
       }
     case ControlPanelActionType.Delete:
       return {
         ...state,
-        deleteTickersEnabled: action.enable
+        deleteTickersEnabled: action.payload.enable
       }
     case ControlPanelActionType.Update:
       return {
         ...state,
-        updateValuesEnabled: action.enable
+        updateValuesEnabled: action.payload.enable
       }
   }
 }
@@ -58,30 +58,30 @@ function handleControlPanelToggleAction(state: IConrolPanelOptions, action: Cont
 function handleControlPanelChangeIntervalAction(state: IConrolPanelOptions, action: ControlPanelChangeIntervalAction): IConrolPanelOptions {
   let interval:number;
 
-  switch (action.controlPanelActionType) {
+  switch (action.payload.controlPanelActionType) {
     case ControlPanelActionType.Replace:
-      interval = state.replaceTickerIntervalMSec + (action.increment ? 1 : -1) * ControlPanelDefaults.ReplaceIncrementMsec;
+      interval = state.replaceTickerIntervalMSec + (action.payload.increment ? 1 : -1) * ControlPanelDefaults.ReplaceIncrementMsec;
       if (interval < ControlPanelDefaults.ReplaceMinIntervalMsec ) {interval = ControlPanelDefaults.ReplaceMinIntervalMsec;}
       return {
           ...state,
           replaceTickerIntervalMSec: interval
         }
     case ControlPanelActionType.Add:
-      interval = state.addTickerIntervalMSec + (action.increment ? 1 : -1) * ControlPanelDefaults.AddIncrementMsec;
+      interval = state.addTickerIntervalMSec + (action.payload.increment ? 1 : -1) * ControlPanelDefaults.AddIncrementMsec;
       if (interval < ControlPanelDefaults.AddMinIntervalMsec ) { interval = ControlPanelDefaults.AddMinIntervalMsec;}
       return {
           ...state,
           addTickerIntervalMSec: interval
         }
     case ControlPanelActionType.Delete:
-      interval = state.deleteTickerIntervalMSec + (action.increment ? 1 : -1) * ControlPanelDefaults.DeleteIncrementMsec;
+      interval = state.deleteTickerIntervalMSec + (action.payload.increment ? 1 : -1) * ControlPanelDefaults.DeleteIncrementMsec;
       if (interval < ControlPanelDefaults.DeleteMinIntervalMsec ) { interval = ControlPanelDefaults.DeleteMinIntervalMsec;}
       return {
           ...state,
           deleteTickerIntervalMSec: interval
         }
     case ControlPanelActionType.Update:
-      interval = state.updateValuesIntervalMSec + (action.increment ? 1 : -1) * ControlPanelDefaults.UpdateIncrementMsec;
+      interval = state.updateValuesIntervalMSec + (action.payload.increment ? 1 : -1) * ControlPanelDefaults.UpdateIncrementMsec;
       if (interval < ControlPanelDefaults.UpdateMinIntervalMsec ) { interval = ControlPanelDefaults.UpdateMinIntervalMsec;}
        return {
         ...state,

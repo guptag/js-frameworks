@@ -61,27 +61,27 @@ export const tickersReducer: ITickersReducer = (state: ITickerState = DefaultTic
   switch (action.type) {
     case REPLACE_TICKERS:
       return {
-        tickerList: _.map(action.tickerData, data => data.ticker),
+        tickerList: _.map(action.payload.tickerData, data => data.ticker),
         tickerHash: Object.assign({},
-          ..._.map(action.tickerData, data => <ITickerHash>{ [data.ticker]: data })
+          ..._.map(action.payload.tickerData, data => <ITickerHash>{ [data.ticker]: data })
         )
       };
 
     case ADD_TICKERS:
       return {
-        tickerList: [...state.tickerList, ..._.map(action.tickersToAdd, data => data.ticker)],
+        tickerList: [...state.tickerList, ..._.map(action.payload.tickersToAdd, data => data.ticker)],
         tickerHash: Object.assign({},
           state.tickerHash,
-          ..._.map(action.tickersToAdd, data => <ITickerHash>{ [data.ticker]: data })
+          ..._.map(action.payload.tickersToAdd, data => <ITickerHash>{ [data.ticker]: data })
         )
       }
 
     case DELETE_TICKERS:
       return {
-        tickerList: _.without(state.tickerList, ...action.tickersToDelete),
+        tickerList: _.without(state.tickerList, ...action.payload.tickersToDelete),
         tickerHash: Object.assign({},
           state.tickerHash,
-          ..._.map(action.tickersToDelete, ticker => <ITickerHash>{ [ticker]: null })
+          ..._.map(action.payload.tickersToDelete, ticker => <ITickerHash>{ [ticker]: null })
         )
       }
 
@@ -90,10 +90,10 @@ export const tickersReducer: ITickersReducer = (state: ITickerState = DefaultTic
         tickerList: state.tickerList,
         tickerHash: {
           ...state.tickerHash,
-          [action.ticker]: {
-            ...state.tickerHash[action.ticker],
-            change: action.change,
-            price: action.price
+          [action.payload.ticker]: {
+            ...state.tickerHash[action.payload.ticker],
+            change: action.payload.change,
+            price: action.payload.price
           }
         }
       };
@@ -103,9 +103,9 @@ export const tickersReducer: ITickersReducer = (state: ITickerState = DefaultTic
         tickerList: state.tickerList,
         tickerHash: {
           ...state.tickerHash,
-          [action.ticker]: {
-            ...state.tickerHash[action.ticker],
-            volume: action.volume
+          [action.payload.ticker]: {
+            ...state.tickerHash[action.payload.ticker],
+            volume: action.payload.volume
           }
         }
       };
