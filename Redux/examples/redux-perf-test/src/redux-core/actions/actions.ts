@@ -13,24 +13,24 @@ type Action = { type: typeof INCREASE_COUNTER }
 import {ITickerData, ITickerList} from '../reducers/domain/tickers/tickersReducer';
 import {ControlPanelActionType} from '../config/config';
 
-export type REPLACE_TICKER = "REPLACE_TICKER";
-export const REPLACE_TICKER:REPLACE_TICKER = "REPLACE_TICKER";
+export type REPLACE_TICKERS = "REPLACE_TICKERS";
+export const REPLACE_TICKERS:REPLACE_TICKERS = "REPLACE_TICKERS";
 export interface ReplaceTickerAction {
-  type: REPLACE_TICKER,
+  type: REPLACE_TICKERS,
   tickerData: ITickerData[];
 }
 
-export type ADD_TICKER = "ADD_TICKER";
-export const ADD_TICKER:ADD_TICKER = "ADD_TICKER";
+export type ADD_TICKERS = "ADD_TICKERS";
+export const ADD_TICKERS:ADD_TICKERS = "ADD_TICKERS";
 export interface AddTickerAction {
-  type: ADD_TICKER,
+  type: ADD_TICKERS,
   tickersToAdd: ITickerData[];
 }
 
-export type DELETE_TICKER = "DELETE_TICKER";
-export const DELETE_TICKER:DELETE_TICKER = "DELETE_TICKER";
+export type DELETE_TICKERS = "DELETE_TICKERS";
+export const DELETE_TICKERS:DELETE_TICKERS = "DELETE_TICKERS";
 export interface DeleteTickerAction {
-  type: DELETE_TICKER,
+  type: DELETE_TICKERS,
   tickersToDelete: ITickerList
 }
 
@@ -51,42 +51,20 @@ export interface UpdateVolumeAction {
   volume: number;
 }
 
-export type TOGGLE_CONTROLPANEL_ACTION = "TOGGLE_CONTROLPANEL_ACTION";
-export const TOGGLE_CONTROLPANEL_ACTION:TOGGLE_CONTROLPANEL_ACTION = "TOGGLE_CONTROLPANEL_ACTION";
-export interface ToggleControlPanelAction {
-  type: TOGGLE_CONTROLPANEL_ACTION;
+export type CONTROLPANEL_TOGGLE_ACTION = "CONTROLPANEL_TOGGLE_ACTION";
+export const CONTROLPANEL_TOGGLE_ACTION:CONTROLPANEL_TOGGLE_ACTION = "CONTROLPANEL_TOGGLE_ACTION";
+export interface ControlPanelToggleAction {
+  type: CONTROLPANEL_TOGGLE_ACTION;
   controlPanelActionType: ControlPanelActionType;
   enable: boolean
 }
 
-export type CHANGE_REPLACE_TICKER_DELAY = "CHANGE_REPLACE_TICKER_DELAY";
-export const CHANGE_REPLACE_TICKER_DELAY:CHANGE_REPLACE_TICKER_DELAY = "CHANGE_REPLACE_TICKER_DELAY";
-export interface ChangeReplaceTickerDelayAction {
-  type: CHANGE_REPLACE_TICKER_DELAY,
-  delayMS: number;
-}
-
-
-export type CHANGE_ADD_TICKER_DELAY = "CHANGE_ADD_TICKER_DELAY";
-export const CHANGE_ADD_TICKER_DELAY:CHANGE_ADD_TICKER_DELAY = "CHANGE_ADD_TICKER_DELAY";
-export interface ChangeAddTickerDelayAction {
-  type: CHANGE_ADD_TICKER_DELAY,
-  delayMS: number;
-}
-
-export type CHANGE_DELETE_TICKER_DELAY = "CHANGE_DELETE_TICKER_DELAY";
-export const CHANGE_DELETE_TICKER_DELAY:CHANGE_DELETE_TICKER_DELAY = "CHANGE_DELETE_TICKER_DELAY";
-export interface ChangeDeleteTickerDelayAction {
-  type: CHANGE_DELETE_TICKER_DELAY,
-  delayMS: number;
-}
-
-
-export type CHANGE_UPDATE_VALUES_DELAY = "CHANGE_UPDATE_VALUES_DELAY";
-export const CHANGE_UPDATE_VALUES_DELAY:CHANGE_UPDATE_VALUES_DELAY = "CHANGE_UPDATE_VALUES_DELAY";
-export interface ChangeUpdateValuesDelayAction {
-  type: CHANGE_UPDATE_VALUES_DELAY,
-  delayMS: number;
+export type CONTROLPANEL_CHANGE_INTERVAL = "CONTROLPANEL_CHANGE_INTERVAL";
+export const CONTROLPANEL_CHANGE_INTERVAL:CONTROLPANEL_CHANGE_INTERVAL = "CONTROLPANEL_CHANGE_INTERVAL";
+export interface ControlPanelChangeIntervalAction {
+  type: CONTROLPANEL_CHANGE_INTERVAL,
+  controlPanelActionType: ControlPanelActionType,
+  increment: boolean;
 }
 
 export type AppAction = ReplaceTickerAction |
@@ -94,32 +72,29 @@ export type AppAction = ReplaceTickerAction |
                         DeleteTickerAction |
                         UpdatePriceAction |
                         UpdateVolumeAction |
-                        ChangeReplaceTickerDelayAction |
-                        ToggleControlPanelAction |
-                        ChangeAddTickerDelayAction |
-                        ChangeDeleteTickerDelayAction |
-                        ChangeUpdateValuesDelayAction;
+                        ControlPanelToggleAction |
+                        ControlPanelChangeIntervalAction;
 
 
 export const actions = {
   ticker: {
     createAddTickerAction: (tickersToAdd: ITickerData[]): AddTickerAction  => {
       return {
-        type: ADD_TICKER,
+        type: ADD_TICKERS,
         tickersToAdd: tickersToAdd
       }
     },
 
     createDeleteTickerAction: (tickersToDelete: ITickerList): DeleteTickerAction  => {
       return {
-        type: DELETE_TICKER,
+        type: DELETE_TICKERS,
         tickersToDelete: tickersToDelete
       }
     },
 
     createReplaceTickerAction: (tickerData: ITickerData[]): ReplaceTickerAction  => {
       return {
-        type: REPLACE_TICKER,
+        type: REPLACE_TICKERS,
         tickerData: tickerData
       }
     },
@@ -143,39 +118,19 @@ export const actions = {
   },
 
   controlPanel: {
-    createToggleAction: (actionType: ControlPanelActionType, enable: boolean): ToggleControlPanelAction => {
+    createToggleAction: (controlPanelActionType: ControlPanelActionType, enable: boolean): ControlPanelToggleAction => {
       return  {
-        type: TOGGLE_CONTROLPANEL_ACTION,
-        controlPanelActionType: actionType,
+        type: CONTROLPANEL_TOGGLE_ACTION,
+        controlPanelActionType: controlPanelActionType,
         enable: enable
       }
     },
 
-    createChangeReplaceTickerDelayAction: (delayMS: number): ChangeReplaceTickerDelayAction => {
+    createChangeIntervalAction: (controlPanelActionType: ControlPanelActionType, increment: boolean): ControlPanelChangeIntervalAction => {
       return  {
-        type: CHANGE_REPLACE_TICKER_DELAY,
-        delayMS: delayMS
-      }
-    },
-
-    createChangeAddTickerDelayAction: (delayMS: number): ChangeAddTickerDelayAction => {
-      return  {
-        type: CHANGE_ADD_TICKER_DELAY,
-        delayMS: delayMS
-      }
-    },
-
-    createChangeDeleteTickerDelayAction: (delayMS: number): ChangeDeleteTickerDelayAction => {
-      return  {
-        type: CHANGE_DELETE_TICKER_DELAY,
-        delayMS: delayMS
-      }
-    },
-
-    createChangeUpdatesDelayAction: (delayMS: number): ChangeUpdateValuesDelayAction => {
-      return  {
-        type: CHANGE_UPDATE_VALUES_DELAY,
-        delayMS: delayMS
+        type: CONTROLPANEL_CHANGE_INTERVAL,
+        controlPanelActionType: controlPanelActionType,
+        increment: increment
       }
     }
   }

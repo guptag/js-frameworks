@@ -16,9 +16,15 @@ export const ControlPanelDefaults = {
   UpdateIncrementMsec: 5,
   DeleteIncrementMsec: 50,
 
-  MinReplaceIntervalMsec: 50,
-  MinAddIntervalMsec: 50,
-  MinUpdateIntervalMsec: 5,
-  MinDeleteIntervalMsec: 50
+  ReplaceMinIntervalMsec: 50,
+  AddMinIntervalMsec: 50,
+  UpdateMinIntervalMsec: 5,
+  DeleteMinIntervalMsec: 50
 };
+
+export const ActionDefaults = {
+  AddActionTickerCount: 50,
+  ReplaceActionTickerCount: 200,
+  DeleteActionTickerCount: 50
+}
 
