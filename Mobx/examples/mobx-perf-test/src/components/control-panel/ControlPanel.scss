@@ -11,12 +11,21 @@
 
   h1 {
     font-size: 1.2em;
+    margin-bottom: 20px;
   }
 
   .stats {
-    & > div{
-      padding: 10px 15px 0 0;
+    & > div.stat-item{
+      padding: 15px 15px 0 0;
+      position: relative;
       float: left;
+
+      i.fa-info-circle {
+        position: absolute;
+        top: 0px;
+        right: 17px;
+        font-size: 10px;
+      }
     }
   }
 
@@ -53,7 +62,7 @@
     width: 200px;
 
     &.replace-tickers {
-      margin-top: 10px;
+      margin-top: 20px;
     }
 
     .title {
