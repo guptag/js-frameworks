@@ -105,11 +105,17 @@ angular.module('perfTest')
         var statsMs = new window["Stats"]();
         statsMs.showPanel(1);
 
+        var statsMem = new window["Stats"]();
+        statsMem.showPanel(2);
+
         document.getElementById("stats_rps").appendChild(statsRps.dom);
         document.getElementById("stats_ms").appendChild(statsMs.dom);
+        document.getElementById("stats_memory").appendChild(statsMem.dom);
+        
         requestAnimationFrame(function loop() {
           statsRps.update();
           statsMs.update();
+          statsMem.update();
           document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
           requestAnimationFrame(loop)
         });

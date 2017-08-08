@@ -28,9 +28,14 @@
     float: left;
     width: 80px;
     height: 50px;
-    font-size: 1.2em;
+    font-size: 1em;
     background-color: black;
     color:#13DFE2;
+
+    div {
+      padding-top: 2px;
+      font-size: 1.2em;
+    }
   }
 
   .counts .dom {

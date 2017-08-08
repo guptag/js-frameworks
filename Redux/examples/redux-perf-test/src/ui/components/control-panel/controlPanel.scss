@@ -14,9 +14,17 @@
   }
 
   .stats {
-    & > div{
-      padding: 10px 15px 0 0;
+    & > div.stat-item{
+      padding: 15px 15px 0 0;
+      position: relative;
       float: left;
+
+      i.fa-info-circle {
+        position: absolute;
+        top: 0px;
+        right: 17px;
+        font-size: 10px;
+      }
     }
   }
 
@@ -28,9 +36,14 @@
     float: left;
     width: 80px;
     height: 50px;
-    font-size: 1.2em;
+    font-size: 1em;
     background-color: black;
     color:#13DFE2;
+
+    div {
+      padding-top: 2px;
+      font-size: 1.2em;
+    }
   }
 
   .counts .dom {

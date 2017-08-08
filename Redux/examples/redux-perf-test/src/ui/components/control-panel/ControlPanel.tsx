@@ -54,9 +54,18 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
       <section className="control-panel">
           <h1>React/Redux Perf Test</h1>
           <section className="stats clearfix">
-            <div id="stats_rps" className="rps" title="Frames rendered in the last second(fps). App is more responsive when fps is higher."></div>
-            <div id="stats_ms" className="ms" title="Time to render the last frame (msec). Lower values are better."></div>
-            <div id="stats_memory" className="mem" title="Allocated memory in MB. Run Chrome with --enable-precise-memory-info"></div>
+            <div className="stat-item">
+              <div id="stats_rps" className="rps"></div>
+              <i className="fa fa-info-circle stats_rps" title="Frames rendered in the last second(fps). App is more responsive when fps is higher."></i>
+            </div>
+            <div className="stat-item">
+              <div id="stats_ms" className="ms"></div>
+              <i className="fa fa-info-circle" title="Time to render the last frame (msec). Lower values are better."></i>
+            </div>
+            <div className="stat-item">
+              <div id="stats_memory" className="mem"></div>
+              <i className="fa fa-info-circle" title="Allocated memory in MB. Open Chrome with --enable-precise-memory-info to get this informarion."></i>
+            </div>
           </section>
           <section className="counts clearfix">
             <div className="tickers">
