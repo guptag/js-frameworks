@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-
+import { ControlPanelActionType, ControlPanelDefaults, ActionDefaults } from "../../config/config";
 import { ITickerDataViewModel } from '../../models/TickerDataModel';
 import { IControlPanelViewModel, IConrolPanelOptions} from '../../models/ControlPanelModel';
 import ActionSimulator from '../../services/actionSimulator';
@@ -35,32 +35,19 @@ class ControlPanel extends React.Component<IControlPanelProps, null> {
     });
   }
 
-  onAddTickers() {
-    this.props.controlPanelModel.toggleAddTickers(false);
-    ActionSimulator.startAddingTickers();
+  onStartAction(actionType: ControlPanelActionType) {
+    this.props.controlPanelModel.toggleAction(actionType, false);
+    ActionSimulator.startAction(actionType);
   }
 
-  onStopAddTickers() {
-    this.props.controlPanelModel.toggleAddTickers(true);
-    ActionSimulator.stopAddingTickers();
+  onStopAction(actionType: ControlPanelActionType) {
+    this.props.controlPanelModel.toggleAction(actionType, true);
+    ActionSimulator.stopAction(actionType);
   }
 
-  onUpdateTickers() {
-    this.props.controlPanelModel.toggleUpdateValues(false);
-    ActionSimulator.startUpdatingTickers();
-  }
-
-  onStopUpdateTickers() {
-    this.props.controlPanelModel.toggleUpdateValues(true);
-    ActionSimulator.stopUpdatingTickers();
-  }
-
-  onChangeAddTickerFrequency(frequency: number) {
-    this.props.controlPanelModel.changeAddTickerInterval(frequency);
-  }
-
-  onChangeUpdateTickerFrequency(frequency: number) {
-    this.props.controlPanelModel.changeUpdateTickerInterval(frequency);
+  onChangeInterval(actionType: ControlPanelActionType, increment: boolean) {
+    this.props.controlPanelModel.changeActionInterval(actionType, increment);
+    ActionSimulator.resetInterval(actionType);
   }
 
   render() {
@@ -93,46 +80,46 @@ class ControlPanel extends React.Component<IControlPanelProps, null> {
         </section>
         <section className="replace-tickers action">
           <div className="title">Simulate Switching views</div>
-          <button onClick={() => this.props.onStartAction(ControlPanelActionType.Replace)} disabled={!this.props.settings.replaceTickersEnabled}>Start</button>
-          <button onClick={() => this.props.onStopAction(ControlPanelActionType.Replace)} disabled={this.props.settings.replaceTickersEnabled}>Stop</button>
+          <button onClick={() => this.onStartAction(ControlPanelActionType.Replace)} disabled={!this.props.controlPanelModel.options.replaceTickersEnabled}>Start</button>
+          <button onClick={() => this.onStopAction(ControlPanelActionType.Replace)} disabled={this.props.controlPanelModel.options.replaceTickersEnabled}>Stop</button>
           <div className="frequency">
             <span className="sub-title noselect">Interval:&nbsp;</span>
-            <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeInterval(ControlPanelActionType.Replace, false)}></i>
-            <span  className="noselect">{this.props.settings.replaceTickerIntervalMSec}ms</span>
-            <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeInterval(ControlPanelActionType.Replace, true)}></i>
+            <i className="fa fa-minus" aria-hidden="true" onClick={() => this.onChangeInterval(ControlPanelActionType.Replace, false)}></i>
+            <span  className="noselect">{this.props.controlPanelModel.options.replaceTickerIntervalMSec}ms</span>
+            <i className="fa fa-plus" aria-hidden="true" onClick={() => this.onChangeInterval(ControlPanelActionType.Replace, true)}></i>
           </div>
         </section>
-        <section className="add-tickers action">
+       <section className="add-tickers action">
           <div className="title">Simulate Adds</div>
-          <button onClick={() => this.onAddTickers()} disabled={!this.props.controlPanelModel.options.addTickersEnabled}>Start</button>
-          <button onClick={() => this.onStopAddTickers()} disabled={this.props.controlPanelModel.options.addTickersEnabled}>Stop</button>
+          <button onClick={() => this.onStartAction(ControlPanelActionType.Add)}  disabled={!this.props.controlPanelModel.options.addTickersEnabled}>Start</button>
+          <button onClick={() => this.onStopAction(ControlPanelActionType.Add)}  disabled={this.props.controlPanelModel.options.addTickersEnabled}>Stop</button>
           <div className="frequency">
-            <span className="sub-title noselect">Add Interval:&nbsp;</span>
-            <i className="fa fa-minus" aria-hidden="true" onClick={() => this.onChangeAddTickerFrequency(this.props.controlPanelModel.options.addTickerIntervalMSec - 20)}></i>
+            <span className="sub-title noselect">Interval:&nbsp;</span>
+            <i className="fa fa-minus" aria-hidden="true" onClick={() => this.onChangeInterval(ControlPanelActionType.Add, false)}></i>
             <span  className="noselect">{this.props.controlPanelModel.options.addTickerIntervalMSec}ms</span>
-            <i className="fa fa-plus" aria-hidden="true" onClick={() => this.onChangeAddTickerFrequency(this.props.controlPanelModel.options.addTickerIntervalMSec + 20)}></i>
+            <i className="fa fa-plus" aria-hidden="true" onClick={() => this.onChangeInterval(ControlPanelActionType.Add, true)}></i>
           </div>
         </section>
         <section className="update-prices action">
           <div  className="title">Simulate Updates</div>
-          <button onClick={() => this.onUpdateTickers()} disabled={!this.props.controlPanelModel.options.updateValuesEnabled}>Start</button>
-          <button onClick={() => this.onStopUpdateTickers()} disabled={this.props.controlPanelModel.options.updateValuesEnabled}>Stop</button>
+          <button onClick={() => this.onStartAction(ControlPanelActionType.Update)} disabled={!this.props.controlPanelModel.options.updateValuesEnabled}>Start</button>
+          <button onClick={() => this.onStopAction(ControlPanelActionType.Update)} disabled={this.props.controlPanelModel.options.updateValuesEnabled}>Stop</button>
           <div className="frequency">
-            <span  className="sub-title noselect">Update Interval:&nbsp;</span>
-            <i className="fa fa-minus" aria-hidden="true" onClick={() => this.onChangeUpdateTickerFrequency(this.props.controlPanelModel.options.updateValueIntervalMSec - 10)}></i>
-            <span className="noselect">{this.props.controlPanelModel.options.updateValueIntervalMSec}ms</span>
-            <i className="fa fa-plus" aria-hidden="true" onClick={() => this.onChangeUpdateTickerFrequency(this.props.controlPanelModel.options.updateValueIntervalMSec + 10)}></i>
+            <span className="sub-title noselect">Interval:&nbsp;</span>
+            <i className="fa fa-minus" aria-hidden="true" onClick={() => this.onChangeInterval(ControlPanelActionType.Update, false)}></i>
+            <span className="noselect">{this.props.controlPanelModel.options.updateValuesIntervalMSec}ms</span>
+            <i className="fa fa-plus" aria-hidden="true" onClick={() => this.onChangeInterval(ControlPanelActionType.Update, true)}></i>
           </div>
         </section>
         <section className="delete-prices action">
           <div  className="title">Simulate Deletes</div>
-          <button onClick={() => this.props.onStartAction(ControlPanelActionType.Delete)} disabled={!this.props.settings.deleteTickersEnabled}>Start</button>
-          <button onClick={() => this.props.onStopAction(ControlPanelActionType.Delete)} disabled={this.props.settings.deleteTickersEnabled}>Stop</button>
+          <button onClick={() => this.onStartAction(ControlPanelActionType.Delete)} disabled={!this.props.controlPanelModel.options.deleteTickersEnabled}>Start</button>
+          <button onClick={() => this.onStopAction(ControlPanelActionType.Delete)} disabled={this.props.controlPanelModel.options.deleteTickersEnabled}>Stop</button>
           <div className="frequency">
             <span className="sub-title noselect">Interval:&nbsp;</span>
-            <i className="fa fa-minus" aria-hidden="true" onClick={() => this.props.onChangeInterval(ControlPanelActionType.Delete, false)}></i>
-            <span className="noselect">{this.props.settings.deleteTickerIntervalMSec}ms</span>
-            <i className="fa fa-plus" aria-hidden="true" onClick={() => this.props.onChangeInterval(ControlPanelActionType.Delete, true)}></i>
+            <i className="fa fa-minus" aria-hidden="true" onClick={() => this.onChangeInterval(ControlPanelActionType.Delete, false)}></i>
+            <span className="noselect">{this.props.controlPanelModel.options.deleteTickerIntervalMSec}ms</span>
+            <i className="fa fa-plus" aria-hidden="true" onClick={() => this.onChangeInterval(ControlPanelActionType.Delete, true)}></i>
           </div>
         </section>
       </section>

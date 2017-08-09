@@ -3,6 +3,7 @@ import {IServerDataManager} from './serverDataManager';
 import {ITickerDataViewModel, ITickerData} from '../models/TickerDataModel';
 import {IControlPanelViewModel} from '../models/ControlPanelModel';
 import { ControlPanelActionType, ControlPanelDefaults, ActionDefaults } from "../config/config";
+import { IObservableArray, observable } from 'mobx';
 
 export interface ISimulatedAction {
   scheduleAction();
@@ -56,7 +57,7 @@ export class AddTickerAction implements ISimulatedAction {
     // reached the end, reset the buttons
     if (this.serverDataManager.hasReachedEnd()) {
       this.clearAction();
-      this.controlPanelViewModel.toggleAddTickers(true);
+      this.controlPanelViewModel.toggleAction(ControlPanelActionType.Add, true);
       this.cbWhenReachedEnd && this.cbWhenReachedEnd();
     }
   }
@@ -78,7 +79,7 @@ export class ReplaceTickerAction implements ISimulatedAction {
 
   scheduleAction() {
     this.cbWhenReachedEnd && this.cbWhenReachedEnd();
-    this.clearReplaceTickerTimerId = setInterval(() => this.replaceTickers(), this.controlPanelViewModel.replaceTickerIntervalMSec || 100);
+    this.clearReplaceTickerTimerId = setInterval(() => this.replaceTickers(), this.controlPanelViewModel.options.replaceTickerIntervalMSec);
   }
 
   clearAction () {
@@ -96,17 +97,17 @@ export class ReplaceTickerAction implements ISimulatedAction {
   private replaceTickers() {
     // already at the end, clear the data and start
     if (this.serverDataManager.hasReachedEnd()) {
-      this.appStore.dispatch(actions.ticker.createReplaceTickerAction([]));
+      this.tickerDataViewModel.clearAllTickers();
       this.serverDataManager.resetIndex();
     }
 
     var newTickers: ITickerData[] = this.serverDataManager.getNewTickers(ActionDefaults.ReplaceActionTickerCount);
-    this.appStore.dispatch(actions.ticker.createReplaceTickerAction(newTickers));
+    this.tickerDataViewModel.replaceTickers(newTickers);
 
     // reached the end, reset the buttons
     if (this.serverDataManager.hasReachedEnd()) {
       this.clearAction();
-      this.appStore.dispatch(actions.controlPanel.createToggleAction(ControlPanelActionType.Replace, true));
+      this.controlPanelViewModel.toggleAction(ControlPanelActionType.Replace, true);
       this.cbWhenReachedEnd && this.cbWhenReachedEnd();
     }
   }
@@ -118,13 +119,14 @@ export class ReplaceTickerAction implements ISimulatedAction {
 export class DeleteTickerAction implements ISimulatedAction {
   private clearDeleteTickerTimerId: number;
   constructor(
-    private appStore: Store<IAppState>
+    private controlPanelViewModel: IControlPanelViewModel,
+    private tickerDataViewModel: ITickerDataViewModel,
   ) {
 
   }
 
   scheduleAction() {
-    this.clearDeleteTickerTimerId = setInterval(() => this.deleteTickers(), appStore.getState().ui.controlPanel.deleteTickerIntervalMSec || 100);
+    this.clearDeleteTickerTimerId = setInterval(() => this.deleteTickers(),this.controlPanelViewModel.options.deleteTickerIntervalMSec || 100);
   }
 
   clearAction () {
@@ -140,13 +142,13 @@ export class DeleteTickerAction implements ISimulatedAction {
   }
 
   private deleteTickers() {
-    var tickerList:ITickerList = this.appStore.getState().domain.tickersState.tickerList;
+    var tickerList:IObservableArray<string> = this.tickerDataViewModel.tickerList;
 
     if (tickerList.length === 0) {
       this.clearAction();
-      appStore.dispatch(actions.controlPanel.createToggleAction(ControlPanelActionType.Delete, true));
+      this.controlPanelViewModel.toggleAction(ControlPanelActionType.Delete, true);
     } else {
-      appStore.dispatch(actions.ticker.createDeleteTickerAction(_.takeRight(tickerList, ActionDefaults.DeleteActionTickerCount)));
+      this.tickerDataViewModel.deleteTickers(_.takeRight(tickerList.slice(), ActionDefaults.DeleteActionTickerCount));
     }
   }
 }
@@ -158,13 +160,14 @@ export class UpdateTickerAction implements ISimulatedAction {
   private clearUpdateTickerTimerId: number;
 
   constructor(
-    private appStore: Store<IAppState>
+    private controlPanelViewModel: IControlPanelViewModel,
+    private tickerDataViewModel: ITickerDataViewModel
   ) {
 
   }
 
   scheduleAction() {
-    this.clearUpdateTickerTimerId = setInterval(() => this.upDateTickerData(), appStore.getState().ui.controlPanel.updateValuesIntervalMSec || 100);
+    this.clearUpdateTickerTimerId = setInterval(() => this.upDateTickerData(), this.controlPanelViewModel.options.updateValuesIntervalMSec);
   }
 
   clearAction () {
@@ -180,33 +183,33 @@ export class UpdateTickerAction implements ISimulatedAction {
   }
 
   private upDateTickerData() {
-    const tickerList = appStore.getState().domain.tickersState.tickerList;
+    const tickerList = this.tickerDataViewModel.tickerList;
     const randomActionIndex: number = Math.floor(Math.random() * 2) + 1 ; // 1-2
     const randomTickerIndex: number = tickerList.length > 0 ? Math.floor(Math.random() * tickerList.length) : -1;
 
     if (randomTickerIndex === -1) {
       this.clearAction();
-      this.appStore.dispatch(actions.controlPanel.createToggleAction(ControlPanelActionType.Update, true));
+      this.controlPanelViewModel.toggleAction(ControlPanelActionType.Update, true);
       return;
     }
 
     const ticker = tickerList[randomTickerIndex];
-    const tickerDataItem = appStore.getState().domain.tickersState.tickerHash[ticker];
+    const tickerDataItem = this.tickerDataViewModel.tickerHash.get(ticker);
     let multiplier = Math.random() > 0.5 ? 1 : -1;
     let changePercent: number = Math.floor(Math.random() * 5); //0 - 4
 
     switch (randomActionIndex) {
       case 1:
-        const currentPrice: number = appStore.getState().domain.tickersState.tickerHash[ticker].price;
+        const currentPrice: number = this.tickerDataViewModel.tickerHash.get(ticker).price;
         const newPrice: number = currentPrice + (multiplier * (currentPrice * changePercent) / 100);
         const newPriceChange: number = newPrice - <number>tickerDataItem.price;
-        this.appStore.dispatch(actions.ticker.createUpdatePriceAction(<string>tickerDataItem.ticker, newPrice, newPriceChange));
+        this.tickerDataViewModel.updatePrice(ticker, newPrice, newPriceChange);
         break;
 
       case 2:
-        const currentVol: number = appStore.getState().domain.tickersState.tickerHash[ticker].volume;
+        const currentVol: number = this.tickerDataViewModel.tickerHash.get(ticker).volume;
         const newVol: number = Math.floor(currentVol + (multiplier * (currentVol * changePercent) / 100));
-        this.appStore.dispatch(actions.ticker.createUpdateVolumeAction(<string>tickerDataItem.ticker, newVol));
+        this.tickerDataViewModel.updateVolume(ticker, newVol);
         break;
     }
   }

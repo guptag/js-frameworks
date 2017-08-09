@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
-import { ITickerData, ITickerList } from '../redux-core/reducers/domain/tickers/tickersReducer';
-import { ControlPanelActionType, ControlPanelDefaults, ActionDefaults } from "../redux-core/config/config";
+import { ITickerData, ITickerList } from '../models/TickerDataModel';
+import { ControlPanelActionType, ControlPanelDefaults, ActionDefaults } from "../config/config";
 
 export interface IServerDataManager {
   resetIndex(): void;
