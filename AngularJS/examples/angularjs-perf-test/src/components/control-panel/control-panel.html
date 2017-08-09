@@ -1,8 +1,18 @@
 <section class="control-panel">
     <h1>AngularJS Perf Test</h1>
     <section class="stats clearfix">
-      <div id="stats_rps" class="rps"></div>
-      <div id="stats_ms" class="ms"></div>
+      <div class="stat-item">
+        <div id="stats_rps" class="rps"></div>
+        <i class="fa fa-info-circle stats_rps" title="Number of frames rendered in the last second(fps). App is more responsive when fps is higher."></i>
+      </div>
+      <div class="stat-item">
+        <div id="stats_ms" class="ms"></div>
+        <i class="fa fa-info-circle" title="Time to render the last frame (msec). Lower values are better."></i>
+      </div>
+      <div class="stat-item">
+        <div id="stats_memory" class="mem"></div>
+        <i class="fa fa-info-circle" title="Allocated memory in MB. Open Chrome with --enable-precise-memory-info to get precise informarion."></i>
+      </div>
     </section>
     <section class="counts clearfix">
       <div class="tickers">
