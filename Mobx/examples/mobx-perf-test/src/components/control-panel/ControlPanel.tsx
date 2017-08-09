@@ -53,7 +53,7 @@ class ControlPanel extends React.Component<IControlPanelProps, null> {
   render() {
     return (
       <section className="control-panel">
-        <h1>Mobx Perf Test</h1>
+        <h1>React/Mobx Perf Test</h1>
         <section className="stats clearfix">
           <div className="stat-item">
             <div id="stats_rps" className="rps"></div>
