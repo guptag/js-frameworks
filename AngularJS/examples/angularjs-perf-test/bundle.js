@@ -57287,7 +57287,7 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n  <control-panel></control-panel>\n  <ticker-list></ticker-list>\n</div>";
+module.exports = "<div>\r\n  <control-panel></control-panel>\r\n  <ticker-list></ticker-list>\r\n</div>";
 
 /***/ }),
 /* 12 */
@@ -57367,11 +57367,15 @@ angular.module('perfTest')
             statsRps.showPanel(0);
             var statsMs = new window["Stats"]();
             statsMs.showPanel(1);
+            var statsMem = new window["Stats"]();
+            statsMem.showPanel(2);
             document.getElementById("stats_rps").appendChild(statsRps.dom);
             document.getElementById("stats_ms").appendChild(statsMs.dom);
+            document.getElementById("stats_memory").appendChild(statsMem.dom);
             requestAnimationFrame(function loop() {
                 statsRps.update();
                 statsMs.update();
+                statsMem.update();
                 document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
                 requestAnimationFrame(loop);
             });
@@ -57384,7 +57388,7 @@ angular.module('perfTest')
 /* 13 */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"control-panel\">\n    <h1>AngularJS Perf Test</h1>\n    <section class=\"stats clearfix\">\n      <div id=\"stats_rps\" class=\"rps\"></div>\n      <div id=\"stats_ms\" class=\"ms\"></div>\n    </section>\n    <section class=\"counts clearfix\">\n      <div class=\"tickers\">\n        <h6>Tickers</h6>\n        <div id=\"stats_ticker_count\"><ticker-count count=\"$ctrl.tickerDataService.getTickerCount()\"></ticker-count></div>\n      </div>\n      <div class=\"dom\">\n        <h6>DOM Count</h6>\n        <div id=\"stats_dom_count\"></div>\n      </div>\n    </section>\n    <section class=\"replace-tickers action\">\n      <div class=\"title\">Simulate Switching views</div>\n      <button ng-click=\"$ctrl.startReplacingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.replaceTickersEnabled\">Start</button>\n      <button ng-click=\"$ctrl.stopReplacingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.replaceTickersEnabled\">Stop</button>\n      <div class=\"frequency\">\n        <span class=\"sub-title noselect\">Interval:&nbsp;</span>\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeReplaceTickerInterval($ctrl.controlPanelService.options.replaceTickerIntervalMSec - 50)\"></i>\n        <span  class=\"noselect\">{{$ctrl.controlPanelService.options.replaceTickerIntervalMSec}}ms</span>\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeReplaceTickerInterval($ctrl.controlPanelService.options.replaceTickerIntervalMSec + 50)\"></i>\n      </div>\n    </section>\n    <section class=\"add-tickers action\">\n      <div class=\"title\">Simulate Adds</div>\n      <button ng-click=\"$ctrl.startAddingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.addTickersEnabled\">Start</button>\n      <button ng-click=\"$ctrl.stopAddingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.addTickersEnabled\">Stop</button>\n      <div class=\"frequency\">\n        <span class=\"sub-title noselect\">Interval:&nbsp;</span>\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec - 50)\"></i>\n        <span  class=\"noselect\">{{$ctrl.controlPanelService.options.addTickerIntervalMSec}}ms</span>\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec + 50)\"></i>\n      </div>\n    </section>\n    <section class=\"update-prices action\">\n      <div  class=\"title\">Simulate Updates</div>\n      <button ng-click=\"$ctrl.startUpdatingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.updateValuesEnabled\">Start</button>\n      <button ng-click=\"$ctrl.stopUpdatingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.updateValuesEnabled\">Stop</button>\n      <div class=\"frequency\">\n        <span  class=\"sub-title noselect\">Interval:&nbsp;</span>\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec - 5)\"></i>\n        <span class=\"noselect\">{{$ctrl.controlPanelService.options.updateValueIntervalMSec}}ms</span>\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec + 5)\"></i>\n      </div>\n    </section>\n    <section class=\"delete-prices action\">\n      <div  class=\"title\">Simulate Deletes</div>\n      <button ng-click=\"$ctrl.startDeletingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.deleteTickersEnabled\">Start</button>\n      <button ng-click=\"$ctrl.stopDeletingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.deleteTickersEnabled\">Stop</button>\n      <div class=\"frequency\">\n        <span  class=\"sub-title noselect\">Interval:&nbsp;</span>\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec - 5)\"></i>\n        <span class=\"noselect\">{{$ctrl.controlPanelService.options.deleteTickerIntervalMSec}}ms</span>\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec + 5)\"></i>\n      </div>\n    </section>\n</section>";
+module.exports = "<section class=\"control-panel\">\r\n    <h1>AngularJS Perf Test</h1>\r\n    <section class=\"stats clearfix\">\r\n      <div class=\"stat-item\">\r\n        <div id=\"stats_rps\" class=\"rps\"></div>\r\n        <i class=\"fa fa-info-circle stats_rps\" title=\"Number of frames rendered in the last second(fps). App is more responsive when fps is higher.\"></i>\r\n      </div>\r\n      <div class=\"stat-item\">\r\n        <div id=\"stats_ms\" class=\"ms\"></div>\r\n        <i class=\"fa fa-info-circle\" title=\"Time to render the last frame (msec). Lower values are better.\"></i>\r\n      </div>\r\n      <div class=\"stat-item\">\r\n        <div id=\"stats_memory\" class=\"mem\"></div>\r\n        <i class=\"fa fa-info-circle\" title=\"Allocated memory in MB. Open Chrome with --enable-precise-memory-info to get precise informarion.\"></i>\r\n      </div>\r\n    </section>\r\n    <section class=\"counts clearfix\">\r\n      <div class=\"tickers\">\r\n        <h6>Tickers</h6>\r\n        <div id=\"stats_ticker_count\"><ticker-count count=\"$ctrl.tickerDataService.getTickerCount()\"></ticker-count></div>\r\n      </div>\r\n      <div class=\"dom\">\r\n        <h6>DOM Count</h6>\r\n        <div id=\"stats_dom_count\"></div>\r\n      </div>\r\n    </section>\r\n    <section class=\"replace-tickers action\">\r\n      <div class=\"title\">Simulate Switching views</div>\r\n      <button ng-click=\"$ctrl.startReplacingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.replaceTickersEnabled\">Start</button>\r\n      <button ng-click=\"$ctrl.stopReplacingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.replaceTickersEnabled\">Stop</button>\r\n      <div class=\"frequency\">\r\n        <span class=\"sub-title noselect\">Interval:&nbsp;</span>\r\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeReplaceTickerInterval($ctrl.controlPanelService.options.replaceTickerIntervalMSec - 50)\"></i>\r\n        <span  class=\"noselect\">{{$ctrl.controlPanelService.options.replaceTickerIntervalMSec}}ms</span>\r\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeReplaceTickerInterval($ctrl.controlPanelService.options.replaceTickerIntervalMSec + 50)\"></i>\r\n      </div>\r\n    </section>\r\n    <section class=\"add-tickers action\">\r\n      <div class=\"title\">Simulate Adds</div>\r\n      <button ng-click=\"$ctrl.startAddingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.addTickersEnabled\">Start</button>\r\n      <button ng-click=\"$ctrl.stopAddingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.addTickersEnabled\">Stop</button>\r\n      <div class=\"frequency\">\r\n        <span class=\"sub-title noselect\">Interval:&nbsp;</span>\r\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec - 50)\"></i>\r\n        <span  class=\"noselect\">{{$ctrl.controlPanelService.options.addTickerIntervalMSec}}ms</span>\r\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec + 50)\"></i>\r\n      </div>\r\n    </section>\r\n    <section class=\"update-prices action\">\r\n      <div  class=\"title\">Simulate Updates</div>\r\n      <button ng-click=\"$ctrl.startUpdatingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.updateValuesEnabled\">Start</button>\r\n      <button ng-click=\"$ctrl.stopUpdatingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.updateValuesEnabled\">Stop</button>\r\n      <div class=\"frequency\">\r\n        <span  class=\"sub-title noselect\">Interval:&nbsp;</span>\r\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec - 5)\"></i>\r\n        <span class=\"noselect\">{{$ctrl.controlPanelService.options.updateValueIntervalMSec}}ms</span>\r\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec + 5)\"></i>\r\n      </div>\r\n    </section>\r\n    <section class=\"delete-prices action\">\r\n      <div  class=\"title\">Simulate Deletes</div>\r\n      <button ng-click=\"$ctrl.startDeletingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.deleteTickersEnabled\">Start</button>\r\n      <button ng-click=\"$ctrl.stopDeletingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.deleteTickersEnabled\">Stop</button>\r\n      <div class=\"frequency\">\r\n        <span  class=\"sub-title noselect\">Interval:&nbsp;</span>\r\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec - 5)\"></i>\r\n        <span class=\"noselect\">{{$ctrl.controlPanelService.options.deleteTickerIntervalMSec}}ms</span>\r\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec + 5)\"></i>\r\n      </div>\r\n    </section>\r\n</section>";
 
 /***/ }),
 /* 14 */
@@ -57428,7 +57432,7 @@ angular.module('perfTest')
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"price\" ng-class=\"$ctrl.priceChanged ? 'price-changed' : ''\">\n  P:&nbsp;{{$ctrl.price.toFixed(2)}}(<span class=\"change\">{{$ctrl.change.toFixed(2)}}</span>)\n</div>";
+module.exports = "<div class=\"price\" ng-class=\"$ctrl.priceChanged ? 'price-changed' : ''\">\r\n  P:&nbsp;{{$ctrl.price.toFixed(2)}}(<span class=\"change\">{{$ctrl.change.toFixed(2)}}</span>)\r\n</div>";
 
 /***/ }),
 /* 16 */
@@ -57458,7 +57462,7 @@ angular.module('perfTest')
 /* 17 */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"sector\">\n  <div>{{::$ctrl.name}}</div>\n</section>";
+module.exports = "<section class=\"sector\">\r\n  <div>{{::$ctrl.name}}</div>\r\n</section>";
 
 /***/ }),
 /* 18 */
@@ -57490,7 +57494,7 @@ angular.module('perfTest')
 /* 19 */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"ticker-list\">\n  <ticker-tile ticker-data=\"tickerData\" ng-repeat=\"(ticker, tickerData) in $ctrl.getTickerHash() track by ticker\"></ticker-tile>\n</section>";
+module.exports = "<section class=\"ticker-list\">\r\n  <ticker-tile ticker-data=\"tickerData\" ng-repeat=\"(ticker, tickerData) in $ctrl.getTickerHash() track by ticker\"></ticker-tile>\r\n</section>";
 
 /***/ }),
 /* 20 */
@@ -57520,7 +57524,7 @@ angular.module('perfTest')
 /* 21 */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"ticker-tile\">\n  <h1 class=\"ticker\" title={{::$ctrl.tickerData.company}} ng-class=\"$ctrl.tickerData.change > 0 ? 'up' : 'down'\">{{$ctrl.tickerData.ticker}}</h1>\n  <sector-name name=\"$ctrl.tickerData.sector\"></sector-name>\n  <price price=\"$ctrl.tickerData.price\" change=\"$ctrl.tickerData.change\"></price>\n  <volume volume=\"$ctrl.tickerData.volume\"></volume>\n  <sma class=\"sma\" label=\"sma20\" value=\"$ctrl.tickerData.sma20\"></sma>\n  <sma class=\"sma\" label=\"sma50\" value=\"$ctrl.tickerData.sma50\"></sma>\n  <sma class=\"sma\" label=\"sma200\" value=\"$ctrl.tickerData.sma200\"></sma>\n</section>";
+module.exports = "<section class=\"ticker-tile\">\r\n  <h1 class=\"ticker\" title={{::$ctrl.tickerData.company}} ng-class=\"$ctrl.tickerData.change >= 0 ? 'up' : 'down'\">{{$ctrl.tickerData.ticker}}</h1>\r\n  <sector-name name=\"$ctrl.tickerData.sector\"></sector-name>\r\n  <price price=\"$ctrl.tickerData.price\" change=\"$ctrl.tickerData.change\"></price>\r\n  <volume volume=\"$ctrl.tickerData.volume\"></volume>\r\n  <sma class=\"sma\" label=\"sma20\" value=\"$ctrl.tickerData.sma20\"></sma>\r\n  <sma class=\"sma\" label=\"sma50\" value=\"$ctrl.tickerData.sma50\"></sma>\r\n  <sma class=\"sma\" label=\"sma200\" value=\"$ctrl.tickerData.sma200\"></sma>\r\n</section>";
 
 /***/ }),
 /* 22 */
@@ -57593,7 +57597,7 @@ angular.module('perfTest')
 /* 25 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"volume\" ng-class=\"$ctrl.volumeChanged ? 'vol-changed' : ''\">\n  V:&nbsp;{{$ctrl.volume.toFixed(0)}}\n</div>\n";
+module.exports = "<div class=\"volume\" ng-class=\"$ctrl.volumeChanged ? 'vol-changed' : ''\">\r\n  V:&nbsp;{{$ctrl.volume.toFixed(0)}}\r\n</div>\r\n";
 
 /***/ }),
 /* 26 */
@@ -57637,7 +57641,7 @@ angular.module('perfTest')
 /* 27 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sma\" ng-class=\"$ctrl.smaChanged ? 'sma-changed' : ''\">\n  {{::$ctrl.label}}:&nbsp;{{$ctrl.value.toFixed(2)}}\n</div>";
+module.exports = "<div class=\"sma\" ng-class=\"$ctrl.smaChanged ? 'sma-changed' : ''\">\r\n  {{::$ctrl.label}}:&nbsp;{{$ctrl.value.toFixed(2)}}\r\n</div>";
 
 /***/ }),
 /* 28 */
@@ -57732,9 +57736,9 @@ class ActionSimulator {
                     sector: tickerItem.Sector,
                     last: tickerItem.Price || 0,
                     price: tickerItem.Price || 0,
-                    sma20: Math.abs(tickerItem.SMA20),
-                    sma50: Math.abs(tickerItem.SMA50),
-                    sma200: Math.abs(tickerItem.SMA200),
+                    sma20: Math.abs(tickerItem.SMA20 || 0),
+                    sma50: Math.abs(tickerItem.SMA50 || 0),
+                    sma200: Math.abs(tickerItem.SMA200 || 0),
                     volume: tickerItem.Volume || 0,
                     avgVol: tickerItem.AvgVol
                 });
@@ -57768,6 +57772,8 @@ class ActionSimulator {
         const randomActionIndex = Math.floor(Math.random() * 2) + 1; // 1-2
         const randomTickerIndex = this.tickerDataService.tickerList.length > 0 ? Math.floor(Math.random() * this.tickerDataService.tickerList.length) : -1;
         if (randomTickerIndex === -1) {
+            this.stopUpdatingTickers();
+            this.controlPanelService.toggleUpdateValues(true);
             return;
         }
         var dispatchUpdateAction = ((actionIndex, randomTickerIndex) => {
