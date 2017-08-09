@@ -6,11 +6,11 @@
   height: 100vh;
   background-color: #bad6ce;
   padding: 10px 0 0 10px;
-  font-family: 'Lucida Grande', verdana, sans-serif;
+  font-family: 'Trebuchet MS', verdana, sans-serif;
   font-size: 1em;
 
   h1 {
-    font-size: 1.2em;
+    font-size: 1.3em;
     margin-bottom: 20px;
   }
 
@@ -53,13 +53,14 @@
   }
 
   .sub-title {
-    font-size: 1.1em;
+    font-size: 1em;
   }
 
   .action {
     padding: 10px 0;
     border-bottom: 1px dashed #a0a0a0;
     width: 200px;
+    font-family: 'Trebuchet MS', verdana, sans-serif;
 
     &.replace-tickers {
       margin-top: 20px;
@@ -74,6 +75,7 @@
     button {
       margin: 0 10px 0 0;
       width: 60px;
+      font-family: inherit;
     }
 
     .frequency {

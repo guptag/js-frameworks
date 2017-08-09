@@ -18,15 +18,22 @@ export interface IControlPanelController {
   changeDeleteTickerInterval(newInterval: number): void;
 };
 
+interface ControlPanelScope extends ng.IScope {
+  resetStats: ()=> void;
+}
+
 class ControlPanelController implements IControlPanelController  {
 
   constructor(
+    private $scope: ControlPanelScope,
     private controlPanelService: IControlPanelService,
     private tickerDataService: ITickerDataService,
     private actionSimulator: IActionSimulator) {
+      this.$scope.resetStats = function () {};
   }
 
   startReplacingTickers() {
+    this.$scope.resetStats();
     this.controlPanelService.toggleReplaceTickers(false);
     this.actionSimulator.startReplacingTickers();
   }
@@ -42,6 +49,7 @@ class ControlPanelController implements IControlPanelController  {
   }
 
   startAddingTickers() {
+    this.$scope.resetStats();
     this.controlPanelService.toggleAddTickers(false);
     this.actionSimulator.startAddingTickers();
   }
@@ -57,6 +65,7 @@ class ControlPanelController implements IControlPanelController  {
   }
 
   startDeletingTickers() {
+    this.$scope.resetStats();
     this.controlPanelService.toggleDeleteTickers(false);
     this.actionSimulator.startDeletingTickers();
   }
@@ -72,6 +81,7 @@ class ControlPanelController implements IControlPanelController  {
   }
 
   startUpdatingTickers() {
+    this.$scope.resetStats();
     this.controlPanelService.toggleUpdateValues(false);
     this.actionSimulator.startUpdatingTickers();
   }
@@ -87,7 +97,7 @@ class ControlPanelController implements IControlPanelController  {
   }
 }
 
-ControlPanelController.$inject = ['controlPanelService', 'tickerDataService', 'actionSimulator'];
+ControlPanelController.$inject = ['$scope', 'controlPanelService', 'tickerDataService', 'actionSimulator'];
 
 angular.module('perfTest')
   .directive('controlPanel', function(){
@@ -98,7 +108,7 @@ angular.module('perfTest')
       template: html,
       controller: ControlPanelController,
       controllerAs: '$ctrl',
-      link: function ($scope, element, attrs) {
+      link: function ($scope: ControlPanelScope, element, attrs) {
         var statsRps = new window["Stats"]();
         statsRps.showPanel(0);
 
@@ -111,7 +121,7 @@ angular.module('perfTest')
         document.getElementById("stats_rps").appendChild(statsRps.dom);
         document.getElementById("stats_ms").appendChild(statsMs.dom);
         document.getElementById("stats_memory").appendChild(statsMem.dom);
-        
+
         requestAnimationFrame(function loop() {
           statsRps.update();
           statsMs.update();
@@ -119,6 +129,12 @@ angular.module('perfTest')
           document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
           requestAnimationFrame(loop)
         });
+
+        $scope.resetStats = function () {
+          statsRps.reset();
+          statsMs.reset();
+          statsMem.reset();
+        }
       }
     };
 });

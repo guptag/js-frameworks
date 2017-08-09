@@ -23,6 +23,8 @@ interface IDispatchToProps {
 
 
 class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, null> {
+  private resetStats: ()=> void = function() {};
+
   componentDidMount() {
     var statsRps = new window["Stats"]();
     statsRps.showPanel(0);
@@ -43,6 +45,12 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
       document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
       requestAnimationFrame(loop)
     });
+
+    this.resetStats = () => {
+      statsRps.reset();
+      statsMs.reset();
+      statsMemory.reset();
+    }
   }
 
   shouldComponentUpdate (nextProps:IStateToProps & IDispatchToProps) {
@@ -79,7 +87,7 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
           </section>
           <section className="replace-tickers action">
             <div className="title">Simulate Switching views</div>
-            <button onClick={() => this.props.onStartAction(ControlPanelActionType.Replace)} disabled={!this.props.settings.replaceTickersEnabled}>Start</button>
+            <button onClick={() => { this.resetStats(); this.props.onStartAction(ControlPanelActionType.Replace)}} disabled={!this.props.settings.replaceTickersEnabled}>Start</button>
             <button onClick={() => this.props.onStopAction(ControlPanelActionType.Replace)} disabled={this.props.settings.replaceTickersEnabled}>Stop</button>
             <div className="frequency">
               <span className="sub-title noselect">Interval:&nbsp;</span>
@@ -90,7 +98,7 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
           </section>
           <section className="add-tickers action">
             <div className="title">Simulate Adds</div>
-            <button onClick={() => this.props.onStartAction(ControlPanelActionType.Add)}  disabled={!this.props.settings.addTickersEnabled}>Start</button>
+            <button onClick={() => {this.resetStats(); this.props.onStartAction(ControlPanelActionType.Add)}}  disabled={!this.props.settings.addTickersEnabled}>Start</button>
             <button onClick={() => this.props.onStopAction(ControlPanelActionType.Add)}  disabled={this.props.settings.addTickersEnabled}>Stop</button>
             <div className="frequency">
               <span className="sub-title noselect">Interval:&nbsp;</span>
@@ -101,7 +109,7 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
           </section>
           <section className="update-prices action">
             <div  className="title">Simulate Updates</div>
-            <button onClick={() => this.props.onStartAction(ControlPanelActionType.Update)} disabled={!this.props.settings.updateValuesEnabled}>Start</button>
+            <button onClick={() => {this.resetStats(); this.props.onStartAction(ControlPanelActionType.Update)}} disabled={!this.props.settings.updateValuesEnabled}>Start</button>
             <button onClick={() => this.props.onStopAction(ControlPanelActionType.Update)} disabled={this.props.settings.updateValuesEnabled}>Stop</button>
             <div className="frequency">
               <span className="sub-title noselect">Interval:&nbsp;</span>

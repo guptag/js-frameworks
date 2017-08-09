@@ -4,7 +4,7 @@ import { ControlPanelActionType, ControlPanelDefaults, ActionDefaults } from "..
 import { ITickerDataViewModel } from '../../models/TickerDataModel';
 import { IControlPanelViewModel, IConrolPanelOptions} from '../../models/ControlPanelModel';
 import ActionSimulator from '../../services/actionSimulator';
-import TickerCount from './TickerCount';
+import TickerCount from '../ticker-list/TickerCount';
 
 interface IControlPanelProps {
   controlPanelModel: IControlPanelViewModel;
@@ -13,6 +13,8 @@ interface IControlPanelProps {
 
 @observer
 class ControlPanel extends React.Component<IControlPanelProps, null> {
+  private resetStats: ()=> void = function() {};
+
   componentDidMount() {
     var statsRps = new window["Stats"]();
     statsRps.showPanel(0);
@@ -33,9 +35,16 @@ class ControlPanel extends React.Component<IControlPanelProps, null> {
       document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
       requestAnimationFrame(loop)
     });
+
+    this.resetStats = () => {
+      statsRps.reset();
+      statsMs.reset();
+      statsMemory.reset();
+    }
   }
 
   onStartAction(actionType: ControlPanelActionType) {
+    this.resetStats();
     this.props.controlPanelModel.toggleAction(actionType, false);
     ActionSimulator.startAction(actionType);
   }
