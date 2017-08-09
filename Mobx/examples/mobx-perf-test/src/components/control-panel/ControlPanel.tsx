@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 
-import { ITickerModel } from '../../models/TickerDataModel';
-import { IControlPanelModel, IConrolPanelOptions} from '../../models/ControlPanelModel';
+import { ITickerDataViewModel } from '../../models/TickerDataModel';
+import { IControlPanelViewModel, IConrolPanelOptions} from '../../models/ControlPanelModel';
 import ActionSimulator from '../../services/actionSimulator';
 import TickerCount from './TickerCount';
 
 interface IControlPanelProps {
-  controlPanelModel: IControlPanelModel;
-  tickerDataModel: ITickerModel;
+  controlPanelModel: IControlPanelViewModel;
+  tickerDataModel: ITickerDataViewModel;
 }
 
 @observer

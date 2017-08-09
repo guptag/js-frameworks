@@ -2,11 +2,11 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 
 import TickerTile from './TickerTile';
-import { ITickerModel, ITickerHash, ITickerData } from '../../models/TickerDataModel';
-import { IControlPanelModel} from '../../models/ControlPanelModel';
+import { ITickerDataViewModel, ITickerHash, ITickerData } from '../../models/TickerDataModel';
+import { IControlPanelViewModel} from '../../models/ControlPanelModel';
 
 interface ITickerListProps {
-  tickerDataModel: ITickerModel;
+  tickerDataModel: ITickerDataViewModel;
 }
 
 @observer

@@ -1,26 +1,39 @@
 import {observable, action} from 'mobx';
+import { ControlPanelActionType, ControlPanelDefaults, ActionDefaults } from "../config/config";
 
 export interface IConrolPanelOptions {
   addTickersEnabled: boolean;
-  addTickerIntervalMSec: number;
   updateValuesEnabled: boolean;
-  updateValueIntervalMSec: number;
+  replaceTickersEnabled: boolean;
+  deleteTickersEnabled: boolean;
+  addTickerIntervalMSec: number;
+  updateValuesIntervalMSec: number;
+  replaceTickerIntervalMSec: number;
+  deleteTickerIntervalMSec: number;
 }
 
-export interface IControlPanelModel {
+export interface IControlPanelViewModel {
   toggleAddTickers(enable: boolean): void;
   toggleUpdateValues(enable: boolean): void;
-  changeAddTickerInterval(interval: number): void;
+  toggleReplaceValues(enable: boolean): void;
+  toggleDeleteValues(enable: boolean): void;
+  changeAddTickersInterval(interval: number): void;
+  changeReplaceTickersInterval(interval: number): void;
+  changeDeleteTickersInterval(interval: number): void;
   changeUpdateTickerInterval(interval: number): void;
   options:IConrolPanelOptions;
 }
 
-class ControlPanelModel implements IControlPanelModel {
+class ControlPanelViewModel implements IControlPanelViewModel {
   @observable public options:IConrolPanelOptions = {
+    replaceTickersEnabled: true,
+    replaceTickerIntervalMSec: ControlPanelDefaults.ReplaceTickerIntervalMSec,
     addTickersEnabled: true,
-    addTickerIntervalMSec: 40,
+    addTickerIntervalMSec: ControlPanelDefaults.AddTickerIntervalMSec,
+    deleteTickersEnabled: true,
+    deleteTickerIntervalMSec: ControlPanelDefaults.DeleteTickerIntervalMSec,
     updateValuesEnabled: true,
-    updateValueIntervalMSec: 20
+    updateValuesIntervalMSec: ControlPanelDefaults.UpdateValuesIntervalMSec
   };
 
   @action public toggleAddTickers(enable: boolean): void {
@@ -31,15 +44,33 @@ class ControlPanelModel implements IControlPanelModel {
     this.options.updateValuesEnabled = enable;
   }
 
-  @action public changeAddTickerInterval(interval: number): void {
+  @action public toggleReplaceValues(enable: boolean): void {
+    this.options.replaceTickersEnabled = enable;
+  }
+
+  @action public toggleDeleteValues(enable: boolean): void {
+    this.options.deleteTickersEnabled = enable;
+  }
+
+  @action public changeAddTickersInterval(interval: number): void {
     if (interval < 20) { interval = 20;}
     this.options.addTickerIntervalMSec = interval;
   }
 
   @action public changeUpdateTickerInterval(interval: number): void {
     if (interval < 10) { interval = 10;}
-    this.options.updateValueIntervalMSec = interval;
+    this.options.updateValuesIntervalMSec = interval;
+  }
+
+  @action public changeReplaceTickersInterval(interval: number): void {
+    if (interval < 20) { interval = 20;}
+    this.options.addTickerIntervalMSec = interval;
+  }
+
+  @action public changeDeleteTickersInterval(interval: number): void {
+    if (interval < 20) { interval = 20;}
+    this.options.addTickerIntervalMSec = interval;
   }
 }
 
-export let controlPanelModel = new ControlPanelModel();
+export let controlPanelModel = new ControlPanelViewModel();

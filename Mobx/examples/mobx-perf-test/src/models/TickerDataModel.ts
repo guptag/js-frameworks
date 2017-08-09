@@ -1,3 +1,4 @@
+import * as _ from "lodash";
 import {observable, action, ObservableMap, computed} from 'mobx';
 
 export interface ITickerData {
@@ -17,20 +18,46 @@ export interface ITickerData {
 
 export type ITickerHash = Map<string, ITickerData>;
 
-export interface ITickerModel {
-  addTicker(tickerData: ITickerData): void;
+export interface ITickerDataViewModel {
+  addTickers(tickerDataList: ITickerData[]): void;
+  replaceTickers(tickerDataList: ITickerData[]): void;
+  deleteTickers(tickerDataList: ITickerData[]): void;
+  clearAllTickers(): void;
   updatePrice(ticker: string, price: number, change: number): void;
   updateVolume(ticker: string, volumne: number);
   tickerHash:ObservableMap<ITickerData>
 }
 
-class TickerDataModel implements ITickerModel {
+class TickerDataViewModel implements ITickerDataViewModel {
   public tickerHash:ObservableMap<ITickerData> = observable.map<ITickerData>();
 
-  @action public addTicker(tickerData: ITickerData): void {
-    if (!this.tickerHash[tickerData.ticker]) {
-      this.tickerHash.set(tickerData.ticker, tickerData);
-    }
+  @action public addTickers(tickerDataList: ITickerData[]): void {
+    _.each(tickerDataList, (tickerData: ITickerData) => {
+      if (!this.tickerHash[tickerData.ticker]) {
+        this.tickerHash.set(tickerData.ticker, tickerData);
+      }
+    });
+  }
+
+  @action public clearAllTickers(): void {
+    this.tickerHash.clear();
+  }
+
+  @action public replaceTickers(tickerDataList: ITickerData[]): void {
+    this.tickerHash.clear();
+    _.each(tickerDataList, (tickerData: ITickerData) => {
+      if (!this.tickerHash[tickerData.ticker]) {
+        this.tickerHash.set(tickerData.ticker, tickerData);
+      }
+    });
+  }
+
+  @action public deleteTickers(tickerDataList: ITickerData[]): void {
+    _.each(tickerDataList, (tickerData: ITickerData) => {
+      if (this.tickerHash[tickerData.ticker]) {
+        this.tickerHash.delete(tickerData.ticker);
+      }
+    });
   }
 
   @action public updatePrice(ticker: string, price: number, change: number): void {
@@ -53,4 +80,4 @@ class TickerDataModel implements ITickerModel {
   }
 }
 
-export let tickerDataModel = new TickerDataModel();
+export let tickerDataModel = new TickerDataViewModel();
