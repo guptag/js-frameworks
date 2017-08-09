@@ -56,7 +56,7 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
           <section className="stats clearfix">
             <div className="stat-item">
               <div id="stats_rps" className="rps"></div>
-              <i className="fa fa-info-circle stats_rps" title="Frames rendered in the last second(fps). App is more responsive when fps is higher."></i>
+              <i className="fa fa-info-circle stats_rps" title="Number of frames rendered in the last second(fps). App is more responsive when fps is higher."></i>
             </div>
             <div className="stat-item">
               <div id="stats_ms" className="ms"></div>
@@ -64,7 +64,7 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
             </div>
             <div className="stat-item">
               <div id="stats_memory" className="mem"></div>
-              <i className="fa fa-info-circle" title="Allocated memory in MB. Open Chrome with --enable-precise-memory-info to get this informarion."></i>
+              <i className="fa fa-info-circle" title="Allocated memory in MB. Open Chrome with --enable-precise-memory-info to get precise informarion."></i>
             </div>
           </section>
           <section className="counts clearfix">
