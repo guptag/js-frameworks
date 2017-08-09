@@ -57299,12 +57299,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const html = __webpack_require__(13);
 ;
 class ControlPanelController {
-    constructor(controlPanelService, tickerDataService, actionSimulator) {
+    constructor($scope, controlPanelService, tickerDataService, actionSimulator) {
+        this.$scope = $scope;
         this.controlPanelService = controlPanelService;
         this.tickerDataService = tickerDataService;
         this.actionSimulator = actionSimulator;
+        this.$scope.resetStats = function () { };
     }
     startReplacingTickers() {
+        this.$scope.resetStats();
         this.controlPanelService.toggleReplaceTickers(false);
         this.actionSimulator.startReplacingTickers();
     }
@@ -57317,6 +57320,7 @@ class ControlPanelController {
         this.actionSimulator.resetReplaceTickerInterval();
     }
     startAddingTickers() {
+        this.$scope.resetStats();
         this.controlPanelService.toggleAddTickers(false);
         this.actionSimulator.startAddingTickers();
     }
@@ -57329,6 +57333,7 @@ class ControlPanelController {
         this.actionSimulator.resetAddTickerInterval();
     }
     startDeletingTickers() {
+        this.$scope.resetStats();
         this.controlPanelService.toggleDeleteTickers(false);
         this.actionSimulator.startDeletingTickers();
     }
@@ -57341,6 +57346,7 @@ class ControlPanelController {
         this.actionSimulator.resetAddTickerInterval();
     }
     startUpdatingTickers() {
+        this.$scope.resetStats();
         this.controlPanelService.toggleUpdateValues(false);
         this.actionSimulator.startUpdatingTickers();
     }
@@ -57353,7 +57359,7 @@ class ControlPanelController {
         this.actionSimulator.resetUpdateTickerInterval();
     }
 }
-ControlPanelController.$inject = ['controlPanelService', 'tickerDataService', 'actionSimulator'];
+ControlPanelController.$inject = ['$scope', 'controlPanelService', 'tickerDataService', 'actionSimulator'];
 angular.module('perfTest')
     .directive('controlPanel', function () {
     return {
@@ -57379,6 +57385,11 @@ angular.module('perfTest')
                 document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
                 requestAnimationFrame(loop);
             });
+            $scope.resetStats = function () {
+                statsRps.reset();
+                statsMs.reset();
+                statsMem.reset();
+            };
         }
     };
 });

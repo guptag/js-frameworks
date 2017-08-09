@@ -141,7 +141,7 @@ module.exports = invariant;
 
 
 
-var emptyFunction = __webpack_require__(6);
+var emptyFunction = __webpack_require__(7);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -583,6 +583,16 @@ module.exports = ExecutionEnvironment;
 "use strict";
 
 
+module.exports = __webpack_require__(14);
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -621,7 +631,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -648,16 +658,6 @@ if (false) {
 }
 
 module.exports = { debugTool: debugTool };
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = __webpack_require__(14);
-
 
 /***/ }),
 /* 9 */
@@ -970,7 +970,7 @@ var _assign = __webpack_require__(3);
 
 var PooledClass = __webpack_require__(12);
 
-var emptyFunction = __webpack_require__(6);
+var emptyFunction = __webpack_require__(7);
 var warning = __webpack_require__(1);
 
 var didWarnForAddedNewProperty = false;
@@ -1342,7 +1342,7 @@ module.exports = PooledClass;
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (global, factory) {
-	 true ? factory(exports, __webpack_require__(49), __webpack_require__(8), __webpack_require__(57)) :
+	 true ? factory(exports, __webpack_require__(49), __webpack_require__(6), __webpack_require__(57)) :
 	typeof define === 'function' && define.amd ? define(['exports', 'mobx', 'react', 'react-dom'], factory) :
 	(factory((global.mobxReact = global.mobxReact || {}),global.mobx,global.React,global.ReactDOM));
 }(this, (function (exports,mobx,React,ReactDOM) { 'use strict';
@@ -2934,7 +2934,7 @@ module.exports = DOMProperty;
 
 
 var ReactRef = __webpack_require__(111);
-var ReactInstrumentation = __webpack_require__(7);
+var ReactInstrumentation = __webpack_require__(8);
 
 var warning = __webpack_require__(1);
 
@@ -5460,7 +5460,7 @@ module.exports = getEventModifierState;
 var DOMLazyTree = __webpack_require__(18);
 var Danger = __webpack_require__(117);
 var ReactDOMComponentTree = __webpack_require__(4);
-var ReactInstrumentation = __webpack_require__(7);
+var ReactInstrumentation = __webpack_require__(8);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(39);
 var setInnerHTML = __webpack_require__(27);
@@ -6514,7 +6514,7 @@ var _prodInvariant = __webpack_require__(2);
 
 var ReactCurrentOwner = __webpack_require__(10);
 var ReactInstanceMap = __webpack_require__(23);
-var ReactInstrumentation = __webpack_require__(7);
+var ReactInstrumentation = __webpack_require__(8);
 var ReactUpdates = __webpack_require__(9);
 
 var invariant = __webpack_require__(0);
@@ -6751,7 +6751,7 @@ module.exports = ReactUpdateQueue;
 
 var _assign = __webpack_require__(3);
 
-var emptyFunction = __webpack_require__(6);
+var emptyFunction = __webpack_require__(7);
 var warning = __webpack_require__(1);
 
 var validateDOMNesting = emptyFunction;
@@ -29056,7 +29056,7 @@ module.exports = CSSProperty;
 
 var DOMProperty = __webpack_require__(16);
 var ReactDOMComponentTree = __webpack_require__(4);
-var ReactInstrumentation = __webpack_require__(7);
+var ReactInstrumentation = __webpack_require__(8);
 
 var quoteAttributeValueForBrowser = __webpack_require__(131);
 var warning = __webpack_require__(1);
@@ -30158,7 +30158,7 @@ module.exports = traverseAllChildren;
  * @typechecks
  */
 
-var emptyFunction = __webpack_require__(6);
+var emptyFunction = __webpack_require__(7);
 
 /**
  * Upstream version of event listener. Does not take into account specific
@@ -30423,7 +30423,7 @@ var ReactDOMContainerInfo = __webpack_require__(172);
 var ReactDOMFeatureFlags = __webpack_require__(173);
 var ReactFeatureFlags = __webpack_require__(63);
 var ReactInstanceMap = __webpack_require__(23);
-var ReactInstrumentation = __webpack_require__(7);
+var ReactInstrumentation = __webpack_require__(8);
 var ReactMarkupChecksum = __webpack_require__(174);
 var ReactReconciler = __webpack_require__(17);
 var ReactUpdateQueue = __webpack_require__(46);
@@ -31100,7 +31100,7 @@ exports.controlPanelModel = new ControlPanelViewModel();
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(87);
-module.exports = __webpack_require__(198);
+module.exports = __webpack_require__(199);
 
 
 /***/ }),
@@ -31110,7 +31110,7 @@ module.exports = __webpack_require__(198);
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(8);
+const React = __webpack_require__(6);
 const ReactDOM = __webpack_require__(57);
 const app_1 = __webpack_require__(179);
 ReactDOM.render(React.createElement(app_1.default, null), document.getElementById('app'));
@@ -31206,7 +31206,7 @@ module.exports = lowPriorityWarning;
 var PooledClass = __webpack_require__(90);
 var ReactElement = __webpack_require__(15);
 
-var emptyFunction = __webpack_require__(6);
+var emptyFunction = __webpack_require__(7);
 var traverseAllChildren = __webpack_require__(91);
 
 var twoArgumentPooler = PooledClass.twoArgumentPooler;
@@ -32004,7 +32004,7 @@ module.exports = factory(isValidElement);
 
 
 
-var emptyFunction = __webpack_require__(6);
+var emptyFunction = __webpack_require__(7);
 var invariant = __webpack_require__(0);
 var warning = __webpack_require__(1);
 
@@ -35363,7 +35363,7 @@ var DOMLazyTree = __webpack_require__(18);
 var ExecutionEnvironment = __webpack_require__(5);
 
 var createNodesFromMarkup = __webpack_require__(118);
-var emptyFunction = __webpack_require__(6);
+var emptyFunction = __webpack_require__(7);
 var invariant = __webpack_require__(0);
 
 var Danger = {
@@ -35787,11 +35787,11 @@ var ReactDOMInput = __webpack_require__(134);
 var ReactDOMOption = __webpack_require__(136);
 var ReactDOMSelect = __webpack_require__(71);
 var ReactDOMTextarea = __webpack_require__(137);
-var ReactInstrumentation = __webpack_require__(7);
+var ReactInstrumentation = __webpack_require__(8);
 var ReactMultiChild = __webpack_require__(138);
 var ReactServerRenderingTransaction = __webpack_require__(145);
 
-var emptyFunction = __webpack_require__(6);
+var emptyFunction = __webpack_require__(7);
 var escapeTextContentForBrowser = __webpack_require__(28);
 var invariant = __webpack_require__(0);
 var isEventSupported = __webpack_require__(35);
@@ -36813,7 +36813,7 @@ module.exports = AutoFocusUtils;
 
 var CSSProperty = __webpack_require__(69);
 var ExecutionEnvironment = __webpack_require__(5);
-var ReactInstrumentation = __webpack_require__(7);
+var ReactInstrumentation = __webpack_require__(8);
 
 var camelizeStyleName = __webpack_require__(125);
 var dangerousStyleValue = __webpack_require__(127);
@@ -38098,13 +38098,13 @@ var _prodInvariant = __webpack_require__(2);
 
 var ReactComponentEnvironment = __webpack_require__(41);
 var ReactInstanceMap = __webpack_require__(23);
-var ReactInstrumentation = __webpack_require__(7);
+var ReactInstrumentation = __webpack_require__(8);
 
 var ReactCurrentOwner = __webpack_require__(10);
 var ReactReconciler = __webpack_require__(17);
 var ReactChildReconciler = __webpack_require__(139);
 
-var emptyFunction = __webpack_require__(6);
+var emptyFunction = __webpack_require__(7);
 var flattenChildren = __webpack_require__(144);
 var invariant = __webpack_require__(0);
 
@@ -38712,7 +38712,7 @@ var ReactComponentEnvironment = __webpack_require__(41);
 var ReactCurrentOwner = __webpack_require__(10);
 var ReactErrorUtils = __webpack_require__(33);
 var ReactInstanceMap = __webpack_require__(23);
-var ReactInstrumentation = __webpack_require__(7);
+var ReactInstrumentation = __webpack_require__(8);
 var ReactNodeTypes = __webpack_require__(74);
 var ReactReconciler = __webpack_require__(17);
 
@@ -39792,7 +39792,7 @@ var _assign = __webpack_require__(3);
 
 var PooledClass = __webpack_require__(12);
 var Transaction = __webpack_require__(25);
-var ReactInstrumentation = __webpack_require__(7);
+var ReactInstrumentation = __webpack_require__(8);
 var ReactServerUpdateQueue = __webpack_require__(146);
 
 /**
@@ -40405,7 +40405,7 @@ var _assign = __webpack_require__(3);
 var ReactUpdates = __webpack_require__(9);
 var Transaction = __webpack_require__(25);
 
-var emptyFunction = __webpack_require__(6);
+var emptyFunction = __webpack_require__(7);
 
 var RESET_BATCHED_UPDATES = {
   initialize: emptyFunction,
@@ -40722,7 +40722,7 @@ var CallbackQueue = __webpack_require__(62);
 var PooledClass = __webpack_require__(12);
 var ReactBrowserEventEmitter = __webpack_require__(29);
 var ReactInputSelection = __webpack_require__(79);
-var ReactInstrumentation = __webpack_require__(7);
+var ReactInstrumentation = __webpack_require__(8);
 var Transaction = __webpack_require__(25);
 var ReactUpdateQueue = __webpack_require__(46);
 
@@ -41818,7 +41818,7 @@ var SyntheticTransitionEvent = __webpack_require__(170);
 var SyntheticUIEvent = __webpack_require__(22);
 var SyntheticWheelEvent = __webpack_require__(171);
 
-var emptyFunction = __webpack_require__(6);
+var emptyFunction = __webpack_require__(7);
 var getEventCharCode = __webpack_require__(48);
 var invariant = __webpack_require__(0);
 
@@ -42823,7 +42823,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(8);
+const React = __webpack_require__(6);
 const mobx_react_1 = __webpack_require__(13);
 const ControlPanel_1 = __webpack_require__(180);
 const TickerList_1 = __webpack_require__(193);
@@ -42856,12 +42856,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(8);
+const React = __webpack_require__(6);
 const mobx_react_1 = __webpack_require__(13);
 const config_1 = __webpack_require__(30);
 const actionSimulator_1 = __webpack_require__(181);
 const TickerCount_1 = __webpack_require__(192);
 let ControlPanel = class ControlPanel extends React.Component {
+    constructor() {
+        super(...arguments);
+        this.resetStats = function () { };
+    }
     componentDidMount() {
         var statsRps = new window["Stats"]();
         statsRps.showPanel(0);
@@ -42879,8 +42883,14 @@ let ControlPanel = class ControlPanel extends React.Component {
             document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
             requestAnimationFrame(loop);
         });
+        this.resetStats = () => {
+            statsRps.reset();
+            statsMs.reset();
+            statsMemory.reset();
+        };
     }
     onStartAction(actionType) {
+        this.resetStats();
         this.props.controlPanelModel.toggleAction(actionType, false);
         actionSimulator_1.default.startAction(actionType);
     }
@@ -42894,7 +42904,7 @@ let ControlPanel = class ControlPanel extends React.Component {
     }
     render() {
         return (React.createElement("section", { className: "control-panel" },
-            React.createElement("h1", null, "Mobx Perf Test"),
+            React.createElement("h1", null, "React/Mobx Perf Test"),
             React.createElement("section", { className: "stats clearfix" },
                 React.createElement("div", { className: "stat-item" },
                     React.createElement("div", { id: "stats_rps", className: "rps" }),
@@ -44381,7 +44391,7 @@ exports.UpdateTickerAction = UpdateTickerAction;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(8);
+const React = __webpack_require__(6);
 class TickerCount extends React.Component {
     shouldComponentUpdate(newProps) {
         return this.props.count !== newProps.count;
@@ -44406,7 +44416,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(8);
+const React = __webpack_require__(6);
 const mobx_react_1 = __webpack_require__(13);
 const TickerTile_1 = __webpack_require__(194);
 const TickerDataModel_1 = __webpack_require__(50);
@@ -44438,18 +44448,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(8);
+const React = __webpack_require__(6);
 const mobx_react_1 = __webpack_require__(13);
 const Sector_1 = __webpack_require__(195);
 const Price_1 = __webpack_require__(196);
 const Volume_1 = __webpack_require__(197);
+const Sma_1 = __webpack_require__(198);
 let TickerTile = class TickerTile extends React.Component {
     render() {
         return (React.createElement("section", { className: "ticker-tile" },
-            React.createElement("h1", { title: this.props.tickerData.company }, this.props.tickerData.ticker),
+            React.createElement("h1", { className: `ticker ${this.props.tickerData.change >= 0 ? 'up' : 'down'}`, title: this.props.tickerData.company }, this.props.tickerData.ticker),
             React.createElement(Sector_1.default, { name: this.props.tickerData.sector }),
             React.createElement(Price_1.default, { price: this.props.tickerData.price, change: this.props.tickerData.change }),
-            React.createElement(Volume_1.default, { volume: this.props.tickerData.volume })));
+            React.createElement(Volume_1.default, { volume: this.props.tickerData.volume }),
+            React.createElement(Sma_1.default, { label: "sma20", value: this.props.tickerData.sma20 }),
+            React.createElement(Sma_1.default, { label: "sma50", value: this.props.tickerData.sma50 }),
+            React.createElement(Sma_1.default, { label: "sma200", value: this.props.tickerData.sma200 })));
     }
 };
 TickerTile = __decorate([
@@ -44471,7 +44485,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(8);
+const React = __webpack_require__(6);
 const mobx_react_1 = __webpack_require__(13);
 let SectorName = class SectorName extends React.Component {
     shouldComponentUpdate(nextProps) {
@@ -44501,7 +44515,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(8);
+const React = __webpack_require__(6);
 const mobx_react_1 = __webpack_require__(13);
 let Price = class Price extends React.Component {
     constructor() {
@@ -44553,7 +44567,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(8);
+const React = __webpack_require__(6);
 const mobx_react_1 = __webpack_require__(13);
 let Volume = class Volume extends React.Component {
     constructor() {
@@ -44592,6 +44606,47 @@ exports.default = Volume;
 
 /***/ }),
 /* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __webpack_require__(6);
+class Sma extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            smaChanged: false
+        };
+    }
+    componentWillReceiveProps(nextProps) {
+        if (this.props.value !== nextProps.value) {
+            this.setState({
+                smaChanged: true
+            });
+            setTimeout(() => {
+                this.setState({
+                    smaChanged: false
+                });
+            }, 100);
+        }
+    }
+    shouldComponentUpdate(nextProps, nextState) {
+        return (this.props.value !== nextProps.value) || (this.state.smaChanged !== nextState.smaChanged);
+        ;
+    }
+    render() {
+        return (React.createElement("div", { className: `sma ${this.state.smaChanged ? 'sma-changed' : ''}` },
+            this.props.label,
+            ":\u00A0",
+            this.props.value.toFixed(2)));
+    }
+}
+exports.default = Sma;
+
+
+/***/ }),
+/* 199 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

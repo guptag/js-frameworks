@@ -40770,6 +40770,10 @@ const ActionSimulator_1 = __webpack_require__(223);
 const config_1 = __webpack_require__(32);
 const TickerCount_1 = __webpack_require__(234);
 class ControlPanel extends React.Component {
+    constructor() {
+        super(...arguments);
+        this.resetStats = function () { };
+    }
     componentDidMount() {
         var statsRps = new window["Stats"]();
         statsRps.showPanel(0);
@@ -40787,6 +40791,11 @@ class ControlPanel extends React.Component {
             document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
             requestAnimationFrame(loop);
         });
+        this.resetStats = () => {
+            statsRps.reset();
+            statsMs.reset();
+            statsMemory.reset();
+        };
     }
     shouldComponentUpdate(nextProps) {
         return this.props.settings !== nextProps.settings;
@@ -40814,7 +40823,7 @@ class ControlPanel extends React.Component {
                     React.createElement("div", { id: "stats_dom_count" }))),
             React.createElement("section", { className: "replace-tickers action" },
                 React.createElement("div", { className: "title" }, "Simulate Switching views"),
-                React.createElement("button", { onClick: () => this.props.onStartAction(config_1.ControlPanelActionType.Replace), disabled: !this.props.settings.replaceTickersEnabled }, "Start"),
+                React.createElement("button", { onClick: () => { this.resetStats(); this.props.onStartAction(config_1.ControlPanelActionType.Replace); }, disabled: !this.props.settings.replaceTickersEnabled }, "Start"),
                 React.createElement("button", { onClick: () => this.props.onStopAction(config_1.ControlPanelActionType.Replace), disabled: this.props.settings.replaceTickersEnabled }, "Stop"),
                 React.createElement("div", { className: "frequency" },
                     React.createElement("span", { className: "sub-title noselect" }, "Interval:\u00A0"),
@@ -40825,7 +40834,7 @@ class ControlPanel extends React.Component {
                     React.createElement("i", { className: "fa fa-plus", "aria-hidden": "true", onClick: () => this.props.onChangeInterval(config_1.ControlPanelActionType.Replace, true) }))),
             React.createElement("section", { className: "add-tickers action" },
                 React.createElement("div", { className: "title" }, "Simulate Adds"),
-                React.createElement("button", { onClick: () => this.props.onStartAction(config_1.ControlPanelActionType.Add), disabled: !this.props.settings.addTickersEnabled }, "Start"),
+                React.createElement("button", { onClick: () => { this.resetStats(); this.props.onStartAction(config_1.ControlPanelActionType.Add); }, disabled: !this.props.settings.addTickersEnabled }, "Start"),
                 React.createElement("button", { onClick: () => this.props.onStopAction(config_1.ControlPanelActionType.Add), disabled: this.props.settings.addTickersEnabled }, "Stop"),
                 React.createElement("div", { className: "frequency" },
                     React.createElement("span", { className: "sub-title noselect" }, "Interval:\u00A0"),
@@ -40836,7 +40845,7 @@ class ControlPanel extends React.Component {
                     React.createElement("i", { className: "fa fa-plus", "aria-hidden": "true", onClick: () => this.props.onChangeInterval(config_1.ControlPanelActionType.Add, true) }))),
             React.createElement("section", { className: "update-prices action" },
                 React.createElement("div", { className: "title" }, "Simulate Updates"),
-                React.createElement("button", { onClick: () => this.props.onStartAction(config_1.ControlPanelActionType.Update), disabled: !this.props.settings.updateValuesEnabled }, "Start"),
+                React.createElement("button", { onClick: () => { this.resetStats(); this.props.onStartAction(config_1.ControlPanelActionType.Update); }, disabled: !this.props.settings.updateValuesEnabled }, "Start"),
                 React.createElement("button", { onClick: () => this.props.onStopAction(config_1.ControlPanelActionType.Update), disabled: this.props.settings.updateValuesEnabled }, "Stop"),
                 React.createElement("div", { className: "frequency" },
                     React.createElement("span", { className: "sub-title noselect" }, "Interval:\u00A0"),

@@ -47,10 +47,10 @@ body {
   height: 100vh;
   background-color: #bad6ce;
   padding: 10px 0 0 10px;
-  font-family: 'Lucida Grande', verdana, sans-serif;
+  font-family: 'Trebuchet MS', verdana, sans-serif;
   font-size: 1em; }
   .control-panel h1 {
-    font-size: 1.2em;
+    font-size: 1.3em;
     margin-bottom: 20px; }
   .control-panel .stats > div.stat-item {
     padding: 15px 15px 0 0;
@@ -80,11 +80,12 @@ body {
     margin-left: 15px;
     color: lightgreen; }
   .control-panel .sub-title {
-    font-size: 1.1em; }
+    font-size: 1em; }
   .control-panel .action {
     padding: 10px 0;
     border-bottom: 1px dashed #a0a0a0;
-    width: 200px; }
+    width: 200px;
+    font-family: 'Trebuchet MS', verdana, sans-serif; }
     .control-panel .action.replace-tickers {
       margin-top: 20px; }
     .control-panel .action .title {
@@ -93,7 +94,8 @@ body {
       margin: 3px 0 10px 0; }
     .control-panel .action button {
       margin: 0 10px 0 0;
-      width: 60px; }
+      width: 60px;
+      font-family: inherit; }
     .control-panel .action .frequency {
       margin: 10px 0 0 0;
       font-size: 0.85em; }
