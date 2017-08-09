@@ -47,13 +47,20 @@ body {
   height: 100vh;
   background-color: #bad6ce;
   padding: 10px 0 0 10px;
-  font-family: Calibri, Cambria,"Times New Roman",Times,serif;
+  font-family: 'Lucida Grande', verdana, sans-serif;
   font-size: 1em; }
   .control-panel h1 {
-    font-size: 1.2em; }
-  .control-panel .stats > div {
-    padding: 10px 15px 0 0;
+    font-size: 1.2em;
+    margin-bottom: 20px; }
+  .control-panel .stats > div.stat-item {
+    padding: 15px 15px 0 0;
+    position: relative;
     float: left; }
+    .control-panel .stats > div.stat-item i.fa-info-circle {
+      position: absolute;
+      top: 0px;
+      right: 17px;
+      font-size: 10px; }
   .control-panel .counts .dom,
   .control-panel .counts .tickers {
     margin: 20px 0 0 0;
@@ -62,9 +69,13 @@ body {
     float: left;
     width: 80px;
     height: 50px;
-    font-size: 1.2em;
+    font-size: 1em;
     background-color: black;
     color: #13DFE2; }
+    .control-panel .counts .dom div,
+    .control-panel .counts .tickers div {
+      padding-top: 2px;
+      font-size: 1.2em; }
   .control-panel .counts .dom {
     margin-left: 15px;
     color: lightgreen; }
@@ -75,9 +86,9 @@ body {
     border-bottom: 1px dashed #a0a0a0;
     width: 200px; }
     .control-panel .action.replace-tickers {
-      margin-top: 10px; }
+      margin-top: 20px; }
     .control-panel .action .title {
-      font-size: 1em;
+      font-size: 0.85em;
       font-weight: bold;
       margin: 3px 0 10px 0; }
     .control-panel .action button {
@@ -85,7 +96,7 @@ body {
       width: 60px; }
     .control-panel .action .frequency {
       margin: 10px 0 0 0;
-      font-size: 0.9em; }
+      font-size: 0.85em; }
     .control-panel .action .frequency i.fa {
       padding: 0 10px; }
 
