@@ -4,9 +4,11 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-var Stats = function () {
+var Stats = function (panelId) {
 
 	var mode = 0;
+
+	var noopPanel = {reset: function() {}, update: function() {}};
 
 	var container = document.createElement( 'div' );
 	container.style.cssText = '/*position:fixed;top:0;left:0;*/cursor:pointer;opacity:0.9;z-index:10000;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transform:translateZ(1px);-webkit-transform:translateZ(1px);';
@@ -32,10 +34,10 @@ var Stats = function () {
 	//
 
 	var beginTime = ( performance || Date ).now(), prevTime = beginTime, frames = 0;
-	var fpsPanel = addPanel( new Stats.Panel( 'FPS', '#0ff', '#002' ) );
-	var msPanel = addPanel( new Stats.Panel( 'MS', '#0f0', '#020' ) );
+	var fpsPanel = (panelId === 0) ? addPanel( new Stats.Panel( 'FPS', '#0ff', '#002' ) ) : noopPanel;
+	var msPanel = (panelId === 1) ? addPanel( new Stats.Panel( 'MS', '#0f0', '#020' ) ) : noopPanel;
 	if ( performance && performance.memory ) {
-		var memPanel = addPanel( new Stats.Panel( 'MB', '#f08', '#201' ) );
+		var memPanel = (panelId===2) ? addPanel( new Stats.Panel( 'MB', '#f08', '#201' ) ): noopPanel;
 	}
 
 	showPanel( 0 );
@@ -50,6 +52,7 @@ var Stats = function () {
 			msPanel.reset();
 			fpsPanel.reset();
 			memPanel.reset();
+			this.begin();
 		},
 		begin: function () {
 			beginTime = ( performance || Date ).now();

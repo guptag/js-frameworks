@@ -109,14 +109,14 @@ angular.module('perfTest')
       controller: ControlPanelController,
       controllerAs: '$ctrl',
       link: function ($scope: ControlPanelScope, element, attrs) {
-        var statsRps = new window["Stats"]();
+        var statsRps = new window["Stats"](0);
         statsRps.showPanel(0);
 
-        var statsMs = new window["Stats"]();
-        statsMs.showPanel(1);
+        var statsMs = new window["Stats"](1);
+        statsMs.showPanel(0);
 
-        var statsMem = new window["Stats"]();
-        statsMem.showPanel(2);
+        var statsMem = new window["Stats"](2);
+        statsMem.showPanel(0);
 
         document.getElementById("stats_rps").appendChild(statsRps.dom);
         document.getElementById("stats_ms").appendChild(statsMs.dom);
