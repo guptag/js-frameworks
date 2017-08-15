@@ -1,6 +1,7 @@
 <section class="ticker-tile">
-  <h1 class="ticker" title={{::$ctrl.tickerData.company}} ng-class="$ctrl.tickerData.change >= 0 ? 'up' : 'down'">{{$ctrl.tickerData.ticker}}</h1>
-  <sector-name name="$ctrl.tickerData.sector"></sector-name>
+  <h1 class="ticker" title={{::$ctrl.tickerData.company}} 
+      ng-class="$ctrl.tickerData.change >= 0 ? 'up' : 'down'">{{$ctrl.tickerData.ticker}}</h1>
+  <sector-name name="::$ctrl.tickerData.sector"></sector-name>
   <price price="$ctrl.tickerData.price" change="$ctrl.tickerData.change"></price>
   <volume volume="$ctrl.tickerData.volume"></volume>
   <sma class="sma" label="sma20" value="$ctrl.tickerData.sma20"></sma>

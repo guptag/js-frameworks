@@ -17,8 +17,8 @@ class TickerTile extends React.Component<ITickerTileProps, null> {
   render() {
     return (
       <section className="ticker-tile">
-          <h1 className={`ticker ${this.props.tickerData.change >= 0 ? 'up' : 'down'}`} title={this.props.tickerData.company}>{this.props.tickerData.ticker}</h1>
-          { /* Purposefully creating custom components for each field to simulate our scenarios */ }
+          <h1 className={`ticker ${this.props.tickerData.change >= 0 ? 'up' : 'down'}`} 
+              title={this.props.tickerData.company}>{this.props.tickerData.ticker}</h1>
           <Sector name={this.props.tickerData.sector}></Sector>
           <Price price={this.props.tickerData.price} change={this.props.tickerData.change}></Price>
           <Volume volume={this.props.tickerData.volume}></Volume>

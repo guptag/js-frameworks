@@ -64,15 +64,15 @@ class ControlPanel extends React.Component<IStateToProps & IDispatchToProps, nul
           <section className="stats clearfix">
             <div className="stat-item">
               <div id="stats_rps" className="rps"></div>
-              <i className="fa fa-info-circle stats_rps" title="Number of frames rendered in the last second(fps). App is more responsive when fps is higher."></i>
+              <i className="fa fa-info-circle stats_rps" title="Number of frames rendered in the last second(fps). App is more responsive when fps is higher. (https://github.com/mrdoob/stats.js)"></i>
             </div>
             <div className="stat-item">
               <div id="stats_ms" className="ms"></div>
-              <i className="fa fa-info-circle" title="Time to render the last frame (msec). Lower values are better."></i>
+              <i className="fa fa-info-circle" title="Time to render the last frame (msec). Lower values are better. (https://github.com/mrdoob/stats.js)"></i>
             </div>
             <div className="stat-item">
               <div id="stats_memory" className="mem"></div>
-              <i className="fa fa-info-circle" title="Allocated memory in MB. Open Chrome with --enable-precise-memory-info to get precise informarion."></i>
+              <i className="fa fa-info-circle" title="Allocated memory in MB. Open Chrome with --enable-precise-memory-info to get precise informarion. (https://github.com/mrdoob/stats.js)"></i>
             </div>
           </section>
           <section className="counts clearfix">
