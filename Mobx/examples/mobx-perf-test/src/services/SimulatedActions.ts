@@ -27,9 +27,11 @@ export class AddTickerAction implements ISimulatedAction {
 
   }
 
-  scheduleAction() {
-    this.tickerDataViewModel.clearAllTickers();
-    this.serverDataManager.resetIndex();
+  scheduleAction(clearExistingData: boolean = true) {
+    if (clearExistingData) {
+      this.tickerDataViewModel.clearAllTickers();
+      this.serverDataManager.resetIndex();
+    }
     this.resetReplaceAction && this.resetReplaceAction();
     this.clearAddTickerTimerId = setInterval(() => this.addTickers(), this.controlPanelViewModel.options.addTickerIntervalMSec);
   }
@@ -42,7 +44,7 @@ export class AddTickerAction implements ISimulatedAction {
   resetAction () {
     if (this.clearAddTickerTimerId) {
       this.clearAction();
-      this.scheduleAction();
+      this.scheduleAction(false);
     }
   }
 
@@ -73,9 +75,11 @@ export class ReplaceTickerAction implements ISimulatedAction {
 
   }
 
-  scheduleAction() {
-    this.tickerDataViewModel.clearAllTickers();
-    this.serverDataManager.resetIndex();
+  scheduleAction(clearExistingData: boolean = true) {
+    if (clearExistingData) {
+      this.tickerDataViewModel.clearAllTickers();
+      this.serverDataManager.resetIndex();
+    }
     this.resetAddAction && this.resetAddAction();
     this.clearReplaceTickerTimerId = setInterval(() => this.replaceTickers(), this.controlPanelViewModel.options.replaceTickerIntervalMSec);
   }
@@ -88,7 +92,7 @@ export class ReplaceTickerAction implements ISimulatedAction {
   resetAction () {
     if (this.clearReplaceTickerTimerId) {
       this.clearAction();
-      this.scheduleAction();
+      this.scheduleAction(false);
     }
   }
 

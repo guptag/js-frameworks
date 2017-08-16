@@ -49,7 +49,7 @@ class ActionSimulator {
   }
 
   startPerf() {
-    // eanble for debugging; will impact perf/memory numbers
+    // enable for debugging; will impact perf/memory numbers
 
     /*if (!this.measuringPerf) {
       this.measuringPerf = true;
