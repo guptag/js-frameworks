@@ -24,11 +24,9 @@ var Stats = function (panelId) {
 		return panel;
 	}
 
-	function showPanel( id ) {
-		for ( var i = 0; i < container.children.length; i ++ ) {
-			container.children[ i ].style.display = i === id ? 'block' : 'none';
-		}
-		mode = id;
+	function showPanel() {
+		container.children[ 0 ].style.display = 'block';
+		mode = 0;
 	}
 
 	//
@@ -134,7 +132,7 @@ Stats.Panel = function ( name, fg, bg ) {
               context.fillStyle = bg;
               context.globalAlpha = 0.9;
               context.fillRect( GRAPH_X, GRAPH_Y, GRAPH_WIDTH, GRAPH_HEIGHT );
-            }, 50);
+            }, 100);
 		},
 		update: function ( value, maxValue ) {
 			min = Math.min( min, value );

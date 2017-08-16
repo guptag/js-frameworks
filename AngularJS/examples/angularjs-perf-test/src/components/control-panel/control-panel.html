@@ -63,9 +63,9 @@
       <button ng-click="$ctrl.stopDeletingTickers()" ng-disabled="$ctrl.controlPanelService.options.deleteTickersEnabled">Stop</button>
       <div class="frequency">
         <span  class="sub-title noselect">Interval:&nbsp;</span>
-        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec - 5)"></i>
+        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec - 50)"></i>
         <span class="noselect">{{$ctrl.controlPanelService.options.deleteTickerIntervalMSec}}ms</span>
-        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec + 5)"></i>
+        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec + 50)"></i>
       </div>
     </section>
 </section>

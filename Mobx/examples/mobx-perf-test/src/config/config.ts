@@ -24,7 +24,7 @@ export const ControlPanelDefaults = {
 
 export const ActionDefaults = {
   AddActionTickerCount: 50,
-  ReplaceActionTickerCount: 200,
+  ReplaceActionTickerCount: 150,
   DeleteActionTickerCount: 50
 }
 

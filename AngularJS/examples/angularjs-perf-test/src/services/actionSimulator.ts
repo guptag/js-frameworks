@@ -37,39 +37,44 @@ class ActionSimulator implements IActionSimulator {
     this.newTickerIndexToAdd = -1;
   }
 
+  private clearTimersAndResetIndex() {
+    this.newTickerIndexToAdd = -1;
+
+    this.stopAddingTickers();
+    this.controlPanelService.toggleAddTickers(true);
+
+    this.stopReplacingTickers();
+    this.controlPanelService.toggleReplaceTickers(true);
+  }
+
+  private clearTickersAndResetIndex() {
+    this.tickerDataService.clearAllData();
+    this.newTickerIndexToAdd = -1;
+  }
+
   private addTickers(count: number) {
-    if (this.newTickerIndexToAdd >= this.tickerDataFromServer.length - 1) {
-      this.tickerDataService.clearAllData();
-      this.newTickerIndexToAdd = -1;
+    for (var index = 0; index < count; ++index) {
+      if (this.newTickerIndexToAdd < this.tickerDataFromServer.length - 1) {
+        this.newTickerIndexToAdd++;
+        var tickerItem = this.tickerDataFromServer[this.newTickerIndexToAdd];
+        this.tickerDataService.addTicker({
+          ticker: <string>tickerItem.Ticker,
+          company: <string>tickerItem.Company,
+          change: <number>tickerItem.Change || 0,
+          sector: <string>tickerItem.Sector,
+          last: <number>tickerItem.Price || 0,
+          price: <number>tickerItem.Price || 0,
+          sma20: Math.abs(<number>tickerItem.SMA20 || 0),
+          sma50: Math.abs(<number>tickerItem.SMA50 || 0),
+          sma200: Math.abs(<number>tickerItem.SMA200 || 0),
+          volume: <number>tickerItem.Volume || 0,
+          avgVol: <number>tickerItem.AvgVol
+        });
+      } else {
+        this.clearTimersAndResetIndex();
+        break;
+      }
     }
-
-    _.times(count, () => {
-        if (this.newTickerIndexToAdd < this.tickerDataFromServer.length - 1) {
-          this.newTickerIndexToAdd++;
-          var tickerItem = this.tickerDataFromServer[this.newTickerIndexToAdd];
-          this.tickerDataService.addTicker({
-            ticker: <string>tickerItem.Ticker,
-            company: <string>tickerItem.Company,
-            change: <number>tickerItem.Change || 0,
-            sector: <string>tickerItem.Sector,
-            last: <number>tickerItem.Price || 0,
-            price: <number>tickerItem.Price || 0,
-            sma20: Math.abs(<number>tickerItem.SMA20 || 0),
-            sma50: Math.abs(<number>tickerItem.SMA50 || 0),
-            sma200: Math.abs(<number>tickerItem.SMA200 || 0),
-            volume: <number>tickerItem.Volume || 0,
-            avgVol: <number>tickerItem.AvgVol
-          });
-        } else {
-          this.stopAddingTickers();
-          this.controlPanelService.toggleAddTickers(true);
-
-          this.stopReplacingTickers();
-          this.controlPanelService.toggleReplaceTickers(true);
-
-          return false;
-        }
-    });
   }
 
   private deleteTickers(count: number) {
@@ -84,17 +89,16 @@ class ActionSimulator implements IActionSimulator {
     });
   }
 
-  private replaceTickers(count: number) {
+  private replaceTickers(count:number) {
     this.tickerDataService.clearAllData();
     this.addTickers(count);
   }
-
 
   private upDateTickerData() {
     const randomActionIndex: number = Math.floor(Math.random() * 2) + 1 ; // 1-2
     const randomTickerIndex: number = this.tickerDataService.tickerList.length > 0 ? Math.floor(Math.random() * this.tickerDataService.tickerList.length) : -1;
 
-    if (randomTickerIndex === -1) { 
+    if (randomTickerIndex === -1) {
       this.stopUpdatingTickers();
       this.controlPanelService.toggleUpdateValues(true);
       return;
@@ -123,7 +127,8 @@ class ActionSimulator implements IActionSimulator {
     })(randomActionIndex, randomTickerIndex);
   }
 
-  private scheduleAddTicker() {
+  private scheduleAddTicker(clearTickers: boolean) {
+    clearTickers && this.clearTickersAndResetIndex();
     this.clearAddTickerPromise = this.$interval(() => this.addTickers(50), this.controlPanelService.options.addTickerIntervalMSec || 100);
   }
 
@@ -142,7 +147,7 @@ class ActionSimulator implements IActionSimulator {
   }
 
   private scheduleDeleteTicker() {
-    this.clearDeleteTickerPromise = this.$interval(() => this.deleteTickers(50), this.controlPanelService.options.deleteTickerIntervalMSec || 100);
+    this.clearDeleteTickerPromise = this.$interval(() => this.deleteTickers(150), this.controlPanelService.options.deleteTickerIntervalMSec || 100);
   }
 
   private clearDeleteTicker() {
@@ -150,8 +155,9 @@ class ActionSimulator implements IActionSimulator {
     this.clearDeleteTickerPromise = null;
   }
 
-  private scheduleReplaceTicker() {
-    this.clearReplaceTickerPromise = this.$interval(() => this.replaceTickers(200), this.controlPanelService.options.replaceTickerIntervalMSec || 100);
+  private scheduleReplaceTicker(clearTickers: boolean) {
+    clearTickers && this.clearTickersAndResetIndex();
+    this.clearReplaceTickerPromise = this.$interval(() => this.replaceTickers(150), this.controlPanelService.options.replaceTickerIntervalMSec || 100);
   }
 
   private clearReplaceTicker() {
@@ -162,7 +168,7 @@ class ActionSimulator implements IActionSimulator {
   resetAddTickerInterval() {
     if (this.clearAddTickerPromise) {
       this.clearAddTicker();
-      this.scheduleAddTicker();
+      this.scheduleAddTicker(false);
     }
   }
 
@@ -183,12 +189,12 @@ class ActionSimulator implements IActionSimulator {
   resetReplaceTickerInterval() {
     if (this.clearUpdateTickerPromise) {
       this.clearReplaceTicker();
-      this.scheduleReplaceTicker();
+      this.scheduleReplaceTicker(false);
     }
   }
 
   startAddingTickers() {
-    this.scheduleAddTicker();
+    this.scheduleAddTicker(true);
   }
 
   stopAddingTickers() {
@@ -204,7 +210,7 @@ class ActionSimulator implements IActionSimulator {
   }
 
   startReplacingTickers() {
-    this.scheduleReplaceTicker();
+    this.scheduleReplaceTicker(true);
   }
 
   stopReplacingTickers() {

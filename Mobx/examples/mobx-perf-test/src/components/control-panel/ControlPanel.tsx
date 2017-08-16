@@ -16,20 +16,20 @@ class ControlPanel extends React.Component<IControlPanelProps, null> {
   private resetStats: ()=> void = function() {};
 
   componentDidMount() {
-    var statsRps = new window["Stats"]();
-    statsRps.showPanel(0);
+    var statsFps = new window["Stats"](0);
+    statsFps.showPanel();
 
-    var statsMs = new window["Stats"]();
-    statsMs.showPanel(1);
+    var statsMs = new window["Stats"](1);
+    statsMs.showPanel();
 
-    var statsMemory = new window["Stats"]();
-    statsMemory.showPanel(2);
+    var statsMemory = new window["Stats"](2);
+    statsMemory.showPanel();
 
-    document.getElementById("stats_rps").appendChild(statsRps.dom);
+    document.getElementById("stats_rps").appendChild(statsFps.dom);
     document.getElementById("stats_ms").appendChild(statsMs.dom);
     document.getElementById("stats_memory").appendChild(statsMemory.dom);
     requestAnimationFrame(function loop() {
-      statsRps.update();
+      statsFps.update();
       statsMs.update();
       statsMemory.update();
       document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
@@ -37,7 +37,7 @@ class ControlPanel extends React.Component<IControlPanelProps, null> {
     });
 
     this.resetStats = () => {
-      statsRps.reset();
+      statsFps.reset();
       statsMs.reset();
       statsMemory.reset();
     }

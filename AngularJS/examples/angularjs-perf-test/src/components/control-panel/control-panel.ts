@@ -76,8 +76,8 @@ class ControlPanelController implements IControlPanelController  {
   }
 
   changeDeleteTickerInterval(newInterval: number) {
-    this.controlPanelService.changeAddTickerInterval(newInterval);
-    this.actionSimulator.resetAddTickerInterval();
+    this.controlPanelService.changeDeleteTickerInterval(newInterval);
+    this.actionSimulator.resetDeleteTickerInterval();
   }
 
   startUpdatingTickers() {
@@ -109,21 +109,21 @@ angular.module('perfTest')
       controller: ControlPanelController,
       controllerAs: '$ctrl',
       link: function ($scope: ControlPanelScope, element, attrs) {
-        var statsRps = new window["Stats"](0);
-        statsRps.showPanel(0);
+        var statsFps = new window["Stats"](0);
+        statsFps.showPanel();
 
         var statsMs = new window["Stats"](1);
-        statsMs.showPanel(0);
+        statsMs.showPanel();
 
         var statsMem = new window["Stats"](2);
-        statsMem.showPanel(0);
+        statsMem.showPanel();
 
-        document.getElementById("stats_rps").appendChild(statsRps.dom);
+        document.getElementById("stats_rps").appendChild(statsFps.dom);
         document.getElementById("stats_ms").appendChild(statsMs.dom);
         document.getElementById("stats_memory").appendChild(statsMem.dom);
 
         requestAnimationFrame(function loop() {
-          statsRps.update();
+          statsFps.update();
           statsMs.update();
           statsMem.update();
           document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
@@ -131,7 +131,7 @@ angular.module('perfTest')
         });
 
         $scope.resetStats = function () {
-          statsRps.reset();
+          statsFps.reset();
           statsMs.reset();
           statsMem.reset();
         }

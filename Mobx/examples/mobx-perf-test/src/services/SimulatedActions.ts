@@ -22,13 +22,15 @@ export class AddTickerAction implements ISimulatedAction {
     private controlPanelViewModel: IControlPanelViewModel,
     private tickerDataViewModel: ITickerDataViewModel,
     private serverDataManager: IServerDataManager,
-    private cbWhenReachedEnd?: () => void
+    private resetReplaceAction?: () => void
   ) {
 
   }
 
   scheduleAction() {
-    this.cbWhenReachedEnd && this.cbWhenReachedEnd();
+    this.tickerDataViewModel.clearAllTickers();
+    this.serverDataManager.resetIndex();
+    this.resetReplaceAction && this.resetReplaceAction();
     this.clearAddTickerTimerId = setInterval(() => this.addTickers(), this.controlPanelViewModel.options.addTickerIntervalMSec);
   }
 
@@ -45,12 +47,6 @@ export class AddTickerAction implements ISimulatedAction {
   }
 
   private addTickers() {
-    // already at the end, clear the data and start
-    if (this.serverDataManager.hasReachedEnd()) {
-      this.tickerDataViewModel.clearAllTickers();
-      this.serverDataManager.resetIndex();
-    }
-
     var newTickers: ITickerData[] = this.serverDataManager.getNewTickers(ActionDefaults.AddActionTickerCount);
     this.tickerDataViewModel.addTickers(newTickers);
 
@@ -58,7 +54,7 @@ export class AddTickerAction implements ISimulatedAction {
     if (this.serverDataManager.hasReachedEnd()) {
       this.clearAction();
       this.controlPanelViewModel.toggleAction(ControlPanelActionType.Add, true);
-      this.cbWhenReachedEnd && this.cbWhenReachedEnd();
+      this.resetReplaceAction && this.resetReplaceAction();
     }
   }
 }
@@ -72,13 +68,15 @@ export class ReplaceTickerAction implements ISimulatedAction {
     private controlPanelViewModel: IControlPanelViewModel,
     private tickerDataViewModel: ITickerDataViewModel,
     private serverDataManager: IServerDataManager,
-    private cbWhenReachedEnd?: () => void
+    private resetAddAction?: () => void
   ) {
 
   }
 
   scheduleAction() {
-    this.cbWhenReachedEnd && this.cbWhenReachedEnd();
+    this.tickerDataViewModel.clearAllTickers();
+    this.serverDataManager.resetIndex();
+    this.resetAddAction && this.resetAddAction();
     this.clearReplaceTickerTimerId = setInterval(() => this.replaceTickers(), this.controlPanelViewModel.options.replaceTickerIntervalMSec);
   }
 
@@ -95,12 +93,6 @@ export class ReplaceTickerAction implements ISimulatedAction {
   }
 
   private replaceTickers() {
-    // already at the end, clear the data and start
-    if (this.serverDataManager.hasReachedEnd()) {
-      this.tickerDataViewModel.clearAllTickers();
-      this.serverDataManager.resetIndex();
-    }
-
     var newTickers: ITickerData[] = this.serverDataManager.getNewTickers(ActionDefaults.ReplaceActionTickerCount);
     this.tickerDataViewModel.replaceTickers(newTickers);
 
@@ -108,7 +100,7 @@ export class ReplaceTickerAction implements ISimulatedAction {
     if (this.serverDataManager.hasReachedEnd()) {
       this.clearAction();
       this.controlPanelViewModel.toggleAction(ControlPanelActionType.Replace, true);
-      this.cbWhenReachedEnd && this.cbWhenReachedEnd();
+      this.resetAddAction && this.resetAddAction();
     }
   }
 }
