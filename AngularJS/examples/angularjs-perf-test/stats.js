@@ -4,9 +4,11 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-var Stats = function () {
+var Stats = function (panelId) {
 
 	var mode = 0;
+
+	var noopPanel = {reset: function() {}, update: function() {}};
 
 	var container = document.createElement( 'div' );
 	container.style.cssText = '/*position:fixed;top:0;left:0;*/cursor:pointer;opacity:0.9;z-index:10000;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transform:translateZ(1px);-webkit-transform:translateZ(1px);';
@@ -22,20 +24,18 @@ var Stats = function () {
 		return panel;
 	}
 
-	function showPanel( id ) {
-		for ( var i = 0; i < container.children.length; i ++ ) {
-			container.children[ i ].style.display = i === id ? 'block' : 'none';
-		}
-		mode = id;
+	function showPanel() {
+		container.children[ 0 ].style.display = 'block';
+		mode = 0;
 	}
 
 	//
 
 	var beginTime = ( performance || Date ).now(), prevTime = beginTime, frames = 0;
-	var fpsPanel = addPanel( new Stats.Panel( 'FPS', '#0ff', '#002' ) );
-	var msPanel = addPanel( new Stats.Panel( 'MS', '#0f0', '#020' ) );
+	var fpsPanel = (panelId === 0) ? addPanel( new Stats.Panel( 'FPS', '#0ff', '#002' ) ) : noopPanel;
+	var msPanel = (panelId === 1) ? addPanel( new Stats.Panel( 'MS', '#0f0', '#020' ) ) : noopPanel;
 	if ( performance && performance.memory ) {
-		var memPanel = addPanel( new Stats.Panel( 'MB', '#f08', '#201' ) );
+		var memPanel = (panelId===2) ? addPanel( new Stats.Panel( 'MB', '#f08', '#201' ) ): noopPanel;
 	}
 
 	showPanel( 0 );
@@ -50,6 +50,7 @@ var Stats = function () {
 			msPanel.reset();
 			fpsPanel.reset();
 			memPanel.reset();
+			this.begin();
 		},
 		begin: function () {
 			beginTime = ( performance || Date ).now();
@@ -131,7 +132,7 @@ Stats.Panel = function ( name, fg, bg ) {
               context.fillStyle = bg;
               context.globalAlpha = 0.9;
               context.fillRect( GRAPH_X, GRAPH_Y, GRAPH_WIDTH, GRAPH_HEIGHT );
-            }, 50);
+            }, 100);
 		},
 		update: function ( value, maxValue ) {
 			min = Math.min( min, value );

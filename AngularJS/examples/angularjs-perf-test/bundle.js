@@ -60,11 +60,47 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ControlPanelActionType;
+(function (ControlPanelActionType) {
+    ControlPanelActionType[ControlPanelActionType["Replace"] = 0] = "Replace";
+    ControlPanelActionType[ControlPanelActionType["Add"] = 1] = "Add";
+    ControlPanelActionType[ControlPanelActionType["Delete"] = 2] = "Delete";
+    ControlPanelActionType[ControlPanelActionType["Update"] = 3] = "Update";
+})(ControlPanelActionType = exports.ControlPanelActionType || (exports.ControlPanelActionType = {}));
+;
+exports.ControlPanelDefaults = {
+    ReplaceTickerIntervalMSec: 500,
+    AddTickerIntervalMSec: 100,
+    DeleteTickerIntervalMSec: 100,
+    UpdateValuesIntervalMSec: 10,
+    ReplaceIncrementMsec: 50,
+    AddIncrementMsec: 50,
+    UpdateIncrementMsec: 5,
+    DeleteIncrementMsec: 50,
+    ReplaceMinIntervalMsec: 50,
+    AddMinIntervalMsec: 50,
+    UpdateMinIntervalMsec: 5,
+    DeleteMinIntervalMsec: 50
+};
+exports.ActionDefaults = {
+    AddActionTickerCount: 50,
+    ReplaceActionTickerCount: 150,
+    DeleteActionTickerCount: 50
+};
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -17153,15 +17189,7 @@
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30), __webpack_require__(31)(module)))
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(2);
-module.exports = __webpack_require__(34);
-
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32), __webpack_require__(33)(module)))
 
 /***/ }),
 /* 2 */
@@ -17170,12 +17198,200 @@ module.exports = __webpack_require__(34);
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(3);
+const _ = __webpack_require__(1);
+const config_1 = __webpack_require__(0);
+/**
+ * Simulates Add Tickers
+ */
+class AddTickerAction {
+    constructor($interval, controlPanelService, tickerDataService, serverDataManager, resetOtherActions) {
+        this.$interval = $interval;
+        this.controlPanelService = controlPanelService;
+        this.tickerDataService = tickerDataService;
+        this.serverDataManager = serverDataManager;
+        this.resetOtherActions = resetOtherActions;
+    }
+    scheduleAction(clearExistingData = true) {
+        if (clearExistingData) {
+            this.tickerDataService.clearAllTickers();
+            this.serverDataManager.resetIndex();
+        }
+        this.resetOtherActions && this.resetOtherActions();
+        this.clearIntervalPromise = this.$interval(() => this.addTickers(), this.controlPanelService.options.addTickerIntervalMSec);
+    }
+    clearAction() {
+        this.clearIntervalPromise && this.$interval.cancel(this.clearIntervalPromise);
+        this.clearIntervalPromise = null;
+    }
+    resetAction() {
+        if (this.clearIntervalPromise) {
+            this.clearAction();
+            this.scheduleAction(false);
+        }
+    }
+    addTickers() {
+        var newTickers = this.serverDataManager.getNewTickers(config_1.ActionDefaults.AddActionTickerCount);
+        this.tickerDataService.addTickers(newTickers);
+        // reached the end, reset the buttons
+        if (this.serverDataManager.hasReachedEnd()) {
+            this.clearAction();
+            this.controlPanelService.toggleAction(config_1.ControlPanelActionType.Add, true);
+            this.resetOtherActions && this.resetOtherActions();
+        }
+    }
+}
+exports.AddTickerAction = AddTickerAction;
+/**
+ * Simulates Replace Tickers
+ */
+class ReplaceTickerAction {
+    constructor($interval, controlPanelViewModel, tickerDataViewModel, serverDataManager, resetOtherActions) {
+        this.$interval = $interval;
+        this.controlPanelViewModel = controlPanelViewModel;
+        this.tickerDataViewModel = tickerDataViewModel;
+        this.serverDataManager = serverDataManager;
+        this.resetOtherActions = resetOtherActions;
+    }
+    scheduleAction(clearExistingData = true) {
+        if (clearExistingData) {
+            this.tickerDataViewModel.clearAllTickers();
+            this.serverDataManager.resetIndex();
+        }
+        this.resetOtherActions && this.resetOtherActions();
+        this.clearReplaceTickerPromise = this.$interval(() => this.replaceTickers(), this.controlPanelViewModel.options.replaceTickerIntervalMSec);
+    }
+    clearAction() {
+        this.clearReplaceTickerPromise && this.$interval.cancel(this.clearReplaceTickerPromise);
+        this.clearReplaceTickerPromise = null;
+    }
+    resetAction() {
+        if (this.clearReplaceTickerPromise) {
+            this.clearAction();
+            this.scheduleAction(false);
+        }
+    }
+    replaceTickers() {
+        var newTickers = this.serverDataManager.getNewTickers(config_1.ActionDefaults.ReplaceActionTickerCount);
+        this.tickerDataViewModel.replaceTickers(newTickers);
+        // reached the end, reset the buttons
+        if (this.serverDataManager.hasReachedEnd()) {
+            this.clearAction();
+            this.controlPanelViewModel.toggleAction(config_1.ControlPanelActionType.Replace, true);
+            this.resetOtherActions && this.resetOtherActions();
+        }
+    }
+}
+exports.ReplaceTickerAction = ReplaceTickerAction;
+/**
+ * Simulates Delete Tickers
+ */
+class DeleteTickerAction {
+    constructor($interval, controlPanelService, tickerDataService, resetOtherActions) {
+        this.$interval = $interval;
+        this.controlPanelService = controlPanelService;
+        this.tickerDataService = tickerDataService;
+        this.resetOtherActions = resetOtherActions;
+    }
+    scheduleAction() {
+        this.resetOtherActions && this.resetOtherActions();
+        this.clearDeleteTickerPromise = this.$interval(() => this.deleteTickers(), this.controlPanelService.options.deleteTickerIntervalMSec || 100);
+    }
+    clearAction() {
+        this.clearDeleteTickerPromise && this.$interval.cancel(this.clearDeleteTickerPromise);
+        this.clearDeleteTickerPromise = null;
+    }
+    resetAction() {
+        if (this.clearDeleteTickerPromise) {
+            this.clearAction();
+            this.scheduleAction();
+        }
+    }
+    deleteTickers() {
+        var tickerList = this.tickerDataService.tickerList;
+        if (tickerList.length === 0) {
+            this.clearAction();
+            this.controlPanelService.toggleAction(config_1.ControlPanelActionType.Delete, true);
+        }
+        else {
+            this.tickerDataService.deleteTickers(_.takeRight(tickerList.slice(), config_1.ActionDefaults.DeleteActionTickerCount));
+        }
+    }
+}
+exports.DeleteTickerAction = DeleteTickerAction;
+/**
+ * Simulates Update Tickers
+ */
+class UpdateTickerAction {
+    constructor($interval, controlPanelViewModel, tickerDataViewModel) {
+        this.$interval = $interval;
+        this.controlPanelViewModel = controlPanelViewModel;
+        this.tickerDataViewModel = tickerDataViewModel;
+    }
+    scheduleAction() {
+        this.clearUpdateTickerPromise = this.$interval(() => this.upDateTickerData(), this.controlPanelViewModel.options.updateValuesIntervalMSec);
+    }
+    clearAction() {
+        this.clearUpdateTickerPromise && this.$interval.cancel(this.clearUpdateTickerPromise);
+        this.clearUpdateTickerPromise = null;
+    }
+    resetAction() {
+        if (this.clearUpdateTickerPromise) {
+            this.clearAction();
+            this.scheduleAction();
+        }
+    }
+    upDateTickerData() {
+        const tickerList = this.tickerDataViewModel.tickerList;
+        const randomActionIndex = Math.floor(Math.random() * 2) + 1; // 1-2
+        const randomTickerIndex = tickerList.length > 0 ? Math.floor(Math.random() * tickerList.length) : -1;
+        if (randomTickerIndex === -1) {
+            this.clearAction();
+            this.controlPanelViewModel.toggleAction(config_1.ControlPanelActionType.Update, true);
+            return;
+        }
+        const ticker = tickerList[randomTickerIndex];
+        const tickerDataItem = this.tickerDataViewModel.tickerHash[ticker];
+        let multiplier = Math.random() > 0.5 ? 1 : -1;
+        let changePercent = Math.floor(Math.random() * 5); //0 - 4
+        switch (randomActionIndex) {
+            case 1:
+                const currentPrice = this.tickerDataViewModel.tickerHash[ticker].price;
+                const newPrice = currentPrice + (multiplier * (currentPrice * changePercent) / 100);
+                const newPriceChange = newPrice - tickerDataItem.price;
+                this.tickerDataViewModel.updatePrice(ticker, newPrice, newPriceChange);
+                break;
+            case 2:
+                const currentVol = this.tickerDataViewModel.tickerHash[ticker].volume;
+                const newVol = Math.floor(currentVol + (multiplier * (currentVol * changePercent) / 100));
+                this.tickerDataViewModel.updateVolume(ticker, newVol);
+                break;
+        }
+    }
+}
+exports.UpdateTickerAction = UpdateTickerAction;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(4);
+module.exports = __webpack_require__(37);
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__(5);
 __webpack_require__(7);
 __webpack_require__(9);
+__webpack_require__(11);
 //cache router html entries
-const html = __webpack_require__(11);
+const html = __webpack_require__(13);
 angular.module('perfTest', ['ngRoute', 'ngSanitize', 'ngAnimate'])
     .config(['$routeProvider', '$sceDelegateProvider',
     function ($routeProvider, $sceDelegateProvider) {
@@ -17194,7 +17410,6 @@ angular.module('perfTest', ['ngRoute', 'ngSanitize', 'ngAnimate'])
 window.onload = function () {
     angular.bootstrap(document.getElementById('app'), ['perfTest']);
 };
-__webpack_require__(12);
 __webpack_require__(14);
 __webpack_require__(16);
 __webpack_require__(18);
@@ -17203,21 +17418,25 @@ __webpack_require__(22);
 __webpack_require__(24);
 __webpack_require__(26);
 __webpack_require__(28);
-__webpack_require__(29);
-__webpack_require__(32);
-__webpack_require__(33);
+__webpack_require__(30);
+__webpack_require__(31);
+__webpack_require__(34);
+__webpack_require__(35);
+__webpack_require__(2);
+__webpack_require__(0);
+__webpack_require__(36);
 
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(4);
+__webpack_require__(6);
 module.exports = angular;
 
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports) {
 
 /**
@@ -51053,15 +51272,15 @@ $provide.value("$locale", {
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(6);
+__webpack_require__(8);
 module.exports = 'ngAnimate';
 
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports) {
 
 /**
@@ -55221,15 +55440,15 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(8);
+__webpack_require__(10);
 module.exports = 'ngRoute';
 
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports) {
 
 /**
@@ -56464,15 +56683,15 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(10);
+__webpack_require__(12);
 module.exports = 'ngSanitize';
 
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports) {
 
 /**
@@ -57284,19 +57503,20 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n  <control-panel></control-panel>\r\n  <ticker-list></ticker-list>\r\n</div>";
+module.exports = "<div>\n  <control-panel></control-panel>\n  <ticker-list></ticker-list>\n</div>";
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const html = __webpack_require__(13);
+const html = __webpack_require__(15);
+const config_1 = __webpack_require__(0);
 ;
 class ControlPanelController {
     constructor($scope, controlPanelService, tickerDataService, actionSimulator) {
@@ -57304,59 +57524,21 @@ class ControlPanelController {
         this.controlPanelService = controlPanelService;
         this.tickerDataService = tickerDataService;
         this.actionSimulator = actionSimulator;
+        this.controlPanelActionType = config_1.ControlPanelActionType;
         this.$scope.resetStats = function () { };
     }
-    startReplacingTickers() {
+    onStartAction(actionType) {
         this.$scope.resetStats();
-        this.controlPanelService.toggleReplaceTickers(false);
-        this.actionSimulator.startReplacingTickers();
+        this.controlPanelService.toggleAction(actionType, false);
+        this.actionSimulator.startAction(actionType);
     }
-    stopReplacingTickers() {
-        this.controlPanelService.toggleReplaceTickers(true);
-        this.actionSimulator.stopReplacingTickers();
+    onStopAction(actionType) {
+        this.controlPanelService.toggleAction(actionType, true);
+        this.actionSimulator.stopAction(actionType);
     }
-    changeReplaceTickerInterval(newInterval) {
-        this.controlPanelService.changeReplaceTickerInterval(newInterval);
-        this.actionSimulator.resetReplaceTickerInterval();
-    }
-    startAddingTickers() {
-        this.$scope.resetStats();
-        this.controlPanelService.toggleAddTickers(false);
-        this.actionSimulator.startAddingTickers();
-    }
-    stopAddingTickers() {
-        this.controlPanelService.toggleAddTickers(true);
-        this.actionSimulator.stopAddingTickers();
-    }
-    changeAddTickerInterval(newInterval) {
-        this.controlPanelService.changeAddTickerInterval(newInterval);
-        this.actionSimulator.resetAddTickerInterval();
-    }
-    startDeletingTickers() {
-        this.$scope.resetStats();
-        this.controlPanelService.toggleDeleteTickers(false);
-        this.actionSimulator.startDeletingTickers();
-    }
-    stopDeletingTickers() {
-        this.controlPanelService.toggleDeleteTickers(true);
-        this.actionSimulator.stopDeletingTickers();
-    }
-    changeDeleteTickerInterval(newInterval) {
-        this.controlPanelService.changeAddTickerInterval(newInterval);
-        this.actionSimulator.resetAddTickerInterval();
-    }
-    startUpdatingTickers() {
-        this.$scope.resetStats();
-        this.controlPanelService.toggleUpdateValues(false);
-        this.actionSimulator.startUpdatingTickers();
-    }
-    stopUpdatingTickers() {
-        this.controlPanelService.toggleUpdateValues(true);
-        this.actionSimulator.stopUpdatingTickers();
-    }
-    changeUpdateTickerInterval(newInterval) {
-        this.controlPanelService.changeUpdateTickerInterval(newInterval);
-        this.actionSimulator.resetUpdateTickerInterval();
+    onChangeInterval(actionType, increment) {
+        this.controlPanelService.changeActionInterval(actionType, increment);
+        this.actionSimulator.resetInterval(actionType);
     }
 }
 ControlPanelController.$inject = ['$scope', 'controlPanelService', 'tickerDataService', 'actionSimulator'];
@@ -57369,24 +57551,24 @@ angular.module('perfTest')
         controller: ControlPanelController,
         controllerAs: '$ctrl',
         link: function ($scope, element, attrs) {
-            var statsRps = new window["Stats"]();
-            statsRps.showPanel(0);
-            var statsMs = new window["Stats"]();
-            statsMs.showPanel(1);
-            var statsMem = new window["Stats"]();
-            statsMem.showPanel(2);
-            document.getElementById("stats_rps").appendChild(statsRps.dom);
+            var statsFps = new window["Stats"](0);
+            statsFps.showPanel();
+            var statsMs = new window["Stats"](1);
+            statsMs.showPanel();
+            var statsMem = new window["Stats"](2);
+            statsMem.showPanel();
+            document.getElementById("stats_rps").appendChild(statsFps.dom);
             document.getElementById("stats_ms").appendChild(statsMs.dom);
             document.getElementById("stats_memory").appendChild(statsMem.dom);
             requestAnimationFrame(function loop() {
-                statsRps.update();
+                statsFps.update();
                 statsMs.update();
                 statsMem.update();
                 document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
                 requestAnimationFrame(loop);
             });
             $scope.resetStats = function () {
-                statsRps.reset();
+                statsFps.reset();
                 statsMs.reset();
                 statsMem.reset();
             };
@@ -57396,19 +57578,19 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"control-panel\">\r\n    <h1>AngularJS Perf Test</h1>\r\n    <section class=\"stats clearfix\">\r\n      <div class=\"stat-item\">\r\n        <div id=\"stats_rps\" class=\"rps\"></div>\r\n        <i class=\"fa fa-info-circle stats_rps\" title=\"Number of frames rendered in the last second(fps). App is more responsive when fps is higher.\"></i>\r\n      </div>\r\n      <div class=\"stat-item\">\r\n        <div id=\"stats_ms\" class=\"ms\"></div>\r\n        <i class=\"fa fa-info-circle\" title=\"Time to render the last frame (msec). Lower values are better.\"></i>\r\n      </div>\r\n      <div class=\"stat-item\">\r\n        <div id=\"stats_memory\" class=\"mem\"></div>\r\n        <i class=\"fa fa-info-circle\" title=\"Allocated memory in MB. Open Chrome with --enable-precise-memory-info to get precise informarion.\"></i>\r\n      </div>\r\n    </section>\r\n    <section class=\"counts clearfix\">\r\n      <div class=\"tickers\">\r\n        <h6>Tickers</h6>\r\n        <div id=\"stats_ticker_count\"><ticker-count count=\"$ctrl.tickerDataService.getTickerCount()\"></ticker-count></div>\r\n      </div>\r\n      <div class=\"dom\">\r\n        <h6>DOM Count</h6>\r\n        <div id=\"stats_dom_count\"></div>\r\n      </div>\r\n    </section>\r\n    <section class=\"replace-tickers action\">\r\n      <div class=\"title\">Simulate Switching views</div>\r\n      <button ng-click=\"$ctrl.startReplacingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.replaceTickersEnabled\">Start</button>\r\n      <button ng-click=\"$ctrl.stopReplacingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.replaceTickersEnabled\">Stop</button>\r\n      <div class=\"frequency\">\r\n        <span class=\"sub-title noselect\">Interval:&nbsp;</span>\r\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeReplaceTickerInterval($ctrl.controlPanelService.options.replaceTickerIntervalMSec - 50)\"></i>\r\n        <span  class=\"noselect\">{{$ctrl.controlPanelService.options.replaceTickerIntervalMSec}}ms</span>\r\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeReplaceTickerInterval($ctrl.controlPanelService.options.replaceTickerIntervalMSec + 50)\"></i>\r\n      </div>\r\n    </section>\r\n    <section class=\"add-tickers action\">\r\n      <div class=\"title\">Simulate Adds</div>\r\n      <button ng-click=\"$ctrl.startAddingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.addTickersEnabled\">Start</button>\r\n      <button ng-click=\"$ctrl.stopAddingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.addTickersEnabled\">Stop</button>\r\n      <div class=\"frequency\">\r\n        <span class=\"sub-title noselect\">Interval:&nbsp;</span>\r\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec - 50)\"></i>\r\n        <span  class=\"noselect\">{{$ctrl.controlPanelService.options.addTickerIntervalMSec}}ms</span>\r\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec + 50)\"></i>\r\n      </div>\r\n    </section>\r\n    <section class=\"update-prices action\">\r\n      <div  class=\"title\">Simulate Updates</div>\r\n      <button ng-click=\"$ctrl.startUpdatingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.updateValuesEnabled\">Start</button>\r\n      <button ng-click=\"$ctrl.stopUpdatingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.updateValuesEnabled\">Stop</button>\r\n      <div class=\"frequency\">\r\n        <span  class=\"sub-title noselect\">Interval:&nbsp;</span>\r\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec - 5)\"></i>\r\n        <span class=\"noselect\">{{$ctrl.controlPanelService.options.updateValueIntervalMSec}}ms</span>\r\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec + 5)\"></i>\r\n      </div>\r\n    </section>\r\n    <section class=\"delete-prices action\">\r\n      <div  class=\"title\">Simulate Deletes</div>\r\n      <button ng-click=\"$ctrl.startDeletingTickers()\" ng-disabled=\"!$ctrl.controlPanelService.options.deleteTickersEnabled\">Start</button>\r\n      <button ng-click=\"$ctrl.stopDeletingTickers()\" ng-disabled=\"$ctrl.controlPanelService.options.deleteTickersEnabled\">Stop</button>\r\n      <div class=\"frequency\">\r\n        <span  class=\"sub-title noselect\">Interval:&nbsp;</span>\r\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec - 5)\"></i>\r\n        <span class=\"noselect\">{{$ctrl.controlPanelService.options.deleteTickerIntervalMSec}}ms</span>\r\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec + 5)\"></i>\r\n      </div>\r\n    </section>\r\n</section>";
+module.exports = "<section class=\"control-panel\">\n    <h1>AngularJS Perf Test</h1>\n    <section class=\"stats clearfix\">\n      <div class=\"stat-item\">\n        <div id=\"stats_rps\" class=\"rps\"></div>\n        <i class=\"fa fa-info-circle stats_rps\" title=\"Number of frames rendered in the last second(fps). App is more responsive when fps is higher. (https://github.com/mrdoob/stats.js)\"></i>\n      </div>\n      <div class=\"stat-item\">\n        <div id=\"stats_ms\" class=\"ms\"></div>\n        <i class=\"fa fa-info-circle\" title=\"Time to render the last frame (msec). Lower values are better. (https://github.com/mrdoob/stats.js)\"></i>\n      </div>\n      <div class=\"stat-item\">\n        <div id=\"stats_memory\" class=\"mem\"></div>\n        <i class=\"fa fa-info-circle\" title=\"Allocated memory in MB. Open Chrome with --enable-precise-memory-info to get precise informarion. (https://github.com/mrdoob/stats.js)\"></i>\n      </div>\n    </section>\n    <section class=\"counts clearfix\">\n      <div class=\"tickers\">\n        <h6>Tickers</h6>\n        <div id=\"stats_ticker_count\"><ticker-count count=\"$ctrl.tickerDataService.getTickerCount()\"></ticker-count></div>\n      </div>\n      <div class=\"dom\">\n        <h6>DOM Count</h6>\n        <div id=\"stats_dom_count\"></div>\n      </div>\n    </section>\n    <section class=\"replace-tickers action\">\n      <div class=\"title\">Simulate Switching views</div>\n      <button ng-click=\"$ctrl.onStartAction($ctrl.controlPanelActionType.Replace)\" ng-disabled=\"!$ctrl.controlPanelService.options.replaceTickersEnabled\">Start</button>\n      <button ng-click=\"$ctrl.onStopAction($ctrl.controlPanelActionType.Replace)\" ng-disabled=\"$ctrl.controlPanelService.options.replaceTickersEnabled\">Stop</button>\n      <div class=\"frequency\">\n        <span class=\"sub-title noselect\">Interval:&nbsp;</span>\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.onChangeInterval($ctrl.controlPanelActionType.Replace, false)\"></i>\n        <span  class=\"noselect\">{{$ctrl.controlPanelService.options.replaceTickerIntervalMSec}}ms</span>\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.onChangeInterval($ctrl.controlPanelActionType.Replace, true)\"></i>\n      </div>\n    </section>\n    <section class=\"add-tickers action\">\n      <div class=\"title\">Simulate Adds</div>\n      <button ng-click=\"$ctrl.onStartAction($ctrl.controlPanelActionType.Add)\" ng-disabled=\"!$ctrl.controlPanelService.options.addTickersEnabled\">Start</button>\n      <button ng-click=\"$ctrl.onStopAction($ctrl.controlPanelActionType.Add)\" ng-disabled=\"$ctrl.controlPanelService.options.addTickersEnabled\">Stop</button>\n      <div class=\"frequency\">\n        <span class=\"sub-title noselect\">Interval:&nbsp;</span>\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.onChangeInterval($ctrl.controlPanelActionType.Add, false)\"></i>\n        <span  class=\"noselect\">{{$ctrl.controlPanelService.options.addTickerIntervalMSec}}ms</span>\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.onChangeInterval($ctrl.controlPanelActionType.Add, true)\"></i>\n      </div>\n    </section>\n    <section class=\"update-prices action\">\n      <div  class=\"title\">Simulate Updates</div>\n      <button ng-click=\"$ctrl.onStartAction($ctrl.controlPanelActionType.Update)\" ng-disabled=\"!$ctrl.controlPanelService.options.updateValuesEnabled\">Start</button>\n      <button ng-click=\"$ctrl.onStopAction($ctrl.controlPanelActionType.Update)\" ng-disabled=\"$ctrl.controlPanelService.options.updateValuesEnabled\">Stop</button>\n      <div class=\"frequency\">\n        <span  class=\"sub-title noselect\">Interval:&nbsp;</span>\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.onChangeInterval($ctrl.controlPanelActionType.Update, false)\"></i>\n        <span class=\"noselect\">{{$ctrl.controlPanelService.options.updateValueIntervalMSec}}ms</span>\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.onChangeInterval($ctrl.controlPanelActionType.Update, true)\"></i>\n      </div>\n    </section>\n    <section class=\"delete-prices action\">\n      <div  class=\"title\">Simulate Deletes</div>\n      <button ng-click=\"$ctrl.onStartAction($ctrl.controlPanelActionType.Delete)\" ng-disabled=\"!$ctrl.controlPanelService.options.deleteTickersEnabled\">Start</button>\n      <button ng-click=\"$ctrl.onStopAction($ctrl.controlPanelActionType.Delete)\" ng-disabled=\"$ctrl.controlPanelService.options.deleteTickersEnabled\">Stop</button>\n      <div class=\"frequency\">\n        <span  class=\"sub-title noselect\">Interval:&nbsp;</span>\n        <i class=\"fa fa-minus\" aria-hidden=\"true\" ng-click=\"$ctrl.onChangeInterval($ctrl.controlPanelActionType.Delete, false)\"></i>\n        <span class=\"noselect\">{{$ctrl.controlPanelService.options.deleteTickerIntervalMSec}}ms</span>\n        <i class=\"fa fa-plus\" aria-hidden=\"true\" ng-click=\"$ctrl.onChangeInterval($ctrl.controlPanelActionType.Delete, true)\"></i>\n      </div>\n    </section>\n</section>";
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const html = __webpack_require__(15);
+const html = __webpack_require__(17);
 ;
 class PriceController {
     constructor($scope, $timeout) {
@@ -57440,19 +57622,19 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"price\" ng-class=\"$ctrl.priceChanged ? 'price-changed' : ''\">\r\n  P:&nbsp;{{$ctrl.price.toFixed(2)}}(<span class=\"change\">{{$ctrl.change.toFixed(2)}}</span>)\r\n</div>";
+module.exports = "<div class=\"price\" ng-class=\"$ctrl.priceChanged ? 'price-changed' : ''\">\n  P:&nbsp;{{$ctrl.price.toFixed(2)}}(<span class=\"change\">{{$ctrl.change.toFixed(2)}}</span>)\n</div>";
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const html = __webpack_require__(17);
+const html = __webpack_require__(19);
 ;
 class SectorNameController {
     constructor() {
@@ -57470,19 +57652,19 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"sector\">\r\n  <div>{{::$ctrl.name}}</div>\r\n</section>";
+module.exports = "<section class=\"sector\">\n  <div>{{::$ctrl.name}}</div>\n</section>";
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const html = __webpack_require__(19);
+const html = __webpack_require__(21);
 ;
 class TickerListController {
     constructor(tickerDataService) {
@@ -57502,19 +57684,19 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"ticker-list\">\r\n  <ticker-tile ticker-data=\"tickerData\" ng-repeat=\"(ticker, tickerData) in $ctrl.getTickerHash() track by ticker\"></ticker-tile>\r\n</section>";
+module.exports = "<section class=\"ticker-list\">\n  <ticker-tile ticker-data=\"tickerData\" ng-repeat=\"(ticker, tickerData) in $ctrl.getTickerHash() track by ticker\"></ticker-tile>\n</section>";
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const html = __webpack_require__(21);
+const html = __webpack_require__(23);
 ;
 class TickerTileController {
     constructor() {
@@ -57532,19 +57714,19 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"ticker-tile\">\r\n  <h1 class=\"ticker\" title={{::$ctrl.tickerData.company}} ng-class=\"$ctrl.tickerData.change >= 0 ? 'up' : 'down'\">{{$ctrl.tickerData.ticker}}</h1>\r\n  <sector-name name=\"$ctrl.tickerData.sector\"></sector-name>\r\n  <price price=\"$ctrl.tickerData.price\" change=\"$ctrl.tickerData.change\"></price>\r\n  <volume volume=\"$ctrl.tickerData.volume\"></volume>\r\n  <sma class=\"sma\" label=\"sma20\" value=\"$ctrl.tickerData.sma20\"></sma>\r\n  <sma class=\"sma\" label=\"sma50\" value=\"$ctrl.tickerData.sma50\"></sma>\r\n  <sma class=\"sma\" label=\"sma200\" value=\"$ctrl.tickerData.sma200\"></sma>\r\n</section>";
+module.exports = "<section class=\"ticker-tile\">\n  <h1 class=\"ticker\" title={{::$ctrl.tickerData.company}} \n      ng-class=\"$ctrl.tickerData.change >= 0 ? 'up' : 'down'\">{{$ctrl.tickerData.ticker}}</h1>\n  <sector-name name=\"::$ctrl.tickerData.sector\"></sector-name>\n  <price price=\"$ctrl.tickerData.price\" change=\"$ctrl.tickerData.change\"></price>\n  <volume volume=\"$ctrl.tickerData.volume\"></volume>\n  <sma class=\"sma\" label=\"sma20\" value=\"$ctrl.tickerData.sma20\"></sma>\n  <sma class=\"sma\" label=\"sma50\" value=\"$ctrl.tickerData.sma50\"></sma>\n  <sma class=\"sma\" label=\"sma200\" value=\"$ctrl.tickerData.sma200\"></sma>\n</section>";
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const html = __webpack_require__(23);
+const html = __webpack_require__(25);
 ;
 class TickerCountController {
     constructor() {
@@ -57562,19 +57744,19 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = "<span>{{$ctrl.count}}</span>";
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const html = __webpack_require__(25);
+const html = __webpack_require__(27);
 ;
 class VolumeController {
     constructor($scope, $timeout) {
@@ -57605,19 +57787,19 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"volume\" ng-class=\"$ctrl.volumeChanged ? 'vol-changed' : ''\">\r\n  V:&nbsp;{{$ctrl.volume.toFixed(0)}}\r\n</div>\r\n";
+module.exports = "<div class=\"volume\" ng-class=\"$ctrl.volumeChanged ? 'vol-changed' : ''\">\n  V:&nbsp;{{$ctrl.volume.toFixed(0)}}\n</div>\n";
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const html = __webpack_require__(27);
+const html = __webpack_require__(29);
 ;
 class SmaController {
     constructor($scope, $timeout) {
@@ -57649,66 +57831,80 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sma\" ng-class=\"$ctrl.smaChanged ? 'sma-changed' : ''\">\r\n  {{::$ctrl.label}}:&nbsp;{{$ctrl.value.toFixed(2)}}\r\n</div>";
+module.exports = "<div class=\"sma\" ng-class=\"$ctrl.smaChanged ? 'sma-changed' : ''\">\n  {{::$ctrl.label}}:&nbsp;{{$ctrl.value.toFixed(2)}}\n</div>";
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+const config_1 = __webpack_require__(0);
 class ControlPanelService {
     constructor() {
         this.options = {
-            addTickersEnabled: true,
-            addTickerIntervalMSec: 100,
-            updateValuesEnabled: true,
-            updateValueIntervalMSec: 10,
-            deleteTickersEnabled: true,
-            deleteTickerIntervalMSec: 100,
             replaceTickersEnabled: true,
-            replaceTickerIntervalMSec: 500
+            replaceTickerIntervalMSec: config_1.ControlPanelDefaults.ReplaceTickerIntervalMSec,
+            addTickersEnabled: true,
+            addTickerIntervalMSec: config_1.ControlPanelDefaults.AddTickerIntervalMSec,
+            deleteTickersEnabled: true,
+            deleteTickerIntervalMSec: config_1.ControlPanelDefaults.DeleteTickerIntervalMSec,
+            updateValuesEnabled: true,
+            updateValuesIntervalMSec: config_1.ControlPanelDefaults.UpdateValuesIntervalMSec
         };
     }
-    toggleAddTickers(enable) {
-        this.options.addTickersEnabled = enable;
-    }
-    toggleUpdateValues(enable) {
-        this.options.updateValuesEnabled = enable;
-    }
-    toggleDeleteTickers(enable) {
-        this.options.deleteTickersEnabled = enable;
-    }
-    toggleReplaceTickers(enable) {
-        this.options.replaceTickersEnabled = enable;
-    }
-    changeAddTickerInterval(interval) {
-        if (interval < 50) {
-            interval = 50;
+    toggleAction(actionType, enable) {
+        switch (actionType) {
+            case config_1.ControlPanelActionType.Add:
+                this.options.addTickersEnabled = enable;
+                break;
+            case config_1.ControlPanelActionType.Delete:
+                this.options.deleteTickersEnabled = enable;
+                break;
+            case config_1.ControlPanelActionType.Replace:
+                this.options.replaceTickersEnabled = enable;
+                break;
+            case config_1.ControlPanelActionType.Update:
+                this.options.updateValuesEnabled = enable;
+                break;
         }
-        this.options.addTickerIntervalMSec = interval;
     }
-    changeUpdateTickerInterval(interval) {
-        if (interval < 5) {
-            interval = 5;
+    changeActionInterval(actionType, increment) {
+        let interval;
+        switch (actionType) {
+            case config_1.ControlPanelActionType.Add:
+                interval = this.options.addTickerIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.AddIncrementMsec;
+                if (interval < config_1.ControlPanelDefaults.AddMinIntervalMsec) {
+                    interval = config_1.ControlPanelDefaults.AddMinIntervalMsec;
+                }
+                this.options.addTickerIntervalMSec = interval;
+                break;
+            case config_1.ControlPanelActionType.Delete:
+                interval = this.options.deleteTickerIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.DeleteIncrementMsec;
+                if (interval < config_1.ControlPanelDefaults.DeleteMinIntervalMsec) {
+                    interval = config_1.ControlPanelDefaults.DeleteMinIntervalMsec;
+                }
+                this.options.deleteTickerIntervalMSec = interval;
+                break;
+            case config_1.ControlPanelActionType.Replace:
+                interval = this.options.replaceTickerIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.ReplaceIncrementMsec;
+                if (interval < config_1.ControlPanelDefaults.ReplaceMinIntervalMsec) {
+                    interval = config_1.ControlPanelDefaults.ReplaceMinIntervalMsec;
+                }
+                this.options.replaceTickerIntervalMSec = interval;
+                break;
+            case config_1.ControlPanelActionType.Update:
+                interval = this.options.updateValuesIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.UpdateIncrementMsec;
+                if (interval < config_1.ControlPanelDefaults.UpdateMinIntervalMsec) {
+                    interval = config_1.ControlPanelDefaults.UpdateMinIntervalMsec;
+                }
+                this.options.updateValuesIntervalMSec = interval;
+                break;
         }
-        this.options.updateValueIntervalMSec = interval;
-    }
-    changeDeleteTickerInterval(interval) {
-        if (interval < 20) {
-            interval = 20;
-        }
-        this.options.deleteTickerIntervalMSec = interval;
-    }
-    changeReplaceTickerInterval(interval) {
-        if (interval < 50) {
-            interval = 50;
-        }
-        this.options.replaceTickerIntervalMSec = interval;
     }
 }
 angular.module('perfTest')
@@ -57716,172 +57912,55 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const _ = __webpack_require__(0);
+const config_1 = __webpack_require__(0);
+const simulatedActions_1 = __webpack_require__(2);
 class ActionSimulator {
-    constructor(tickerDataService, controlPanelService, $interval) {
-        this.tickerDataService = tickerDataService;
+    constructor(serverDataManager, controlPanelService, tickerDataService, $interval) {
+        this.serverDataManager = serverDataManager;
         this.controlPanelService = controlPanelService;
+        this.tickerDataService = tickerDataService;
         this.$interval = $interval;
-        this.tickerDataFromServer = window.tickerData || []; //for simulation
-        this.newTickerIndexToAdd = -1;
-    }
-    addTickers(count) {
-        if (this.newTickerIndexToAdd >= this.tickerDataFromServer.length - 1) {
-            this.tickerDataService.clearAllData();
-            this.newTickerIndexToAdd = -1;
-        }
-        _.times(count, () => {
-            if (this.newTickerIndexToAdd < this.tickerDataFromServer.length - 1) {
-                this.newTickerIndexToAdd++;
-                var tickerItem = this.tickerDataFromServer[this.newTickerIndexToAdd];
-                this.tickerDataService.addTicker({
-                    ticker: tickerItem.Ticker,
-                    company: tickerItem.Company,
-                    change: tickerItem.Change || 0,
-                    sector: tickerItem.Sector,
-                    last: tickerItem.Price || 0,
-                    price: tickerItem.Price || 0,
-                    sma20: Math.abs(tickerItem.SMA20 || 0),
-                    sma50: Math.abs(tickerItem.SMA50 || 0),
-                    sma200: Math.abs(tickerItem.SMA200 || 0),
-                    volume: tickerItem.Volume || 0,
-                    avgVol: tickerItem.AvgVol
-                });
-            }
-            else {
-                this.stopAddingTickers();
-                this.controlPanelService.toggleAddTickers(true);
-                this.stopReplacingTickers();
-                this.controlPanelService.toggleReplaceTickers(true);
-                return false;
-            }
+        this.actionMapper = {};
+        this.actionMapper[config_1.ControlPanelActionType.Replace] = new simulatedActions_1.ReplaceTickerAction($interval, controlPanelService, tickerDataService, this.serverDataManager, () => {
+            this.resetAddAction();
+            this.resetDeleteAction();
         });
-    }
-    deleteTickers(count) {
-        _.times(count, () => {
-            if (this.tickerDataService.getTickerCount() > 0) {
-                this.tickerDataService.removeTicker(this.tickerDataService.tickerList[this.tickerDataService.tickerList.length - 1]);
-            }
-            else {
-                this.stopDeletingTickers();
-                this.controlPanelService.toggleDeleteTickers(true);
-                return false;
-            }
+        this.actionMapper[config_1.ControlPanelActionType.Add] = new simulatedActions_1.AddTickerAction($interval, controlPanelService, tickerDataService, this.serverDataManager, () => {
+            this.resetReplaceAction();
+            this.resetDeleteAction();
         });
+        this.actionMapper[config_1.ControlPanelActionType.Delete] = new simulatedActions_1.DeleteTickerAction($interval, controlPanelService, tickerDataService, () => {
+            this.resetReplaceAction();
+            this.resetAddAction();
+        });
+        this.actionMapper[config_1.ControlPanelActionType.Update] = new simulatedActions_1.UpdateTickerAction($interval, controlPanelService, tickerDataService);
     }
-    replaceTickers(count) {
-        this.tickerDataService.clearAllData();
-        this.addTickers(count);
+    resetReplaceAction() {
+        this.actionMapper[config_1.ControlPanelActionType.Replace].clearAction();
+        this.controlPanelService.toggleAction(config_1.ControlPanelActionType.Replace, true);
     }
-    upDateTickerData() {
-        const randomActionIndex = Math.floor(Math.random() * 2) + 1; // 1-2
-        const randomTickerIndex = this.tickerDataService.tickerList.length > 0 ? Math.floor(Math.random() * this.tickerDataService.tickerList.length) : -1;
-        if (randomTickerIndex === -1) {
-            this.stopUpdatingTickers();
-            this.controlPanelService.toggleUpdateValues(true);
-            return;
-        }
-        var dispatchUpdateAction = ((actionIndex, randomTickerIndex) => {
-            const ticker = this.tickerDataService.tickerList[randomTickerIndex];
-            const tickerDataItem = this.tickerDataService.tickerHash[ticker];
-            let multiplier = Math.random() > 0.5 ? 1 : -1;
-            let changePercent = Math.floor(Math.random() * 4); //0 - 3
-            switch (actionIndex) {
-                case 1:
-                    const currentPrice = this.tickerDataService.tickerHash[ticker].price;
-                    const newPrice = currentPrice + (multiplier * (currentPrice * changePercent) / 100);
-                    const newPriceChange = newPrice - tickerDataItem.price;
-                    this.tickerDataService.updatePrice(ticker, newPrice, newPriceChange);
-                    break;
-                case 2:
-                    const currentVol = tickerDataItem.volume;
-                    const newVol = Math.floor(currentVol + (multiplier * (currentVol * changePercent) / 100));
-                    this.tickerDataService.updateVolume(ticker, newVol);
-                    break;
-            }
-        })(randomActionIndex, randomTickerIndex);
+    resetAddAction() {
+        this.actionMapper[config_1.ControlPanelActionType.Add].clearAction();
+        this.controlPanelService.toggleAction(config_1.ControlPanelActionType.Add, true);
     }
-    scheduleAddTicker() {
-        this.clearAddTickerPromise = this.$interval(() => this.addTickers(50), this.controlPanelService.options.addTickerIntervalMSec || 100);
+    resetDeleteAction() {
+        this.actionMapper[config_1.ControlPanelActionType.Delete].clearAction();
+        this.controlPanelService.toggleAction(config_1.ControlPanelActionType.Delete, true);
     }
-    clearAddTicker() {
-        this.clearAddTickerPromise && this.$interval.cancel(this.clearAddTickerPromise);
-        this.clearAddTickerPromise = null;
+    startAction(actionType) {
+        this.actionMapper[actionType].scheduleAction();
     }
-    scheduleUpdateTicker() {
-        this.clearUpdateTickerPromise = this.$interval(() => this.upDateTickerData(), this.controlPanelService.options.updateValueIntervalMSec || 100);
+    stopAction(actionType) {
+        this.actionMapper[actionType].clearAction();
     }
-    clearUpdateTicker() {
-        this.clearUpdateTickerPromise && this.$interval.cancel(this.clearUpdateTickerPromise);
-        this.clearUpdateTickerPromise = null;
-    }
-    scheduleDeleteTicker() {
-        this.clearDeleteTickerPromise = this.$interval(() => this.deleteTickers(50), this.controlPanelService.options.deleteTickerIntervalMSec || 100);
-    }
-    clearDeleteTicker() {
-        this.clearDeleteTickerPromise && this.$interval.cancel(this.clearDeleteTickerPromise);
-        this.clearDeleteTickerPromise = null;
-    }
-    scheduleReplaceTicker() {
-        this.clearReplaceTickerPromise = this.$interval(() => this.replaceTickers(200), this.controlPanelService.options.replaceTickerIntervalMSec || 100);
-    }
-    clearReplaceTicker() {
-        this.clearReplaceTickerPromise && this.$interval.cancel(this.clearReplaceTickerPromise);
-        this.clearReplaceTickerPromise = null;
-    }
-    resetAddTickerInterval() {
-        if (this.clearAddTickerPromise) {
-            this.clearAddTicker();
-            this.scheduleAddTicker();
-        }
-    }
-    resetUpdateTickerInterval() {
-        if (this.clearUpdateTickerPromise) {
-            this.clearUpdateTicker();
-            this.scheduleUpdateTicker();
-        }
-    }
-    resetDeleteTickerInterval() {
-        if (this.clearDeleteTickerPromise) {
-            this.clearDeleteTicker();
-            this.scheduleDeleteTicker();
-        }
-    }
-    resetReplaceTickerInterval() {
-        if (this.clearUpdateTickerPromise) {
-            this.clearReplaceTicker();
-            this.scheduleReplaceTicker();
-        }
-    }
-    startAddingTickers() {
-        this.scheduleAddTicker();
-    }
-    stopAddingTickers() {
-        this.clearAddTicker();
-    }
-    startUpdatingTickers() {
-        this.scheduleUpdateTicker();
-    }
-    stopUpdatingTickers() {
-        this.clearUpdateTicker();
-    }
-    startReplacingTickers() {
-        this.scheduleReplaceTicker();
-    }
-    stopReplacingTickers() {
-        this.clearReplaceTicker();
-    }
-    startDeletingTickers() {
-        this.scheduleDeleteTicker();
-    }
-    stopDeletingTickers() {
-        this.clearDeleteTicker();
+    resetInterval(actionType) {
+        this.actionMapper[actionType].resetAction();
     }
 }
 angular.module('perfTest')
@@ -57889,7 +57968,7 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports) {
 
 var g;
@@ -57916,7 +57995,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -57944,13 +58023,13 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const _ = __webpack_require__(0);
+const _ = __webpack_require__(1);
 class TickerDataService {
     constructor() {
         this.tickerHash = {};
@@ -57959,19 +58038,27 @@ class TickerDataService {
     getTickerCount() {
         return this.tickerList.length;
     }
-    addTicker(tickerData) {
-        if (!this.tickerHash[tickerData.ticker]) {
-            this.tickerHash[tickerData.ticker] = tickerData;
-            this.tickerList.push(tickerData.ticker);
-        }
+    replaceTickers(tickerDataList) {
+        this.clearAllTickers();
+        this.addTickers(tickerDataList);
     }
-    removeTicker(ticker) {
-        if (this.tickerHash[ticker]) {
-            delete this.tickerHash[ticker];
-            _.pull(this.tickerList, ticker);
-        }
+    addTickers(tickerDataList) {
+        _.each(tickerDataList, (tickerData) => {
+            if (!this.tickerHash[tickerData.ticker]) {
+                this.tickerList.push(tickerData.ticker);
+                this.tickerHash[tickerData.ticker] = tickerData;
+            }
+        });
     }
-    clearAllData() {
+    deleteTickers(tickers) {
+        _.each(tickers, (ticker) => {
+            if (this.tickerHash[ticker]) {
+                delete this.tickerHash[ticker];
+                _.pull(this.tickerList, ticker);
+            }
+        });
+    }
+    clearAllTickers() {
         this.tickerList = [];
         this.tickerHash = {};
     }
@@ -57994,7 +58081,55 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 33 */
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const _ = __webpack_require__(1);
+class ServerDataManager {
+    constructor() {
+        this.newTickerIndexToAdd = -1;
+        this.tickerDataFromServer = window.tickerData || [];
+    }
+    resetIndex() {
+        this.newTickerIndexToAdd = -1;
+    }
+    hasReachedEnd() {
+        return (this.newTickerIndexToAdd >= this.tickerDataFromServer.length - 1);
+    }
+    getNewTickers(count) {
+        let newTickers = [];
+        _.times(count, () => {
+            if (this.newTickerIndexToAdd < this.tickerDataFromServer.length - 1) {
+                this.newTickerIndexToAdd++;
+                var tickerItem = this.tickerDataFromServer[this.newTickerIndexToAdd];
+                newTickers.push({
+                    ticker: tickerItem.Ticker,
+                    company: tickerItem.Company,
+                    change: tickerItem.Change || 0,
+                    sector: tickerItem.Sector,
+                    last: tickerItem.Price || 0,
+                    price: tickerItem.Price || 0,
+                    sma20: Math.abs(tickerItem.SMA20 || 0),
+                    sma50: Math.abs(tickerItem.SMA50 || 0),
+                    sma200: Math.abs(tickerItem.SMA200 || 0),
+                    volume: tickerItem.Volume || 0,
+                    avgVol: tickerItem.AvgVol
+                });
+            }
+        });
+        return newTickers;
+    }
+}
+exports.ServerDataManager = ServerDataManager;
+angular.module('perfTest')
+    .service('serverDataManager', ServerDataManager);
+
+
+/***/ }),
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58011,7 +58146,7 @@ angular.module('perfTest')
 
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

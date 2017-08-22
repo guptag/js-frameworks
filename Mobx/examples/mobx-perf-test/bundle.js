@@ -4712,7 +4712,7 @@ exports.ControlPanelDefaults = {
 };
 exports.ActionDefaults = {
     AddActionTickerCount: 50,
-    ReplaceActionTickerCount: 200,
+    ReplaceActionTickerCount: 150,
     DeleteActionTickerCount: 50
 };
 
@@ -10774,14 +10774,8 @@ class TickerDataViewModel {
         this.tickerList.clear();
     }
     replaceTickers(tickerDataList) {
-        this.tickerHash.clear();
-        this.tickerList.clear();
-        _.each(tickerDataList, (tickerData) => {
-            if (!this.tickerHash.get(tickerData.ticker)) {
-                this.tickerHash.set(tickerData.ticker, tickerData);
-                this.tickerList.push(tickerData.ticker);
-            }
-        });
+        this.clearAllTickers();
+        this.addTickers(tickerDataList);
     }
     deleteTickers(tickers) {
         _.each(tickers, (ticker) => {
@@ -31053,28 +31047,28 @@ class ControlPanelViewModel {
         let interval;
         switch (actionType) {
             case config_1.ControlPanelActionType.Add:
-                interval = exports.controlPanelModel.options.addTickerIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.AddIncrementMsec;
+                interval = this.options.addTickerIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.AddIncrementMsec;
                 if (interval < config_1.ControlPanelDefaults.AddMinIntervalMsec) {
                     interval = config_1.ControlPanelDefaults.AddMinIntervalMsec;
                 }
                 this.options.addTickerIntervalMSec = interval;
                 break;
             case config_1.ControlPanelActionType.Delete:
-                interval = exports.controlPanelModel.options.deleteTickerIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.DeleteIncrementMsec;
+                interval = this.options.deleteTickerIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.DeleteIncrementMsec;
                 if (interval < config_1.ControlPanelDefaults.DeleteMinIntervalMsec) {
                     interval = config_1.ControlPanelDefaults.DeleteMinIntervalMsec;
                 }
                 this.options.deleteTickerIntervalMSec = interval;
                 break;
             case config_1.ControlPanelActionType.Replace:
-                interval = exports.controlPanelModel.options.replaceTickerIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.ReplaceIncrementMsec;
+                interval = this.options.replaceTickerIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.ReplaceIncrementMsec;
                 if (interval < config_1.ControlPanelDefaults.ReplaceMinIntervalMsec) {
                     interval = config_1.ControlPanelDefaults.ReplaceMinIntervalMsec;
                 }
                 this.options.replaceTickerIntervalMSec = interval;
                 break;
             case config_1.ControlPanelActionType.Update:
-                interval = exports.controlPanelModel.options.updateValuesIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.UpdateIncrementMsec;
+                interval = this.options.updateValuesIntervalMSec + (increment ? 1 : -1) * config_1.ControlPanelDefaults.UpdateIncrementMsec;
                 if (interval < config_1.ControlPanelDefaults.UpdateMinIntervalMsec) {
                     interval = config_1.ControlPanelDefaults.UpdateMinIntervalMsec;
                 }
@@ -42867,24 +42861,24 @@ let ControlPanel = class ControlPanel extends React.Component {
         this.resetStats = function () { };
     }
     componentDidMount() {
-        var statsRps = new window["Stats"]();
-        statsRps.showPanel(0);
-        var statsMs = new window["Stats"]();
-        statsMs.showPanel(1);
-        var statsMemory = new window["Stats"]();
-        statsMemory.showPanel(2);
-        document.getElementById("stats_rps").appendChild(statsRps.dom);
+        var statsFps = new window["Stats"](0);
+        statsFps.showPanel();
+        var statsMs = new window["Stats"](1);
+        statsMs.showPanel();
+        var statsMemory = new window["Stats"](2);
+        statsMemory.showPanel();
+        document.getElementById("stats_rps").appendChild(statsFps.dom);
         document.getElementById("stats_ms").appendChild(statsMs.dom);
         document.getElementById("stats_memory").appendChild(statsMemory.dom);
         requestAnimationFrame(function loop() {
-            statsRps.update();
+            statsFps.update();
             statsMs.update();
             statsMemory.update();
             document.getElementById("stats_dom_count").innerText = document.getElementsByTagName('*').length.toString();
             requestAnimationFrame(loop);
         });
         this.resetStats = () => {
-            statsRps.reset();
+            statsFps.reset();
             statsMs.reset();
             statsMemory.reset();
         };
@@ -42908,13 +42902,13 @@ let ControlPanel = class ControlPanel extends React.Component {
             React.createElement("section", { className: "stats clearfix" },
                 React.createElement("div", { className: "stat-item" },
                     React.createElement("div", { id: "stats_rps", className: "rps" }),
-                    React.createElement("i", { className: "fa fa-info-circle stats_rps", title: "Number of frames rendered in the last second(fps). App is more responsive when fps is higher." })),
+                    React.createElement("i", { className: "fa fa-info-circle stats_rps", title: "Number of frames rendered in the last second(fps). App is more responsive when fps is higher. (https://github.com/mrdoob/stats.js)" })),
                 React.createElement("div", { className: "stat-item" },
                     React.createElement("div", { id: "stats_ms", className: "ms" }),
-                    React.createElement("i", { className: "fa fa-info-circle", title: "Time to render the frame (msec). Lower values are better." })),
+                    React.createElement("i", { className: "fa fa-info-circle", title: "Time to render the frame (msec). Lower values are better. (https://github.com/mrdoob/stats.js)" })),
                 React.createElement("div", { className: "stat-item" },
                     React.createElement("div", { id: "stats_memory", className: "mem" }),
-                    React.createElement("i", { className: "fa fa-info-circle", title: "Allocated memory in MB. Open Chrome with --enable-precise-memory-info to get precise informarion." }))),
+                    React.createElement("i", { className: "fa fa-info-circle", title: "Allocated memory in MB. Open Chrome with --enable-precise-memory-info to get precise informarion. (https://github.com/mrdoob/stats.js)" }))),
             React.createElement("section", { className: "counts clearfix" },
                 React.createElement("div", { className: "tickers" },
                     React.createElement("h6", null, "Tickers"),
@@ -42993,9 +42987,18 @@ class ActionSimulator {
     constructor() {
         this.actionMapper = {};
         this.serverDataManager = new serverDataManager_1.ServerDataManager();
-        this.actionMapper[config_1.ControlPanelActionType.Replace] = new simulatedActions_1.ReplaceTickerAction(ControlPanelModel_1.controlPanelModel, TickerDataModel_1.tickerDataModel, this.serverDataManager, () => this.resetAddAction());
-        this.actionMapper[config_1.ControlPanelActionType.Add] = new simulatedActions_1.AddTickerAction(ControlPanelModel_1.controlPanelModel, TickerDataModel_1.tickerDataModel, this.serverDataManager, () => this.resetReplaceAction());
-        this.actionMapper[config_1.ControlPanelActionType.Delete] = new simulatedActions_1.DeleteTickerAction(ControlPanelModel_1.controlPanelModel, TickerDataModel_1.tickerDataModel);
+        this.actionMapper[config_1.ControlPanelActionType.Replace] = new simulatedActions_1.ReplaceTickerAction(ControlPanelModel_1.controlPanelModel, TickerDataModel_1.tickerDataModel, this.serverDataManager, () => {
+            this.resetAddAction();
+            this.resetDeleteAction();
+        });
+        this.actionMapper[config_1.ControlPanelActionType.Add] = new simulatedActions_1.AddTickerAction(ControlPanelModel_1.controlPanelModel, TickerDataModel_1.tickerDataModel, this.serverDataManager, () => {
+            this.resetReplaceAction();
+            this.resetDeleteAction();
+        });
+        this.actionMapper[config_1.ControlPanelActionType.Delete] = new simulatedActions_1.DeleteTickerAction(ControlPanelModel_1.controlPanelModel, TickerDataModel_1.tickerDataModel, () => {
+            this.resetReplaceAction();
+            this.resetAddAction();
+        });
         this.actionMapper[config_1.ControlPanelActionType.Update] = new simulatedActions_1.UpdateTickerAction(ControlPanelModel_1.controlPanelModel, TickerDataModel_1.tickerDataModel);
     }
     resetReplaceAction() {
@@ -43005,6 +43008,10 @@ class ActionSimulator {
     resetAddAction() {
         this.actionMapper[config_1.ControlPanelActionType.Add].clearAction();
         ControlPanelModel_1.controlPanelModel.toggleAction(config_1.ControlPanelActionType.Add, true);
+    }
+    resetDeleteAction() {
+        this.actionMapper[config_1.ControlPanelActionType.Delete].clearAction();
+        ControlPanelModel_1.controlPanelModel.toggleAction(config_1.ControlPanelActionType.Delete, true);
     }
     startAction(actionType) {
         this.startPerf();
@@ -43018,7 +43025,7 @@ class ActionSimulator {
         this.actionMapper[actionType].resetAction();
     }
     startPerf() {
-        // eanble for debugging; will impact perf/memory numbers
+        // enable for debugging; will impact perf/memory numbers
         /*if (!this.measuringPerf) {
           this.measuringPerf = true;
           Perf.start();
@@ -44221,14 +44228,18 @@ const config_1 = __webpack_require__(30);
  * Simulates Add Tickers
  */
 class AddTickerAction {
-    constructor(controlPanelViewModel, tickerDataViewModel, serverDataManager, cbWhenReachedEnd) {
+    constructor(controlPanelViewModel, tickerDataViewModel, serverDataManager, resetOtherActions) {
         this.controlPanelViewModel = controlPanelViewModel;
         this.tickerDataViewModel = tickerDataViewModel;
         this.serverDataManager = serverDataManager;
-        this.cbWhenReachedEnd = cbWhenReachedEnd;
+        this.resetOtherActions = resetOtherActions;
     }
-    scheduleAction() {
-        this.cbWhenReachedEnd && this.cbWhenReachedEnd();
+    scheduleAction(clearExistingData = true) {
+        if (clearExistingData) {
+            this.tickerDataViewModel.clearAllTickers();
+            this.serverDataManager.resetIndex();
+        }
+        this.resetOtherActions && this.resetOtherActions();
         this.clearAddTickerTimerId = setInterval(() => this.addTickers(), this.controlPanelViewModel.options.addTickerIntervalMSec);
     }
     clearAction() {
@@ -44238,22 +44249,17 @@ class AddTickerAction {
     resetAction() {
         if (this.clearAddTickerTimerId) {
             this.clearAction();
-            this.scheduleAction();
+            this.scheduleAction(false);
         }
     }
     addTickers() {
-        // already at the end, clear the data and start
-        if (this.serverDataManager.hasReachedEnd()) {
-            this.tickerDataViewModel.clearAllTickers();
-            this.serverDataManager.resetIndex();
-        }
         var newTickers = this.serverDataManager.getNewTickers(config_1.ActionDefaults.AddActionTickerCount);
         this.tickerDataViewModel.addTickers(newTickers);
         // reached the end, reset the buttons
         if (this.serverDataManager.hasReachedEnd()) {
             this.clearAction();
             this.controlPanelViewModel.toggleAction(config_1.ControlPanelActionType.Add, true);
-            this.cbWhenReachedEnd && this.cbWhenReachedEnd();
+            this.resetOtherActions && this.resetOtherActions();
         }
     }
 }
@@ -44262,14 +44268,18 @@ exports.AddTickerAction = AddTickerAction;
  * Simulates Replace Tickers
  */
 class ReplaceTickerAction {
-    constructor(controlPanelViewModel, tickerDataViewModel, serverDataManager, cbWhenReachedEnd) {
+    constructor(controlPanelViewModel, tickerDataViewModel, serverDataManager, resetOtherActions) {
         this.controlPanelViewModel = controlPanelViewModel;
         this.tickerDataViewModel = tickerDataViewModel;
         this.serverDataManager = serverDataManager;
-        this.cbWhenReachedEnd = cbWhenReachedEnd;
+        this.resetOtherActions = resetOtherActions;
     }
-    scheduleAction() {
-        this.cbWhenReachedEnd && this.cbWhenReachedEnd();
+    scheduleAction(clearExistingData = true) {
+        if (clearExistingData) {
+            this.tickerDataViewModel.clearAllTickers();
+            this.serverDataManager.resetIndex();
+        }
+        this.resetOtherActions && this.resetOtherActions();
         this.clearReplaceTickerTimerId = setInterval(() => this.replaceTickers(), this.controlPanelViewModel.options.replaceTickerIntervalMSec);
     }
     clearAction() {
@@ -44279,22 +44289,17 @@ class ReplaceTickerAction {
     resetAction() {
         if (this.clearReplaceTickerTimerId) {
             this.clearAction();
-            this.scheduleAction();
+            this.scheduleAction(false);
         }
     }
     replaceTickers() {
-        // already at the end, clear the data and start
-        if (this.serverDataManager.hasReachedEnd()) {
-            this.tickerDataViewModel.clearAllTickers();
-            this.serverDataManager.resetIndex();
-        }
         var newTickers = this.serverDataManager.getNewTickers(config_1.ActionDefaults.ReplaceActionTickerCount);
         this.tickerDataViewModel.replaceTickers(newTickers);
         // reached the end, reset the buttons
         if (this.serverDataManager.hasReachedEnd()) {
             this.clearAction();
             this.controlPanelViewModel.toggleAction(config_1.ControlPanelActionType.Replace, true);
-            this.cbWhenReachedEnd && this.cbWhenReachedEnd();
+            this.resetOtherActions && this.resetOtherActions();
         }
     }
 }
@@ -44303,11 +44308,13 @@ exports.ReplaceTickerAction = ReplaceTickerAction;
  * Simulates Delete Tickers
  */
 class DeleteTickerAction {
-    constructor(controlPanelViewModel, tickerDataViewModel) {
+    constructor(controlPanelViewModel, tickerDataViewModel, resetOtherActions) {
         this.controlPanelViewModel = controlPanelViewModel;
         this.tickerDataViewModel = tickerDataViewModel;
+        this.resetOtherActions = resetOtherActions;
     }
     scheduleAction() {
+        this.resetOtherActions && this.resetOtherActions();
         this.clearDeleteTickerTimerId = setInterval(() => this.deleteTickers(), this.controlPanelViewModel.options.deleteTickerIntervalMSec || 100);
     }
     clearAction() {
