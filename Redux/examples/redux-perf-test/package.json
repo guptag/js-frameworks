@@ -2,6 +2,11 @@
   "name": "redux-perf-test",
   "version": "1.0.0",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guptag/js-frameworks.git"
+  },
+  "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
     "setup": "npm install",
