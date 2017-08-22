@@ -34,7 +34,7 @@ class ActionSimulator {
 
     this.actionMapper[ControlPanelActionType.Delete] = new DeleteTickerAction(appStore, () => { 
       this.resetAddAction(); 
-      this.resetDeleteAction() 
+      this.resetReplaceAction() 
     });
     
     this.actionMapper[ControlPanelActionType.Update] = new UpdateTickerAction(appStore);
