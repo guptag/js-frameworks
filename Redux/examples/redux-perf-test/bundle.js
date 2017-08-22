@@ -40914,7 +40914,7 @@ class ActionSimulator {
         });
         this.actionMapper[config_1.ControlPanelActionType.Delete] = new simulatedActions_1.DeleteTickerAction(appStore_1.default, () => {
             this.resetAddAction();
-            this.resetDeleteAction();
+            this.resetReplaceAction();
         });
         this.actionMapper[config_1.ControlPanelActionType.Update] = new simulatedActions_1.UpdateTickerAction(appStore_1.default);
     }
