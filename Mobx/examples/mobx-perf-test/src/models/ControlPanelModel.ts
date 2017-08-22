@@ -51,22 +51,22 @@ class ControlPanelViewModel implements IControlPanelViewModel {
     let interval: number;
     switch (actionType) {
       case ControlPanelActionType.Add:
-        interval = controlPanelModel.options.addTickerIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.AddIncrementMsec;
+        interval = this.options.addTickerIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.AddIncrementMsec;
         if (interval < ControlPanelDefaults.AddMinIntervalMsec ) { interval = ControlPanelDefaults.AddMinIntervalMsec;}
         this.options.addTickerIntervalMSec = interval;
         break;
       case ControlPanelActionType.Delete:
-        interval = controlPanelModel.options.deleteTickerIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.DeleteIncrementMsec;
+        interval = this.options.deleteTickerIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.DeleteIncrementMsec;
         if (interval < ControlPanelDefaults.DeleteMinIntervalMsec) { interval = ControlPanelDefaults.DeleteMinIntervalMsec;}
         this.options.deleteTickerIntervalMSec = interval;
         break;
       case ControlPanelActionType.Replace:
-         interval = controlPanelModel.options.replaceTickerIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.ReplaceIncrementMsec;
+         interval = this.options.replaceTickerIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.ReplaceIncrementMsec;
          if (interval < ControlPanelDefaults.ReplaceMinIntervalMsec ) {interval = ControlPanelDefaults.ReplaceMinIntervalMsec;}
         this.options.replaceTickerIntervalMSec = interval;
         break;
       case ControlPanelActionType.Update:
-        interval = controlPanelModel.options.updateValuesIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.UpdateIncrementMsec;
+        interval = this.options.updateValuesIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.UpdateIncrementMsec;
         if (interval < ControlPanelDefaults.UpdateMinIntervalMsec) { interval = ControlPanelDefaults.UpdateMinIntervalMsec;}
         this.options.updateValuesIntervalMSec = interval;
         break;

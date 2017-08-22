@@ -16,9 +16,27 @@ class ActionSimulator {
 
   constructor() {
     this.serverDataManager = new ServerDataManager();
-    this.actionMapper[ControlPanelActionType.Replace] = new ReplaceTickerAction(appStore, this.serverDataManager, () => this.resetAddAction());
-    this.actionMapper[ControlPanelActionType.Add] = new AddTickerAction(appStore, this.serverDataManager, () => this.resetReplaceAction());
-    this.actionMapper[ControlPanelActionType.Delete] = new DeleteTickerAction(appStore);
+    this.actionMapper[ControlPanelActionType.Replace] = new ReplaceTickerAction(
+      appStore, 
+      this.serverDataManager, 
+      () => { 
+        this.resetAddAction(); 
+        this.resetDeleteAction() 
+      });
+    
+    this.actionMapper[ControlPanelActionType.Add] = new AddTickerAction(
+      appStore, 
+      this.serverDataManager, 
+      () => { 
+        this.resetReplaceAction(); 
+        this.resetDeleteAction(); 
+      });
+
+    this.actionMapper[ControlPanelActionType.Delete] = new DeleteTickerAction(appStore, () => { 
+      this.resetAddAction(); 
+      this.resetDeleteAction() 
+    });
+    
     this.actionMapper[ControlPanelActionType.Update] = new UpdateTickerAction(appStore);
   }
 
@@ -30,6 +48,11 @@ class ActionSimulator {
   resetAddAction() {
     this.actionMapper[ControlPanelActionType.Add].clearAction();
     appStore.dispatch(actions.controlPanel.createToggleAction(ControlPanelActionType.Add, true));
+  }
+
+  resetDeleteAction() {
+    this.actionMapper[ControlPanelActionType.Delete].clearAction();
+    appStore.dispatch(actions.controlPanel.createToggleAction(ControlPanelActionType.Delete, true));
   }
 
 

@@ -41,4 +41,9 @@ import './components/ticker-list/sma';
 import './services/controlPanelService';
 import './services/actionSimulator';
 import './services/tickerDataService';
+import './services/serverDataManager';
+import './services/simulatedActions';
+
+import './config/config';
+
 import './components/app';

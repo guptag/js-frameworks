@@ -17,9 +17,30 @@ class ActionSimulator {
 
   constructor() {
     this.serverDataManager = new ServerDataManager();
-    this.actionMapper[ControlPanelActionType.Replace] = new ReplaceTickerAction(controlPanelModel, tickerDataModel, this.serverDataManager, () => this.resetAddAction());
-    this.actionMapper[ControlPanelActionType.Add] = new AddTickerAction(controlPanelModel, tickerDataModel, this.serverDataManager, () => this.resetReplaceAction());
-    this.actionMapper[ControlPanelActionType.Delete] = new DeleteTickerAction(controlPanelModel, tickerDataModel);
+    this.actionMapper[ControlPanelActionType.Replace] = new ReplaceTickerAction(
+      controlPanelModel, 
+      tickerDataModel, 
+      this.serverDataManager, () => { 
+        this.resetAddAction(); 
+        this.resetDeleteAction(); 
+      });
+
+    this.actionMapper[ControlPanelActionType.Add] = new AddTickerAction(
+      controlPanelModel, 
+      tickerDataModel, 
+      this.serverDataManager, () => {
+        this.resetReplaceAction();
+        this.resetDeleteAction(); 
+      });
+
+    this.actionMapper[ControlPanelActionType.Delete] = new DeleteTickerAction(
+      controlPanelModel, 
+      tickerDataModel, 
+      () => {
+        this.resetReplaceAction();
+        this.resetAddAction(); 
+      });
+
     this.actionMapper[ControlPanelActionType.Update] = new UpdateTickerAction(controlPanelModel, tickerDataModel);
   }
 
@@ -31,6 +52,11 @@ class ActionSimulator {
   resetAddAction() {
     this.actionMapper[ControlPanelActionType.Add].clearAction();
     controlPanelModel.toggleAction(ControlPanelActionType.Add, true);
+  }
+
+  resetDeleteAction() {
+    this.actionMapper[ControlPanelActionType.Delete].clearAction();
+    controlPanelModel.toggleAction(ControlPanelActionType.Delete, true);
   }
 
 

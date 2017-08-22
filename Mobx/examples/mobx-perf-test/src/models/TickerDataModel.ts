@@ -52,14 +52,8 @@ class TickerDataViewModel implements ITickerDataViewModel {
   }
 
   @action public replaceTickers(tickerDataList: ITickerData[]): void {
-    this.tickerHash.clear();
-    this.tickerList.clear();
-    _.each(tickerDataList, (tickerData: ITickerData) => {
-      if (!this.tickerHash.get(tickerData.ticker)) {
-        this.tickerHash.set(tickerData.ticker, tickerData);
-        this.tickerList.push(tickerData.ticker);
-      }
-    });
+    this.clearAllTickers();
+    this.addTickers(tickerDataList);
   }
 
   @action public deleteTickers(tickers: string[]): void {

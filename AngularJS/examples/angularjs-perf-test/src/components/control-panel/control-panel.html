@@ -26,46 +26,46 @@
     </section>
     <section class="replace-tickers action">
       <div class="title">Simulate Switching views</div>
-      <button ng-click="$ctrl.startReplacingTickers()" ng-disabled="!$ctrl.controlPanelService.options.replaceTickersEnabled">Start</button>
-      <button ng-click="$ctrl.stopReplacingTickers()" ng-disabled="$ctrl.controlPanelService.options.replaceTickersEnabled">Stop</button>
+      <button ng-click="$ctrl.onStartAction($ctrl.controlPanelActionType.Replace)" ng-disabled="!$ctrl.controlPanelService.options.replaceTickersEnabled">Start</button>
+      <button ng-click="$ctrl.onStopAction($ctrl.controlPanelActionType.Replace)" ng-disabled="$ctrl.controlPanelService.options.replaceTickersEnabled">Stop</button>
       <div class="frequency">
         <span class="sub-title noselect">Interval:&nbsp;</span>
-        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.changeReplaceTickerInterval($ctrl.controlPanelService.options.replaceTickerIntervalMSec - 50)"></i>
+        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.onChangeInterval($ctrl.controlPanelActionType.Replace, false)"></i>
         <span  class="noselect">{{$ctrl.controlPanelService.options.replaceTickerIntervalMSec}}ms</span>
-        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.changeReplaceTickerInterval($ctrl.controlPanelService.options.replaceTickerIntervalMSec + 50)"></i>
+        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.onChangeInterval($ctrl.controlPanelActionType.Replace, true)"></i>
       </div>
     </section>
     <section class="add-tickers action">
       <div class="title">Simulate Adds</div>
-      <button ng-click="$ctrl.startAddingTickers()" ng-disabled="!$ctrl.controlPanelService.options.addTickersEnabled">Start</button>
-      <button ng-click="$ctrl.stopAddingTickers()" ng-disabled="$ctrl.controlPanelService.options.addTickersEnabled">Stop</button>
+      <button ng-click="$ctrl.onStartAction($ctrl.controlPanelActionType.Add)" ng-disabled="!$ctrl.controlPanelService.options.addTickersEnabled">Start</button>
+      <button ng-click="$ctrl.onStopAction($ctrl.controlPanelActionType.Add)" ng-disabled="$ctrl.controlPanelService.options.addTickersEnabled">Stop</button>
       <div class="frequency">
         <span class="sub-title noselect">Interval:&nbsp;</span>
-        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec - 50)"></i>
+        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.onChangeInterval($ctrl.controlPanelActionType.Add, false)"></i>
         <span  class="noselect">{{$ctrl.controlPanelService.options.addTickerIntervalMSec}}ms</span>
-        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.changeAddTickerInterval($ctrl.controlPanelService.options.addTickerIntervalMSec + 50)"></i>
+        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.onChangeInterval($ctrl.controlPanelActionType.Add, true)"></i>
       </div>
     </section>
     <section class="update-prices action">
       <div  class="title">Simulate Updates</div>
-      <button ng-click="$ctrl.startUpdatingTickers()" ng-disabled="!$ctrl.controlPanelService.options.updateValuesEnabled">Start</button>
-      <button ng-click="$ctrl.stopUpdatingTickers()" ng-disabled="$ctrl.controlPanelService.options.updateValuesEnabled">Stop</button>
+      <button ng-click="$ctrl.onStartAction($ctrl.controlPanelActionType.Update)" ng-disabled="!$ctrl.controlPanelService.options.updateValuesEnabled">Start</button>
+      <button ng-click="$ctrl.onStopAction($ctrl.controlPanelActionType.Update)" ng-disabled="$ctrl.controlPanelService.options.updateValuesEnabled">Stop</button>
       <div class="frequency">
         <span  class="sub-title noselect">Interval:&nbsp;</span>
-        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec - 5)"></i>
+        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.onChangeInterval($ctrl.controlPanelActionType.Update, false)"></i>
         <span class="noselect">{{$ctrl.controlPanelService.options.updateValueIntervalMSec}}ms</span>
-        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.changeUpdateTickerInterval($ctrl.controlPanelService.options.updateValueIntervalMSec + 5)"></i>
+        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.onChangeInterval($ctrl.controlPanelActionType.Update, true)"></i>
       </div>
     </section>
     <section class="delete-prices action">
       <div  class="title">Simulate Deletes</div>
-      <button ng-click="$ctrl.startDeletingTickers()" ng-disabled="!$ctrl.controlPanelService.options.deleteTickersEnabled">Start</button>
-      <button ng-click="$ctrl.stopDeletingTickers()" ng-disabled="$ctrl.controlPanelService.options.deleteTickersEnabled">Stop</button>
+      <button ng-click="$ctrl.onStartAction($ctrl.controlPanelActionType.Delete)" ng-disabled="!$ctrl.controlPanelService.options.deleteTickersEnabled">Start</button>
+      <button ng-click="$ctrl.onStopAction($ctrl.controlPanelActionType.Delete)" ng-disabled="$ctrl.controlPanelService.options.deleteTickersEnabled">Stop</button>
       <div class="frequency">
         <span  class="sub-title noselect">Interval:&nbsp;</span>
-        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec - 50)"></i>
+        <i class="fa fa-minus" aria-hidden="true" ng-click="$ctrl.onChangeInterval($ctrl.controlPanelActionType.Delete, false)"></i>
         <span class="noselect">{{$ctrl.controlPanelService.options.deleteTickerIntervalMSec}}ms</span>
-        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.changeDeleteTickerInterval($ctrl.controlPanelService.options.deleteTickerIntervalMSec + 50)"></i>
+        <i class="fa fa-plus" aria-hidden="true" ng-click="$ctrl.onChangeInterval($ctrl.controlPanelActionType.Delete, true)"></i>
       </div>
     </section>
 </section>

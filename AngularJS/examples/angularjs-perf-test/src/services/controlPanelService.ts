@@ -1,8 +1,10 @@
+import { ControlPanelActionType, ControlPanelDefaults, ActionDefaults } from "../config/config";
+
 export interface IConrolPanelOptions {
   addTickersEnabled: boolean;
   addTickerIntervalMSec: number;
   updateValuesEnabled: boolean;
-  updateValueIntervalMSec: number;
+  updateValuesIntervalMSec: number;
   deleteTickersEnabled: boolean;
   deleteTickerIntervalMSec: number;
   replaceTickersEnabled: boolean;
@@ -10,67 +12,68 @@ export interface IConrolPanelOptions {
 }
 
 export interface IControlPanelService {
-  toggleAddTickers(enable: boolean): void;
-  toggleUpdateValues(enable: boolean): void;
-  toggleDeleteTickers(enable: boolean): void;
-  toggleReplaceTickers(enable: boolean): void;
-  changeAddTickerInterval(interval: number): void;
-  changeUpdateTickerInterval(interval: number): void;
-  changeDeleteTickerInterval(interval: number): void;
-  changeReplaceTickerInterval(interval: number): void;
+  toggleAction(actionType: ControlPanelActionType, enable: boolean);
+  changeActionInterval(actionType: ControlPanelActionType, increment: boolean);
   options:IConrolPanelOptions;
 }
 
 class ControlPanelService implements IControlPanelService {
   public options:IConrolPanelOptions = {
-    addTickersEnabled: true,
-    addTickerIntervalMSec: 100,
-    updateValuesEnabled: true,
-    updateValueIntervalMSec: 10,
-    deleteTickersEnabled: true,
-    deleteTickerIntervalMSec: 100,
     replaceTickersEnabled: true,
-    replaceTickerIntervalMSec: 500
+    replaceTickerIntervalMSec: ControlPanelDefaults.ReplaceTickerIntervalMSec,
+    addTickersEnabled: true,
+    addTickerIntervalMSec: ControlPanelDefaults.AddTickerIntervalMSec,
+    deleteTickersEnabled: true,
+    deleteTickerIntervalMSec: ControlPanelDefaults.DeleteTickerIntervalMSec,
+    updateValuesEnabled: true,
+    updateValuesIntervalMSec: ControlPanelDefaults.UpdateValuesIntervalMSec
   };
 
   constructor() {
 
   }
 
-  toggleAddTickers(enable: boolean): void {
-   this.options.addTickersEnabled = enable;
+  public toggleAction(actionType: ControlPanelActionType, enable: boolean) {
+    switch (actionType) {
+      case ControlPanelActionType.Add:
+        this.options.addTickersEnabled = enable;
+        break;
+      case ControlPanelActionType.Delete:
+        this.options.deleteTickersEnabled = enable;
+        break;
+      case ControlPanelActionType.Replace:
+        this.options.replaceTickersEnabled = enable;
+        break;
+      case ControlPanelActionType.Update:
+        this.options.updateValuesEnabled = enable;
+        break;
+    }
   }
 
-  toggleUpdateValues(enable: boolean): void {
-    this.options.updateValuesEnabled = enable;
-  }
-
-  toggleDeleteTickers(enable: boolean): void {
-    this.options.deleteTickersEnabled = enable;
-  }
-
-  toggleReplaceTickers(enable: boolean): void {
-    this.options.replaceTickersEnabled = enable;
-  }
-
-  changeAddTickerInterval(interval: number): void {
-    if (interval < 50) { interval = 50;}
-    this.options.addTickerIntervalMSec = interval;
-  }
-
-  public changeUpdateTickerInterval(interval: number): void {
-    if (interval < 5) { interval = 5;}
-    this.options.updateValueIntervalMSec = interval;
-  }
-
-  public changeDeleteTickerInterval(interval: number): void {
-    if (interval < 20) { interval = 20;}
-    this.options.deleteTickerIntervalMSec = interval;
-  }
-
-  public changeReplaceTickerInterval(interval: number): void {
-    if (interval < 50) { interval = 50;}
-    this.options.replaceTickerIntervalMSec = interval;
+  public  changeActionInterval(actionType: ControlPanelActionType, increment: boolean) {
+    let interval: number;
+    switch (actionType) {
+      case ControlPanelActionType.Add:
+        interval = this.options.addTickerIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.AddIncrementMsec;
+        if (interval < ControlPanelDefaults.AddMinIntervalMsec ) { interval = ControlPanelDefaults.AddMinIntervalMsec;}
+        this.options.addTickerIntervalMSec = interval;
+        break;
+      case ControlPanelActionType.Delete:
+        interval = this.options.deleteTickerIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.DeleteIncrementMsec;
+        if (interval < ControlPanelDefaults.DeleteMinIntervalMsec) { interval = ControlPanelDefaults.DeleteMinIntervalMsec;}
+        this.options.deleteTickerIntervalMSec = interval;
+        break;
+      case ControlPanelActionType.Replace:
+         interval = this.options.replaceTickerIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.ReplaceIncrementMsec;
+         if (interval < ControlPanelDefaults.ReplaceMinIntervalMsec ) {interval = ControlPanelDefaults.ReplaceMinIntervalMsec;}
+        this.options.replaceTickerIntervalMSec = interval;
+        break;
+      case ControlPanelActionType.Update:
+        interval = this.options.updateValuesIntervalMSec + (increment ? 1 : -1) * ControlPanelDefaults.UpdateIncrementMsec;
+        if (interval < ControlPanelDefaults.UpdateMinIntervalMsec) { interval = ControlPanelDefaults.UpdateMinIntervalMsec;}
+        this.options.updateValuesIntervalMSec = interval;
+        break;
+    }
   }
 }
 

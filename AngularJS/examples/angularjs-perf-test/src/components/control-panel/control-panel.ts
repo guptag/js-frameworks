@@ -2,20 +2,12 @@ import * as html from './control-panel.html';
 import {IControlPanelService} from '../../services/controlPanelService';
 import {ITickerDataService} from '../../services/tickerDataService';
 import {IActionSimulator} from '../../services/actionSimulator';
+import { ControlPanelActionType, ControlPanelDefaults, ActionDefaults } from "../../config/config";
 
 export interface IControlPanelController {
-  startAddingTickers(): void;
-  stopAddingTickers(): void;
-  startUpdatingTickers(): void;
-  stopUpdatingTickers(): void;
-  startReplacingTickers(): void;
-  stopReplacingTickers(): void;
-  startDeletingTickers(): void;
-  stopDeletingTickers(): void;
-  changeAddTickerInterval(newInterval: number): void;
-  changeUpdateTickerInterval(newInterval: number): void;
-  changeReplaceTickerInterval(newInterval: number): void;
-  changeDeleteTickerInterval(newInterval: number): void;
+  onStartAction(actionType: ControlPanelActionType);
+  onStopAction(actionType: ControlPanelActionType);
+  onChangeInterval(actionType: ControlPanelActionType, increment: boolean);
 };
 
 interface ControlPanelScope extends ng.IScope {
@@ -23,7 +15,8 @@ interface ControlPanelScope extends ng.IScope {
 }
 
 class ControlPanelController implements IControlPanelController  {
-
+  public controlPanelActionType = ControlPanelActionType;
+  
   constructor(
     private $scope: ControlPanelScope,
     private controlPanelService: IControlPanelService,
@@ -32,68 +25,20 @@ class ControlPanelController implements IControlPanelController  {
       this.$scope.resetStats = function () {};
   }
 
-  startReplacingTickers() {
+  onStartAction(actionType: ControlPanelActionType) {
     this.$scope.resetStats();
-    this.controlPanelService.toggleReplaceTickers(false);
-    this.actionSimulator.startReplacingTickers();
+    this.controlPanelService.toggleAction(actionType, false);
+    this.actionSimulator.startAction(actionType);
   }
 
-  stopReplacingTickers() {
-    this.controlPanelService.toggleReplaceTickers(true);
-    this.actionSimulator.stopReplacingTickers();
+  onStopAction(actionType: ControlPanelActionType) {
+    this.controlPanelService.toggleAction(actionType, true);
+    this.actionSimulator.stopAction(actionType);
   }
 
-  changeReplaceTickerInterval(newInterval: number) {
-    this.controlPanelService.changeReplaceTickerInterval(newInterval);
-    this.actionSimulator.resetReplaceTickerInterval();
-  }
-
-  startAddingTickers() {
-    this.$scope.resetStats();
-    this.controlPanelService.toggleAddTickers(false);
-    this.actionSimulator.startAddingTickers();
-  }
-
-  stopAddingTickers() {
-    this.controlPanelService.toggleAddTickers(true);
-    this.actionSimulator.stopAddingTickers();
-  }
-
-  changeAddTickerInterval(newInterval: number) {
-    this.controlPanelService.changeAddTickerInterval(newInterval);
-    this.actionSimulator.resetAddTickerInterval();
-  }
-
-  startDeletingTickers() {
-    this.$scope.resetStats();
-    this.controlPanelService.toggleDeleteTickers(false);
-    this.actionSimulator.startDeletingTickers();
-  }
-
-  stopDeletingTickers() {
-    this.controlPanelService.toggleDeleteTickers(true);
-    this.actionSimulator.stopDeletingTickers();
-  }
-
-  changeDeleteTickerInterval(newInterval: number) {
-    this.controlPanelService.changeDeleteTickerInterval(newInterval);
-    this.actionSimulator.resetDeleteTickerInterval();
-  }
-
-  startUpdatingTickers() {
-    this.$scope.resetStats();
-    this.controlPanelService.toggleUpdateValues(false);
-    this.actionSimulator.startUpdatingTickers();
-  }
-
-  stopUpdatingTickers() {
-    this.controlPanelService.toggleUpdateValues(true);
-    this.actionSimulator.stopUpdatingTickers();
-  }
-
-  changeUpdateTickerInterval(newInterval: number) {
-    this.controlPanelService.changeUpdateTickerInterval(newInterval);
-    this.actionSimulator.resetUpdateTickerInterval();
+  onChangeInterval(actionType: ControlPanelActionType, increment: boolean) {
+    this.controlPanelService.changeActionInterval(actionType, increment);
+    this.actionSimulator.resetInterval(actionType);
   }
 }
 
