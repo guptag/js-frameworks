@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
-import {IServerDataManager} from './serverDataManager';
-import {ITickerDataViewModel, ITickerData} from '../models/TickerDataModel';
-import {IControlPanelViewModel} from '../models/ControlPanelModel';
+import { IServerDataManager } from './serverDataManager';
+import { ITickerDataService, ITickerData, ITickerList } from './tickerDataService';
+import { IControlPanelService } from './controlPanelService';
 import { ControlPanelActionType, ControlPanelDefaults, ActionDefaults } from "../config/config";
-import { IObservableArray, observable } from 'mobx';
+
 
 export interface ISimulatedAction {
   scheduleAction();
@@ -16,11 +16,12 @@ export interface ISimulatedAction {
  * Simulates Add Tickers
  */
 export class AddTickerAction implements ISimulatedAction {
-  private clearAddTickerTimerId: number;
+  private clearIntervalPromise: ng.IPromise<any>;
 
   constructor(
-    private controlPanelViewModel: IControlPanelViewModel,
-    private tickerDataViewModel: ITickerDataViewModel,
+    private $interval: ng.IIntervalService,
+    private controlPanelService: IControlPanelService,
+    private tickerDataService: ITickerDataService,
     private serverDataManager: IServerDataManager,
     private resetOtherActions?: () => void
   ) {
@@ -29,20 +30,20 @@ export class AddTickerAction implements ISimulatedAction {
 
   scheduleAction(clearExistingData: boolean = true) {
     if (clearExistingData) {
-      this.tickerDataViewModel.clearAllTickers();
+      this.tickerDataService.clearAllTickers();
       this.serverDataManager.resetIndex();
     }
     this.resetOtherActions && this.resetOtherActions();
-    this.clearAddTickerTimerId = setInterval(() => this.addTickers(), this.controlPanelViewModel.options.addTickerIntervalMSec);
+    this.clearIntervalPromise = this.$interval(() => this.addTickers(), this.controlPanelService.options.addTickerIntervalMSec);
   }
 
   clearAction () {
-    this.clearAddTickerTimerId && clearInterval(this.clearAddTickerTimerId);
-    this.clearAddTickerTimerId = null;
+    this.clearIntervalPromise && this.$interval.cancel(this.clearIntervalPromise);
+    this.clearIntervalPromise = null;
   }
 
   resetAction () {
-    if (this.clearAddTickerTimerId) {
+    if (this.clearIntervalPromise) {
       this.clearAction();
       this.scheduleAction(false);
     }
@@ -50,12 +51,12 @@ export class AddTickerAction implements ISimulatedAction {
 
   private addTickers() {
     var newTickers: ITickerData[] = this.serverDataManager.getNewTickers(ActionDefaults.AddActionTickerCount);
-    this.tickerDataViewModel.addTickers(newTickers);
+    this.tickerDataService.addTickers(newTickers);
 
     // reached the end, reset the buttons
     if (this.serverDataManager.hasReachedEnd()) {
       this.clearAction();
-      this.controlPanelViewModel.toggleAction(ControlPanelActionType.Add, true);
+      this.controlPanelService.toggleAction(ControlPanelActionType.Add, true);
       this.resetOtherActions && this.resetOtherActions();
     }
   }
@@ -65,10 +66,12 @@ export class AddTickerAction implements ISimulatedAction {
  * Simulates Replace Tickers
  */
 export class ReplaceTickerAction implements ISimulatedAction {
-  private clearReplaceTickerTimerId:number
+  private clearReplaceTickerPromise: ng.IPromise<any>;
+
   constructor(
-    private controlPanelViewModel: IControlPanelViewModel,
-    private tickerDataViewModel: ITickerDataViewModel,
+    private $interval: ng.IIntervalService,
+    private controlPanelViewModel: IControlPanelService,
+    private tickerDataViewModel: ITickerDataService,
     private serverDataManager: IServerDataManager,
     private resetOtherActions?: () => void
   ) {
@@ -81,16 +84,16 @@ export class ReplaceTickerAction implements ISimulatedAction {
       this.serverDataManager.resetIndex();
     }
     this.resetOtherActions && this.resetOtherActions();
-    this.clearReplaceTickerTimerId = setInterval(() => this.replaceTickers(), this.controlPanelViewModel.options.replaceTickerIntervalMSec);
+    this.clearReplaceTickerPromise = this.$interval(() => this.replaceTickers(), this.controlPanelViewModel.options.replaceTickerIntervalMSec);
   }
 
   clearAction () {
-    this.clearReplaceTickerTimerId && clearInterval(this.clearReplaceTickerTimerId);
-    this.clearReplaceTickerTimerId = null;
+    this.clearReplaceTickerPromise && this.$interval.cancel(this.clearReplaceTickerPromise);
+    this.clearReplaceTickerPromise = null;
   }
 
   resetAction () {
-    if (this.clearReplaceTickerTimerId) {
+    if (this.clearReplaceTickerPromise) {
       this.clearAction();
       this.scheduleAction(false);
     }
@@ -113,10 +116,12 @@ export class ReplaceTickerAction implements ISimulatedAction {
  * Simulates Delete Tickers
  */
 export class DeleteTickerAction implements ISimulatedAction {
-  private clearDeleteTickerTimerId: number;
+  private clearDeleteTickerPromise: ng.IPromise<any>;
+
   constructor(
-    private controlPanelViewModel: IControlPanelViewModel,
-    private tickerDataViewModel: ITickerDataViewModel,
+    private $interval: ng.IIntervalService,
+    private controlPanelService: IControlPanelService,
+    private tickerDataService: ITickerDataService,
     private resetOtherActions?: () => void
   ) {
 
@@ -124,29 +129,29 @@ export class DeleteTickerAction implements ISimulatedAction {
 
   scheduleAction() {
     this.resetOtherActions && this.resetOtherActions();
-    this.clearDeleteTickerTimerId = setInterval(() => this.deleteTickers(),this.controlPanelViewModel.options.deleteTickerIntervalMSec || 100);
+    this.clearDeleteTickerPromise = this.$interval(() => this.deleteTickers(),this.controlPanelService.options.deleteTickerIntervalMSec || 100);
   }
 
   clearAction () {
-    this.clearDeleteTickerTimerId && clearInterval(this.clearDeleteTickerTimerId);
-    this.clearDeleteTickerTimerId = null;
+    this.clearDeleteTickerPromise && this.$interval.cancel(this.clearDeleteTickerPromise);
+    this.clearDeleteTickerPromise = null;
   }
 
   resetAction () {
-    if (this.clearDeleteTickerTimerId) {
+    if (this.clearDeleteTickerPromise) {
       this.clearAction();
       this.scheduleAction();
     }
   }
 
   private deleteTickers() {
-    var tickerList:IObservableArray<string> = this.tickerDataViewModel.tickerList;
+    var tickerList: ITickerList = this.tickerDataService.tickerList;
 
     if (tickerList.length === 0) {
       this.clearAction();
-      this.controlPanelViewModel.toggleAction(ControlPanelActionType.Delete, true);
+      this.controlPanelService.toggleAction(ControlPanelActionType.Delete, true);
     } else {
-      this.tickerDataViewModel.deleteTickers(_.takeRight(tickerList.slice(), ActionDefaults.DeleteActionTickerCount));
+      this.tickerDataService.deleteTickers(_.takeRight(tickerList.slice(), ActionDefaults.DeleteActionTickerCount));
     }
   }
 }
@@ -155,26 +160,27 @@ export class DeleteTickerAction implements ISimulatedAction {
  * Simulates Update Tickers
  */
 export class UpdateTickerAction implements ISimulatedAction {
-  private clearUpdateTickerTimerId: number;
+  private clearUpdateTickerPromise: ng.IPromise<any>;
 
   constructor(
-    private controlPanelViewModel: IControlPanelViewModel,
-    private tickerDataViewModel: ITickerDataViewModel
+    private $interval: ng.IIntervalService,
+    private controlPanelViewModel: IControlPanelService,
+    private tickerDataViewModel: ITickerDataService
   ) {
 
   }
 
   scheduleAction() {
-    this.clearUpdateTickerTimerId = setInterval(() => this.upDateTickerData(), this.controlPanelViewModel.options.updateValuesIntervalMSec);
+    this.clearUpdateTickerPromise = this.$interval(() => this.upDateTickerData(), this.controlPanelViewModel.options.updateValuesIntervalMSec);
   }
 
   clearAction () {
-    this.clearUpdateTickerTimerId && clearInterval(this.clearUpdateTickerTimerId);
-    this.clearUpdateTickerTimerId = null;
+    this.clearUpdateTickerPromise && this.$interval.cancel(this.clearUpdateTickerPromise);
+    this.clearUpdateTickerPromise = null;
   }
 
   resetAction () {
-    if (this.clearUpdateTickerTimerId) {
+    if (this.clearUpdateTickerPromise) {
       this.clearAction();
       this.scheduleAction();
     }
@@ -192,20 +198,20 @@ export class UpdateTickerAction implements ISimulatedAction {
     }
 
     const ticker = tickerList[randomTickerIndex];
-    const tickerDataItem = this.tickerDataViewModel.tickerHash.get(ticker);
+    const tickerDataItem = this.tickerDataViewModel.tickerHash[ticker];
     let multiplier = Math.random() > 0.5 ? 1 : -1;
     let changePercent: number = Math.floor(Math.random() * 5); //0 - 4
 
     switch (randomActionIndex) {
       case 1:
-        const currentPrice: number = this.tickerDataViewModel.tickerHash.get(ticker).price;
+        const currentPrice: number = this.tickerDataViewModel.tickerHash[ticker].price;
         const newPrice: number = currentPrice + (multiplier * (currentPrice * changePercent) / 100);
         const newPriceChange: number = newPrice - <number>tickerDataItem.price;
         this.tickerDataViewModel.updatePrice(ticker, newPrice, newPriceChange);
         break;
 
       case 2:
-        const currentVol: number = this.tickerDataViewModel.tickerHash.get(ticker).volume;
+        const currentVol: number = this.tickerDataViewModel.tickerHash[ticker].volume;
         const newVol: number = Math.floor(currentVol + (multiplier * (currentVol * changePercent) / 100));
         this.tickerDataViewModel.updateVolume(ticker, newVol);
         break;

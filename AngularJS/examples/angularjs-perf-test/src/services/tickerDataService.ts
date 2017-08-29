@@ -15,14 +15,15 @@ export interface ITickerData {
 }
 
 export type ITickerHash = { [ticker: string]: ITickerData; };
+export type ITickerList = string[];
 
 export interface ITickerDataService {
-  addTicker(tickerData: ITickerData): void;
-  removeTicker(ticker: string): void;
-  addTicker(tickerData: ITickerData): void;
+  replaceTickers(tickerDataList: ITickerData[]): void;
+  deleteTickers(tickers: string[]): void;
+  addTickers(tickerDataList: ITickerData[]): void;
   updatePrice(ticker: string, price: number, change: number): void;
   updateVolume(ticker: string, volumne: number);
-  clearAllData(): void;
+  clearAllTickers(): void;
   getTickerCount(): number;
   tickerHash:ITickerHash;
   tickerList: string[];
@@ -40,21 +41,30 @@ class TickerDataService implements ITickerDataService {
     return this.tickerList.length;
   }
 
-  addTicker(tickerData: ITickerData): void {
-    if (!this.tickerHash[tickerData.ticker]) {
-      this.tickerHash[tickerData.ticker] = tickerData;
-      this.tickerList.push(tickerData.ticker);
-    }
+  replaceTickers(tickerDataList: ITickerData[]): void {
+    this.clearAllTickers();
+    this.addTickers(tickerDataList);
   }
 
-  removeTicker(ticker: string): void {
-    if (this.tickerHash[ticker]) {
-      delete this.tickerHash[ticker];
-      _.pull(this.tickerList, ticker);
-    }
+  addTickers(tickerDataList: ITickerData[]): void {
+    _.each(tickerDataList, (tickerData: ITickerData) => {
+      if (!this.tickerHash[tickerData.ticker]) {
+        this.tickerList.push(tickerData.ticker);
+        this.tickerHash[tickerData.ticker] = tickerData;
+      }
+    });
   }
 
-  clearAllData(): void {
+  deleteTickers(tickers: string[]): void {
+    _.each(tickers, (ticker: string) => {
+      if (this.tickerHash[ticker]) {
+        delete this.tickerHash[ticker];
+        _.pull(this.tickerList, ticker);
+      }
+    });
+  }
+
+  clearAllTickers(): void {
     this.tickerList = [];
     this.tickerHash = {};
   }

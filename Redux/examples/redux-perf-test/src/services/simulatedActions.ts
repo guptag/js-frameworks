@@ -23,7 +23,7 @@ export class AddTickerAction implements ISimulatedAction {
   constructor(
     private appStore: Store<IAppState>,
     private serverDataManager: IServerDataManager,
-    private resetReplaceAction?: () => void
+    private resetOtherActions?: () => void
   ) {
 
   }
@@ -33,7 +33,7 @@ export class AddTickerAction implements ISimulatedAction {
       this.appStore.dispatch(actions.ticker.createReplaceTickerAction([]));
       this.serverDataManager.resetIndex();
     }
-    this.resetReplaceAction && this.resetReplaceAction();
+    this.resetOtherActions && this.resetOtherActions();
     this.clearAddTickerTimerId = setInterval(() => this.addTickers(), appStore.getState().ui.controlPanel.addTickerIntervalMSec || 100);
   }
 
@@ -58,7 +58,7 @@ export class AddTickerAction implements ISimulatedAction {
       this.clearAction();
       this.appStore.dispatch(actions.controlPanel.createToggleAction(ControlPanelActionType.Add, true));
 
-      this.resetReplaceAction && this.resetReplaceAction();
+      this.resetOtherActions && this.resetOtherActions();
     }
   }
 }
@@ -71,7 +71,7 @@ export class ReplaceTickerAction implements ISimulatedAction {
   constructor(
     private appStore: Store<IAppState>,
     private serverDataManager: IServerDataManager,
-    private resetAddAction?: () => void
+    private resetOtherActions?: () => void
   ) {
 
   }
@@ -81,7 +81,7 @@ export class ReplaceTickerAction implements ISimulatedAction {
       this.appStore.dispatch(actions.ticker.createReplaceTickerAction([]));
       this.serverDataManager.resetIndex();
     }
-    this.resetAddAction && this.resetAddAction();
+    this.resetOtherActions && this.resetOtherActions();
     this.clearReplaceTickerTimerId = setInterval(() => this.replaceTickers(), appStore.getState().ui.controlPanel.replaceTickerIntervalMSec || 100);
   }
 
@@ -105,7 +105,7 @@ export class ReplaceTickerAction implements ISimulatedAction {
     if (this.serverDataManager.hasReachedEnd()) {
       this.clearAction();
       this.appStore.dispatch(actions.controlPanel.createToggleAction(ControlPanelActionType.Replace, true));
-      this.resetAddAction && this.resetAddAction();
+      this.resetOtherActions && this.resetOtherActions();
     }
   }
 }
@@ -116,12 +116,14 @@ export class ReplaceTickerAction implements ISimulatedAction {
 export class DeleteTickerAction implements ISimulatedAction {
   private clearDeleteTickerTimerId: number;
   constructor(
-    private appStore: Store<IAppState>
+    private appStore: Store<IAppState>,
+    private resetOtherActions?: () => void
   ) {
 
   }
 
   scheduleAction() {
+    this.resetOtherActions && this.resetOtherActions();
     this.clearDeleteTickerTimerId = setInterval(() => this.deleteTickers(), appStore.getState().ui.controlPanel.deleteTickerIntervalMSec || 100);
   }
 
