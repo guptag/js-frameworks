@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.common",
+  "compilerOptions": {
+    "outDir": "../dist/src",
+    "target": "amd",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noResolve": false,
+    "removeComments": false,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "lib": [
+      "es5",
+      "dom"
+    ]
+  },
+  "include": [],
+  "exclude": []
+}

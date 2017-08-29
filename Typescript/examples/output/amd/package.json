@@ -1,0 +1,15 @@
+{
+  "name": "typescript-output-test",
+  "description": "Testing Typescript output",
+  "repository": {
+    "url": ""
+  },
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+  },
+  "devDependencies": {
+    "typescript": "2.4.2"
+  },
+  "dependencies": { }
+}
