@@ -12,8 +12,12 @@ export class Person implements IPerson {
   }
 }
 
-class ConsoleLogger implements ILoggable {
+export class ConsoleLogger implements ILoggable {
     log() {
-        // ...
+         for (let id in this) {
+            if (!this.hasOwnProperty(id)) {
+                console.log(`id:{id}, value: {this[id]}`);
+            }
+        }
     }
 }

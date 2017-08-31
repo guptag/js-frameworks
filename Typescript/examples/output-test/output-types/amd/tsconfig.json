@@ -1,8 +1,10 @@
+// http://www.typescriptlang.org/docs/handbook/compiler-options.html
+
+
 {
-  "extends": "../../tsconfig.common",
   "compilerOptions": {
-    "outDir": "../dist/src",
-    "target": "amd",
+    "outDir": "./dist",
+    "target": "es2015",
     "module": "commonjs",
     "moduleResolution": "node",
     "noResolve": false,
@@ -11,11 +13,16 @@
     "sourceMap": true,
     "declaration": true,
     "emitDecoratorMetadata": true,
+    "strict": true,
     "lib": [
       "es5",
       "dom"
     ]
   },
-  "include": [],
-  "exclude": []
+  "include": [
+    "src/**/*"
+   ],
+  "exclude": [
+    "node_modules"
+  ]
 }
