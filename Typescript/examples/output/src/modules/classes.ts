@@ -1,8 +1,7 @@
-export interface IPerson {
-  firstName: string;
-  lastName: string;
-}
 
+import {IPerson, ILoggable} from './interfaces';
+
+// Class
 export class Person implements IPerson {
   public firstName: string;
   public lastName: string;
@@ -13,13 +12,8 @@ export class Person implements IPerson {
   }
 }
 
-export enum Region {
-  East,
-  West,
-  Central
-}
-
-export const Constants = {
-  Test: "test",
-  Test1: "test1"
+class ConsoleLogger implements ILoggable {
+    log() {
+        // ...
+    }
 }
