@@ -23,14 +23,6 @@ export interface DeleteItemsPayload {
   itemId: number
 }
 
-
-
-
-
-
-
-
-
 export interface DeleteItemsActions {
   type: "DeleteItems",
   payload: {
