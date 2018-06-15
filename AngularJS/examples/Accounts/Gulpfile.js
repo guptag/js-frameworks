@@ -85,29 +85,37 @@ gulp.task('jshint', ['copy'], function() {
 
 gulp.task('js', ['copy', 'jshint'], function() {
 
-    var source = [].concat(paths.appJS, paths.js);
+    var source = ['!js/app/lazymodule.js'].concat(paths.appJS, paths.js);
     return gulp
         .src(source, {cwd: bases.target})
         // .pipe(plug.sourcemaps.init()) // get screwed up in the file rev process
         .pipe(plug.concat('accounts.js'))
-        .pipe(isDevEnvironment ? gutil.noop() : stream(uglify()))
+        /*.pipe(isDevEnvironment ? gutil.noop() : stream(uglify()))*/
         .pipe(gulp.dest(bases.jsTarget));
 });
 
+gulp.task('lazyloadscripts', ['copy', 'jshint'], function() {
+        var source = [].concat('js/app/lazy*.js');
+        return gulp
+            .src(source, {cwd: bases.target})
+            .pipe(gulp.dest(bases.jsTarget));
+    });
+
 gulp.task('vendorjs', ['copy', 'jshint'], function() {
     return gulp
-        .src(['js/vendor/angular.js',
+        .src(['js/vendor/jquery.js',
+             'js/vendor/angular.js',
+             'js/vendor/oclazyload.js',
              'js/vendor/lodash.js',
-             'js/vendor/jquery.js',
              'js/vendor/angular-router.js',
              'js/vendor/plugins/**/*.js',
              'js/vendor/directives/**/*.js'], {cwd: bases.target})
-        .pipe(isDevEnvironment ? gutil.noop() : stream(uglify()))
+        /*.pipe(isDevEnvironment ? gutil.noop() : stream(uglify()))*/
         .pipe(plug.concat('vendor.js'))
         .pipe(gulp.dest(bases.jsTarget));
 });
 
-gulp.task('cleanup', ['js', 'vendorjs', 'templatecache'], function() {
+gulp.task('cleanup', ['js', 'lazyloadscripts', 'vendorjs', 'templatecache'], function() {
   return gulp.src(["dist/js/app/",
                    "dist/js/vendor/",
                    "dist/stylus/",
