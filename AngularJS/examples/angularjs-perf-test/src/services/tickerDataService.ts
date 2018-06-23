@@ -47,8 +47,8 @@ class TickerDataService implements ITickerDataService {
   }
 
   addTickers(tickerDataList: ITickerData[]): void {
-    _.each(tickerDataList, (tickerData: ITickerData) => {
-      if (!this.tickerHash[tickerData.ticker]) {
+    tickerDataList.forEach((tickerData: ITickerData) => {
+      if (!(tickerData.ticker in this.tickerHash)) {
         this.tickerList.push(tickerData.ticker);
         this.tickerHash[tickerData.ticker] = tickerData;
       }
@@ -56,8 +56,8 @@ class TickerDataService implements ITickerDataService {
   }
 
   deleteTickers(tickers: string[]): void {
-    _.each(tickers, (ticker: string) => {
-      if (this.tickerHash[ticker]) {
+    tickers.forEach((ticker: string) => {
+      if (ticker in this.tickerHash) {
         delete this.tickerHash[ticker];
         _.pull(this.tickerList, ticker);
       }
@@ -65,12 +65,12 @@ class TickerDataService implements ITickerDataService {
   }
 
   clearAllTickers(): void {
-    this.tickerList = [];
+    this.tickerList.length = 0;
     this.tickerHash = {};
   }
 
   updatePrice(ticker: string, price: number, change: number): void {
-    let tickerData: ITickerData = this.tickerHash[ticker];
+    const tickerData: ITickerData = this.tickerHash[ticker];
     if (tickerData) {
       tickerData.price = price;
       tickerData.change = change;
@@ -78,7 +78,7 @@ class TickerDataService implements ITickerDataService {
   }
 
   public updateVolume(ticker: string, volume: number): void {
-    let tickerData: ITickerData = this.tickerHash[ticker];
+    const tickerData: ITickerData = this.tickerHash[ticker];
     if (tickerData) {
       tickerData.volume = volume;
     }

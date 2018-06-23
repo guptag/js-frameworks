@@ -7,9 +7,11 @@ require('angular-sanitize');
 import * as html from './components/app.html';
 
 angular.module('perfTest', ['ngRoute', 'ngSanitize', 'ngAnimate'])
-  .config(['$routeProvider', '$sceDelegateProvider',
-
-  function($routeProvider, $sceDelegateProvider) {
+  .config(['$routeProvider', '$sceDelegateProvider', '$compileProvider',
+  function($routeProvider, $sceDelegateProvider, $compileProvider) {
+    $compileProvider.debugInfoEnabled(false);
+    $compileProvider.commentDirectivesEnabled(false);
+    $compileProvider.cssClassDirectivesEnabled(false);
 
     $sceDelegateProvider.resourceUrlWhitelist(['**']);
 

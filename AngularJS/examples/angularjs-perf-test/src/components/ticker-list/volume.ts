@@ -12,17 +12,13 @@ class VolumeController implements IVolumeController  {
   constructor(private $scope: ng.IScope,
     private $timeout: ng.ITimeoutService) {
 
-    const detachVolumeChangeListener = this.$scope.$watch("$ctrl.volume", (newValue, oldValue) => {
+    this.$scope.$watch(() => this.volume, (newValue, oldValue) => {
         if (newValue !== oldValue) {
           this.volumeChanged = true;
           this.$timeout(() => {
             this.volumeChanged = false;
           }, 100);
         }
-    });
-
-    this.$scope.$on('$destroy', () => {
-        detachVolumeChangeListener();
     });
   }
 }

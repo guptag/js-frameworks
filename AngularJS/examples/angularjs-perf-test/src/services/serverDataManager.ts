@@ -21,15 +21,17 @@ export class ServerDataManager {
   }
 
   hasReachedEnd() : boolean {
-    return (this.newTickerIndexToAdd >= this.tickerDataFromServer.length - 1);
+    return this.newTickerIndexToAdd >= this.tickerDataFromServer.length - 1;
   }
 
   getNewTickers(count: number): ITickerData[] {
-    let newTickers: ITickerData[] = [];
+    const newTickers: ITickerData[] = [];
+
     _.times(count, () => {
-      if (this.newTickerIndexToAdd < this.tickerDataFromServer.length - 1) {
+      if (!this.hasReachedEnd()) {
         this.newTickerIndexToAdd++;
-        var tickerItem = this.tickerDataFromServer[this.newTickerIndexToAdd];
+        const tickerItem = this.tickerDataFromServer[this.newTickerIndexToAdd];
+
         newTickers.push({
           ticker: <string>tickerItem.Ticker,
           company: <string>tickerItem.Company,
@@ -45,6 +47,7 @@ export class ServerDataManager {
         });
       }
     });
+
     return newTickers;
   }
 }

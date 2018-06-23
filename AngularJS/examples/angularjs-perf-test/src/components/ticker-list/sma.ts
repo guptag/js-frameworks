@@ -11,22 +11,7 @@ class SmaController implements ISmaController  {
   label: string;
   value: number;
 
-  constructor(
-    private $scope: ng.IScope,
-    private $timeout: ng.ITimeoutService) {
-
-    const detachSmaChangeListener = this.$scope.$watch("$ctrl.sma", (newValue, oldValue) => {
-      if (newValue !== oldValue) {
-        this.smaChanged = true;
-        this.$timeout(() => {
-          this.smaChanged = false;
-        }, 100);
-      }
-    });
-
-    this.$scope.$on('$destroy', () => {
-      detachSmaChangeListener();
-    });
+  constructor() {
   }
 }
 

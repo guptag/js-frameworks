@@ -15,17 +15,13 @@ class PriceController implements IPriceController  {
     private $scope: ng.IScope,
     private $timeout: ng.ITimeoutService) {
 
-    const detachPriceChangeListener = this.$scope.$watch("$ctrl.price", (newValue, oldValue) => {
+    this.$scope.$watch(() => this.price, (newValue, oldValue) => {
         if (newValue !== oldValue) {
           this.priceChanged = true;
           this.$timeout(() => {
             this.priceChanged = false;
           }, 100);
         }
-    });
-
-    this.$scope.$on('$destroy', () => {
-        detachPriceChangeListener();
     });
   }
 }

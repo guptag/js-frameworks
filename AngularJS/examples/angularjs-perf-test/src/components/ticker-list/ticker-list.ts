@@ -1,17 +1,22 @@
-import {ITickerHash, ITickerDataService} from '../../services/tickerDataService';
+import {ITickerHash, ITickerDataService, ITickerData} from '../../services/tickerDataService';
 
 import * as html from './ticker-list.html';
 
 export interface ITickerListController {
-  getTickerHash(): ITickerHash;
+    getTickerList(): string [];
+    getTickerData(ticker): ITickerData;
 };
 
 class TickerListController implements ITickerListController  {
   constructor(private tickerDataService: ITickerDataService) {
   }
 
-  getTickerHash(): ITickerHash {
-    return this.tickerDataService.tickerHash;
+  getTickerList(): string[] {
+      return this.tickerDataService.tickerList;
+  }
+
+  getTickerData(ticker): ITickerData {
+      return this.tickerDataService.tickerHash[ticker];
   }
 }
 
