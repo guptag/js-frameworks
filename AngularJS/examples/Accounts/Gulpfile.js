@@ -85,7 +85,7 @@ gulp.task('jshint', ['copy'], function() {
 
 gulp.task('js', ['copy', 'jshint'], function() {
 
-    var source = ['!js/app/lazymodule.js'].concat(paths.appJS, paths.js);
+    var source = ['!js/app/lazy-*.js'].concat(paths.appJS, paths.js);
     return gulp
         .src(source, {cwd: bases.target})
         // .pipe(plug.sourcemaps.init()) // get screwed up in the file rev process
