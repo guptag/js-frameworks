@@ -16,7 +16,7 @@
     "start": "http-server ./dist -c-1 -p 9000 -o"
   },
   "dependencies": {
-    "angular": "1.6.5",
+    "angular": "1.8.0",
     "angular-route": "1.6.5",
     "angular-sanitize": "1.6.5",
     "angular-animate": "1.6.5",
