@@ -1,0 +1,28 @@
+// http://www.typescriptlang.org/docs/handbook/compiler-options.html
+
+
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "es2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noResolve": false,
+    "removeComments": false,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "strict": true,
+    "lib": [
+      "es5",
+      "dom"
+    ]
+  },
+  "include": [
+    "src/**/*"
+   ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,6 +1,6 @@
 (function () {
 
-    angular.module('app.core', ['ngRoute']);
+    angular.module('app.core', ['ngRoute', 'oc.lazyLoad']);
 
     angular.module('app.common.services', ['app.core']);
     angular.module('app.common.models', ['app.core']);
@@ -14,6 +14,12 @@
       'app.core',
       'app.common',
       'app.customer'
-    ]);
-
+    ]).config(['$ocLazyLoadProvider', function ($ocLazyLoadProvider) {
+      $ocLazyLoadProvider.config({
+        modules: [{
+          name: 'greeter',
+          files: ['js/lazy-services.js', 'js/lazy-components.js']
+        }]
+      });
+    }]);
 })();

@@ -1,3 +1,7 @@
+Blog post: 
+
+https://medium.com/@guptagaruda/measuring-performance-gains-angularjs-to-react-with-redux-or-mobx-fb221517455
+
 Perf Tests:
 
 AngularJS - https://guptag.github.io/js-frameworks/AngularJS/examples/angularjs-perf-test/index.html

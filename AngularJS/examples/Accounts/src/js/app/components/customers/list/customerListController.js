@@ -3,8 +3,8 @@
     angular.module('app.customer')
            .controller('CustomerListController', CustomerListController);
 
-    CustomerListController.$inject = ['_', '$timeout', '$routeParams', 'CustomerService'];
-    function CustomerListController(_, $timeout, $routeParams, CustomerService) {
+    CustomerListController.$inject = ['_', '$timeout', '$routeParams', 'CustomerService', '$ocLazyLoad'];
+    function CustomerListController(_, $timeout, $routeParams, CustomerService, $ocLazyLoad) {
         var listCtrl = this;
 
         // all state variables
@@ -12,6 +12,15 @@
         listCtrl.customerList = [];
 
         loadData();
+
+        /*$ocLazyLoad.load('js/lazymodule.js').then(() => {
+            console.log("loaded");
+        });*/
+
+        /*$ocLazyLoad.load('greeter').then(() => {
+            angular.element('html').injector().get('greeterService').greet();
+            angular.element('html').injector().get('anotherGreeterService').greet();
+        });*/
 
         // private methods (not access from template)
         function loadData() {
