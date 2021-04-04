@@ -2,6 +2,8 @@ import { useReducer } from "react";
 
 function reducer(state, action) {
   switch (action.type) {
+    case "load":
+      return [...(action.tasks || [])];
     case "add":
       if (action.description.trim() === "") {
         return state;
@@ -26,7 +28,6 @@ function reducer(state, action) {
       return state;
 
     case "delete":
-      console.log(action.id);
       let deleteIndex = state.findIndex((task) => task.id === action.id);
       if (deleteIndex >= 0) {
         state.splice(deleteIndex, 1);

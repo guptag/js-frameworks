@@ -1,9 +1,26 @@
 import TaskItem from "./TaskItem.react";
 import useTasksReducer from "./data/useTasksReducer";
 import AddTask from "./AddTask.react";
+import { useState, useEffect } from "react";
+
+import TasksService from "./data/TasksService";
 
 export default function TaskListContainer() {
   const { tasks, dispatch } = useTasksReducer();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadTasks() {
+      const initialTasks = await TasksService.fetchTasks();
+      dispatch({ type: "load", tasks: initialTasks });
+      setIsLoading(false);
+    }
+    loadTasks();
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
