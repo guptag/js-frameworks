@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      :root {
+        box-sizing: border-box;
+      }
+
+      *,
+      ::before,
+      ::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #709b90;
+      }
+
+      body * + * {
+        margin-top: 1.5em;
+      }
+
+      .portfolio {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-auto-rows: 1fr;
+        grid-gap: 1em;
+        grid-auto-flow: dense;
+      }
+
+      .portfolio > figure {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .portfolio img {
+        max-width: 100%;
+        flex: 1;
+        object-fit: cover;
+      }
+
+      .portfolio figcaption {
+        color: #fff;
+        text-align: right;
+        padding: 0 0.8em;
+        background-color: rgba(0, 0, 0, 0.5);
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="portfolio">
+      <figure class="featured">
+        <img
+          src="https://live.staticflickr.com/1383/1347265464_67663aeace_b.jpg"
+          alt="monkey"
+        />
+        <figcaption>Monkey</figcaption>
+      </figure>
+      <figure>
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/1/19/%C3%81guila_calva.jpg"
+          alt="eagle"
+        />
+        <figcaption>Eagle</figcaption>
+      </figure>
+      <figure class="featured">
+        <img
+          src="https://www.thespruce.com/thmb/6oqkvxm2kUj6Krf05h7X4qy47fU=/1500x844/smart/filters:no_upscale()/annas-d97a9a5f0321476098e7917726d2366d.jpg"
+          alt="bird"
+        />
+        <figcaption>Bird</figcaption>
+      </figure>
+      <figure>
+        <img
+          src="https://www.pbs.org/wnet/nature/files/2018/07/Bear133.jpg"
+          alt="bear"
+        />
+        <figcaption>Bear</figcaption>
+      </figure>
+      <figure class="featured">
+        <img
+          src="https://www.thespruce.com/thmb/OYDoW8_72D6WP-MvTQ2x676gJ5Y=/1500x844/smart/filters:no_upscale()/mute-swan-adult-58ad87433df78c345b85b294.jpg"
+          alt="swan"
+        />
+        <figcaption>Swan</figcaption>
+      </figure>
+      <figure>
+        <img
+          src="https://c402277.ssl.cf1.rackcdn.com/photos/14206/images/hero_small/WW187785.jpg?1576774644"
+          alt="elephants"
+        />
+        <figcaption>Elephants</figcaption>
+      </figure>
+      <figure>
+        <img
+          src="https://cdn.download.ams.birds.cornell.edu/api/v1/asset/297342281/900"
+          alt="owl"
+        />
+        <figcaption>Owl</figcaption>
+      </figure>
+    </div>
+  </body>
+</html>
