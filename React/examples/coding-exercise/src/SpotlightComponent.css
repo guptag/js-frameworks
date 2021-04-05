@@ -1,0 +1,87 @@
+.spotlight-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #f1f1f1;
+  margin: 5px;
+  border-radius: 10px;
+}
+
+.spotlight-search {
+  height: 40px;
+}
+
+.spotlight-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 2;
+}
+
+.spotlight-results {
+  flex: 1;
+  border-right: 1px solid lightgrey;
+  overflow-y: scroll;
+  height: 80%;
+}
+
+.spotlight-selected {
+  flex: 1;
+}
+
+.search-input {
+  width: calc(100% - 8px);
+  padding: 2px;
+  height: 85%;
+}
+
+.search-results-group-container {
+}
+
+.search-results-group-container h3 {
+  font-size: 0.9em;
+}
+
+.search-results-group-container ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.search-results-group-container ul li {
+  padding: 5px;
+}
+
+.search-results-group-container ul li:hover {
+  background-color: grey;
+  cursor: pointer;
+}
+
+.search-results-group-container ul li.highlight {
+  background-color: lightblue;
+  color: white;
+}
+
+.selected-icon-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.selected-icon-container {
+  padding: 50px 20px;
+  text-align: center;
+  text-transform: capitalize;
+
+  border-bottom: 1px solid lightgrey;
+}
+
+.selected-meta-container {
+  flex: 1;
+  font-size: 0.8em;
+  margin: 25px auto;
+}
+
+.selected-meta-container div label:first-child {
+  padding-right: 5px;
+  text-align: left;
+  min-width: 60px;
+  display: inline-block;
+}
