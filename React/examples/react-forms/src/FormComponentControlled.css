@@ -1,0 +1,15 @@
+.form-container p {
+  padding: 2px;
+}
+
+.form-container label {
+  margin-right: 10px;
+}
+
+.form-container button {
+  margin: 5px;
+}
+
+.form-data {
+  margin: 10px;
+}
