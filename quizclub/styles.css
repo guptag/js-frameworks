@@ -1,0 +1,94 @@
+body {
+  font-family: Calibri, Times, serif;
+  font-size: 1em;
+}
+
+h2,
+h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+}
+
+.header h1 {
+  position: relative;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 3em;
+  margin: 40px;
+}
+
+.header .beta {
+  position: absolute;
+  top: 10px;
+  right: -30px;
+  font-size: 0.35em;
+  background-color: bisque;
+}
+
+nav {
+  border-top: 2px solid gray;
+  border-bottom: 2px solid gray;
+  padding: 0;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  justify-content: space-evenly;
+  font-size: 1.1em;
+  background-color: #bae992;
+  margin: 0;
+  padding: 12px;
+}
+
+nav ul li {
+  padding: 0;
+}
+
+nav ul li:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+nav ul li.selected {
+  text-decoration: underline;
+  color: #5546b5;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.slide {
+  _animation-name: slide;
+  _animation-duration: 0.5s;
+  _animation-fill-mode: forwards;
+  padding: 20px;
+  font-size: 1.1em;
+}
+
+@keyframes slide {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.home .img-container {
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+}
