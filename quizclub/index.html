@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>HTML + CSS</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <h1>Quiz Club <span class="beta">beta</span></h1>
+    </header>
+    <nav class="nav">
+      <ul>
+        <li class="home selected" onclick="showslide('home')">Home</li>
+        <li class="brands" onclick="showslide('brands')">Brands</li>
+        <li class="marketplace" onclick="showslide('marketplace')">
+          MarketPlace
+        </li>
+        <li class="employees" onclick="showslide('employees')">Employees</li>
+        <li class="other" onclick="showslide('other')">Other</li>
+      </ul>
+    </nav>
+    <div class="container">
+      <div class="slide home">
+        <h2>Home</h2>
+        <div>
+          Help your kid get better at math. We have math workbooks, math
+          missions, math games and more!
+        </div>
+        <div class="img-container">
+          <img src="IMG_2513.jpg" width="30%" />
+          <img src="IMG_3651.jpg" width="30%" />
+        </div>
+
+        <h3>Deals :</h3>
+        <ul>
+          <li>Buy now if you want a great deal! buy 1 get 1 25% off!!</li>
+          <li>These deals only last for 1 day!</li>
+          <li>We are running out of copies!</li>
+        </ul>
+      </div>
+      <div class="slide brands hide">
+        <h3>Brands:</h3>
+        <ul>
+          <li>Game version</li>
+          <li>Path math</li>
+          <li>Math Minecraft</li>
+          <li>Quiz club original (most popular)</li>
+        </ul>
+        <img src="quiz_club_stuff_2.png" width="90%" />
+      </div>
+      <div class="marketplace slide hide">
+        <h3>Marketplace:</h3>
+
+        <ul>
+          <li>
+            workbook (includes all chapters) : <strong>$14</strong> quiz club
+            currency:
+            <ul>
+              <li>addition chapter</li>
+              <li>subtraction chapter</li>
+              <li>multiplication chapter</li>
+              <li>division chapter</li>
+              <li>rounding chapter</li>
+              <li>fractions chapter</li>
+              <li>area chapter</li>
+              <li>
+                | &lt; &gt;chapter (future). : <strong>$2</strong> quiz club
+                currency each
+              </li>
+            </ul>
+          </li>
+          <li>Game version : <strong>$4</strong> quiz club currency</li>
+          <li>Mazes : <strong>$8</strong> quiz club currency</li>
+          <li>Guard escape : <strong>$5</strong> quiz club currency</li>
+          <li>
+            Beat the ender dragon with math : <strong>$12</strong> quiz quiz
+            club currency
+          </li>
+        </ul>
+
+        <img src="quiz_club_stuff_3.png" width="60%" />
+        <div>*Our currency denomination is "Quizzes"</div>
+      </div>
+      <div class="employees slide hide">
+        <h3>Employees</h3>
+        <div>These employees are hardworking ones!</div>
+
+        <h4>Entrepreneur(s) :</h4>
+        <ul>
+          <li>Tanuj</li>
+        </ul>
+
+        <h4>Co-leaders :</h4>
+        <ul>
+          <li>Tanvi</li>
+          <li>Krishna</li>
+        </ul>
+
+        <h4>Managers :</h4>
+        <ul>
+          <li>Max</li>
+          <li>Abraham</li>
+        </ul>
+
+        <h4>Quiz checker(s) :</h4>
+        <ul>
+          <li>Sarah</li>
+        </ul>
+
+        <h4>All jobs (except entrepreneur) :</h4>
+        <ul>
+          <li>Krishna</li>
+        </ul>
+
+        <h4>Website creator(s) :</h4>
+        <ul>
+          <li>Krishna</li>
+          <li>gupta</li>
+        </ul>
+      </div>
+      <div class="other slide hide">
+        <h4>Credits</h4>
+
+        <div>Couple of images are from Google.</div>
+        <div>-------------</div>
+        <div>This website is still in beta.</div>
+        <div>Adding < > chapters</div>
+      </div>
+    </div>
+  </body>
+</html>
