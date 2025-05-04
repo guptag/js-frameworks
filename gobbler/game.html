@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hole.io 3D Game</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+      }
+      #score {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: white;
+        font-family: Arial, sans-serif;
+        font-size: 20px;
+      }
+      #leaderboard {
+        position: absolute;
+        top: 40px;
+        left: 10px;
+        color: white;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="score">Score: 0</div>
+    <div id="leaderboard"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script>
+      // Scene setup
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x87ceeb); // Blue sky
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0x404040);
+      scene.add(ambientLight);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+      directionalLight.position.set(0, 10, 10);
+      scene.add(directionalLight);
+
+      // City ground
+      const groundGeometry = new THREE.PlaneGeometry(100, 100);
+      const groundMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 }); // Green ground
+      const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+      ground.rotation.x = -Math.PI / 2;
+      scene.add(ground);
+
+      // Roads
+      const roadMaterial = new THREE.MeshBasicMaterial({ color: 0x222222 });
+      for (let x = -40; x <= 40; x += 10) {
+        const roadGeometryX = new THREE.PlaneGeometry(100, 2);
+        const roadX = new THREE.Mesh(roadGeometryX, roadMaterial);
+        roadX.rotation.x = -Math.PI / 2;
+        roadX.position.set(0, 0.01, x);
+        scene.add(roadX);
+
+        const roadGeometryZ = new THREE.PlaneGeometry(2, 100);
+        const roadZ = new THREE.Mesh(roadGeometryZ, roadMaterial);
+        roadZ.rotation.x = -Math.PI / 2;
+        roadZ.position.set(x, 0.01, 0);
+        scene.add(roadZ);
+      }
+
+      // Sidewalks
+      const sidewalkMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
+      for (let x = -40; x <= 40; x += 10) {
+        const sidewalkGeometryX1 = new THREE.PlaneGeometry(100, 1);
+        const sidewalkX1 = new THREE.Mesh(sidewalkGeometryX1, sidewalkMaterial);
+        sidewalkX1.rotation.x = -Math.PI / 2;
+        sidewalkX1.position.set(0, 0.015, x + 1.5);
+        scene.add(sidewalkX1);
+        const sidewalkX2 = new THREE.Mesh(sidewalkGeometryX1, sidewalkMaterial);
+        sidewalkX2.rotation.x = -Math.PI / 2;
+        sidewalkX2.position.set(0, 0.015, x - 1.5);
+        scene.add(sidewalkX2);
+
+        const sidewalkGeometryZ1 = new THREE.PlaneGeometry(1, 100);
+        const sidewalkZ1 = new THREE.Mesh(sidewalkGeometryZ1, sidewalkMaterial);
+        sidewalkZ1.rotation.x = -Math.PI / 2;
+        sidewalkZ1.position.set(x + 1.5, 0.015, 0);
+        scene.add(sidewalkZ1);
+        const sidewalkZ2 = new THREE.Mesh(sidewalkGeometryZ1, sidewalkMaterial);
+        sidewalkZ2.rotation.x = -Math.PI / 2;
+        sidewalkZ2.position.set(x - 1.5, 0.015, 0);
+        scene.add(sidewalkZ2);
+      }
+
+      // Mailboxes
+      const mailboxes = [];
+      const mailboxGeometry = new THREE.BoxGeometry(0.3, 0.6, 0.3);
+      const mailboxMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+      for (let x = -40; x <= 40; x += 5) {
+        for (let z = -40; z <= 40; z += 5) {
+          if (Math.abs(x % 10) < 1.5 || Math.abs(z % 10) < 1.5) continue; // Avoid roads
+          const mailbox = new THREE.Mesh(mailboxGeometry, mailboxMaterial);
+          mailbox.position.set(x, 0.3, z);
+          mailboxes.push(mailbox);
+          scene.add(mailbox);
+        }
+      }
+
+      // Cars
+      const cars = [];
+      const carGeometry = new THREE.BoxGeometry(1, 0.5, 0.5);
+      const carMaterial = new THREE.MeshBasicMaterial({ color: 0xffa500 }); // Changed to orange
+      for (let i = 0; i < 20; i++) {
+        const car = new THREE.Mesh(carGeometry, carMaterial);
+        const isXRoad = Math.random() < 0.5;
+        car.position.set(
+          isXRoad ? Math.random() * 80 - 40 : -40 + (i % 5) * 20,
+          0.25,
+          isXRoad ? -40 + Math.floor(i / 5) * 20 : Math.random() * 80 - 40
+        );
+        car.userData = {
+          isXRoad,
+          velocity: isXRoad
+            ? Math.random() > 0.5
+              ? 0.1
+              : -0.1
+            : Math.random() > 0.5
+            ? 0.1
+            : -0.1,
+        };
+        cars.push(car);
+        scene.add(car);
+      }
+
+      // Fences
+      const fenceMaterial = new THREE.MeshBasicMaterial({ color: 0x666666 });
+      const fenceGeometry = new THREE.BoxGeometry(0.2, 1, 0.2);
+      for (let x = -50; x <= 50; x += 1) {
+        const fenceTop = new THREE.Mesh(fenceGeometry, fenceMaterial);
+        fenceTop.position.set(x, 0.5, 50);
+        scene.add(fenceTop);
+        const fenceBottom = new THREE.Mesh(fenceGeometry, fenceMaterial);
+        fenceBottom.position.set(x, 0.5, -50);
+        scene.add(fenceBottom);
+      }
+      for (let z = -50; z <= 50; z += 1) {
+        const fenceLeft = new THREE.Mesh(fenceGeometry, fenceMaterial);
+        fenceLeft.position.set(-50, 0.5, z);
+        scene.add(fenceLeft);
+        const fenceRight = new THREE.Mesh(fenceGeometry, fenceMaterial);
+        fenceRight.position.set(50, 0.5, z);
+        scene.add(fenceRight);
+      }
+
+      // Buildings (one per block)
+      const buildings = [];
+      const buildingTypes = [
+        { width: 2, depth: 2, minHeight: 3, maxHeight: 8 }, // Small
+        { width: 4, depth: 4, minHeight: 10, maxHeight: 20 }, // Large
+        { width: 3, depth: 3, minHeight: 25, maxHeight: 40 }, // Skyscrapers
+      ];
+      const windowMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+      const blockCenters = [];
+      for (let x = -45; x <= 45; x += 10) {
+        for (let z = -45; z <= 45; z += 10) {
+          if (Math.abs(x % 10) < 2 || Math.abs(z % 10) < 2) continue; // Skip roads
+          blockCenters.push({ x, z });
+        }
+      }
+      blockCenters.forEach((center) => {
+        const isSkyscraper = Math.random() < 0.3;
+        const type = isSkyscraper
+          ? buildingTypes[2]
+          : buildingTypes[Math.floor(Math.random() * 2)];
+        const height =
+          Math.random() * (type.maxHeight - type.minHeight) + type.minHeight;
+        const buildingGeometry = new THREE.BoxGeometry(
+          type.width,
+          height,
+          type.depth
+        );
+        let hue;
+        do {
+          hue = Math.random();
+        } while (hue >= 0.2 && hue <= 0.4); // Avoid green
+        const color = new THREE.Color().setHSL(hue, 0.5, 0.5);
+        const buildingMaterial = new THREE.MeshBasicMaterial({ color });
+        const building = new THREE.Mesh(buildingGeometry, buildingMaterial);
+        const offsetX = Math.random() * 4 - 2;
+        const offsetZ = Math.random() * 4 - 2;
+        let x = center.x + offsetX;
+        let z = center.z + offsetZ;
+        if (isSkyscraper) {
+          x = Math.max(-48, Math.min(48, x));
+          z = Math.max(-48, Math.min(48, z));
+        }
+        building.position.set(x, height / 2, z);
+
+        // Windows on all faces
+        const windowGeometry = new THREE.PlaneGeometry(0.2, 0.2);
+        const windowSpacing = 0.5;
+        for (let y = 0.5; y < height - 0.5; y += windowSpacing) {
+          for (
+            let wx = -type.width / 2 + 0.3;
+            wx < type.width / 2 - 0.3;
+            wx += windowSpacing
+          ) {
+            const windowFront = new THREE.Mesh(windowGeometry, windowMaterial);
+            windowFront.position.set(x + wx, y, z + type.depth / 2 + 0.01);
+            scene.add(windowFront);
+            const windowBack = new THREE.Mesh(windowGeometry, windowMaterial);
+            windowBack.position.set(x + wx, y, z - type.depth / 2 - 0.01);
+            windowBack.rotation.y = Math.PI;
+            scene.add(windowBack);
+          }
+          for (
+            let wz = -type.depth / 2 + 0.3;
+            wz < type.depth / 2 - 0.3;
+            wz += windowSpacing
+          ) {
+            const windowLeft = new THREE.Mesh(windowGeometry, windowMaterial);
+            windowLeft.position.set(x - type.width / 2 - 0.01, y, z + wz);
+            windowLeft.rotation.y = Math.PI / 2;
+            scene.add(windowLeft);
+            const windowRight = new THREE.Mesh(windowGeometry, windowMaterial);
+            windowRight.position.set(x + type.width / 2 + 0.01, y, z + wz);
+            windowRight.rotation.y = -Math.PI / 2;
+            scene.add(windowRight);
+          }
+        }
+        for (
+          let wx = -type.width / 2 + 0.3;
+          wx < type.width / 2 - 0.3;
+          wx += windowSpacing
+        ) {
+          for (
+            let wz = -type.depth / 2 + 0.3;
+            wz < type.depth / 2 - 0.3;
+            wz += windowSpacing
+          ) {
+            const windowTop = new THREE.Mesh(windowGeometry, windowMaterial);
+            windowTop.position.set(x + wx, height / 2 + 0.01, z + wz);
+            windowTop.rotation.x = -Math.PI / 2;
+            scene.add(windowTop);
+          }
+        }
+
+        buildings.push({
+          mesh: building,
+          size: Math.max(type.width, type.depth),
+        });
+        scene.add(building);
+      });
+
+      // Function to create text sprite for names
+      function createTextSprite(text) {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.width = 256;
+        canvas.height = 64;
+        context.fillStyle = "rgba(0, 0, 0, 0.7)"; // Semi-transparent black background
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.font = "30px Arial";
+        context.fillStyle = "white";
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillText(text, canvas.width / 2, canvas.height / 2);
+        const texture = new THREE.CanvasTexture(canvas);
+        const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+        const sprite = new THREE.Sprite(spriteMaterial);
+        sprite.scale.set(4, 1, 1); // Larger scale for visibility
+        return sprite;
+      }
+
+      // Name lists
+      const playerNames = [
+        "Alex",
+        "Jamie",
+        "Taylor",
+        "Riley",
+        "Morgan",
+        "Casey",
+      ];
+      const aiNames = [
+        "Sam",
+        "Dan",
+        "Emma",
+        "Liam",
+        "Olivia",
+        "Noah",
+        "Ava",
+        "Sophia",
+        "Ethan",
+        "Mia",
+        "Lucas",
+        "Isabella",
+        "Mason",
+        "Charlotte",
+        "Logan",
+        "Amelia",
+        "Oliver",
+        "Harper",
+        "Elijah",
+        "Evelyn",
+        "Jacob",
+        "Abigail",
+        "Michael",
+        "Emily",
+      ];
+
+      // Generate spawn points for holes (5x5 grid, 16-unit spacing)
+      const spawnPoints = [];
+      for (let x = -32; x <= 32; x += 16) {
+        for (let z = -32; z <= 32; z += 16) {
+          spawnPoints.push({ x, z });
+        }
+      }
+      spawnPoints.sort(() => Math.random() - 0.5); // Shuffle spawn points
+
+      // Player hole
+      const playerRadius = 1;
+      const holeGeometry = new THREE.CylinderGeometry(
+        playerRadius,
+        playerRadius,
+        0.2,
+        8
+      );
+      const holeMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+      const playerHole = new THREE.Mesh(holeGeometry, holeMaterial);
+      const playerSpawn = spawnPoints.pop();
+      playerHole.position.set(
+        playerSpawn.x + (Math.random() * 8 - 4),
+        0.1,
+        playerSpawn.z + (Math.random() * 8 - 4)
+      );
+      playerHole.userData = {
+        blocksConsumed: 0,
+        score: 0,
+        name: playerNames[Math.floor(Math.random() * playerNames.length)],
+      };
+      const playerNameSprite = createTextSprite(playerHole.userData.name);
+      playerNameSprite.position.set(0, 1.5, 0); // Higher for visibility
+      playerHole.add(playerNameSprite);
+      scene.add(playerHole);
+
+      // AI holes
+      const aiHoles = [];
+      function spawnAIHole(index) {
+        const aiRadius = 1; // Fixed size, same as player
+        const aiHole = new THREE.Mesh(
+          new THREE.CylinderGeometry(aiRadius, aiRadius, 0.2, 8),
+          new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff })
+        );
+        const spawnPoint = spawnPoints[index % spawnPoints.length];
+        aiHole.position.set(
+          spawnPoint.x + (Math.random() * 8 - 4),
+          0.1,
+          spawnPoint.z + (Math.random() * 8 - 4)
+        );
+        const aiName = aiNames[Math.floor(Math.random() * aiNames.length)];
+        const aiNameSprite = createTextSprite(aiName);
+        aiNameSprite.position.set(0, 1.5, 0); // Higher for visibility
+        aiHole.add(aiNameSprite);
+        const ai = {
+          mesh: aiHole,
+          radius: aiRadius,
+          velocity: new THREE.Vector3(),
+          blocksConsumed: 0,
+          score: 0,
+          name: aiName,
+        };
+        aiHoles.push(ai);
+        scene.add(aiHole);
+        return ai;
+      }
+      for (let i = 0; i < 24; i++) {
+        spawnAIHole(i);
+      }
+
+      // Consumable objects
+      const objects = [];
+      const objectGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+      const objectMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+      for (let i = 0; i < 500; i++) {
+        const object = new THREE.Mesh(objectGeometry, objectMaterial);
+        object.position.set(
+          Math.random() * 80 - 40,
+          0.25,
+          Math.random() * 80 - 40
+        );
+        objects.push(object);
+        scene.add(object);
+      }
+
+      // Camera positioning
+      camera.position.set(0, 15, 20);
+      camera.lookAt(playerHole.position);
+
+      // Player controls
+      const keys = {};
+      document.addEventListener("keydown", (e) => (keys[e.key] = true));
+      document.addEventListener("keyup", (e) => (keys[e.key] = false));
+
+      // Game variables
+      let playerSize = playerRadius;
+      const scoreDisplay = document.getElementById("score");
+      const leaderboardDisplay = document.getElementById("leaderboard");
+      let gameOver = false;
+
+      // Update leaderboard
+      function updateLeaderboard() {
+        const entries = [
+          { name: playerHole.userData.name, score: playerHole.userData.score },
+          ...aiHoles.map((ai) => ({ name: ai.name, score: ai.score })),
+        ];
+        entries.sort((a, b) => b.score - a.score);
+        leaderboardDisplay.innerHTML =
+          "Leaderboard:<br>" +
+          entries
+            .slice(0, 5)
+            .map((e) => `${e.name}: ${e.score}`)
+            .join("<br>");
+      }
+
+      // Animation loop
+      function animate() {
+        if (gameOver) return;
+        requestAnimationFrame(animate);
+
+        // Player movement
+        const speed = 0.3;
+        if (keys["ArrowUp"] || keys["w"]) playerHole.position.z -= speed;
+        if (keys["ArrowDown"] || keys["s"]) playerHole.position.z += speed;
+        if (keys["ArrowLeft"] || keys["a"]) playerHole.position.x -= speed;
+        if (keys["ArrowRight"] || keys["d"]) playerHole.position.x += speed;
+
+        // Keep player within bounds
+        playerHole.position.x = Math.max(
+          -50,
+          Math.min(50, playerHole.position.x)
+        );
+        playerHole.position.z = Math.max(
+          -50,
+          Math.min(50, playerHole.position.z)
+        );
+
+        // Update camera
+        camera.position.set(
+          playerHole.position.x,
+          15,
+          playerHole.position.z + 20
+        );
+        camera.lookAt(playerHole.position);
+
+        // AI holes movement and aggression
+        aiHoles.forEach((ai) => {
+          const distanceToPlayer = playerHole.position.distanceTo(
+            ai.mesh.position
+          );
+          if (distanceToPlayer < 8 && ai.radius > playerSize * 1.1) {
+            // Changed: distance 10->8, size 1.2->1.1
+            const direction = playerHole.position
+              .clone()
+              .sub(ai.mesh.position)
+              .normalize();
+            ai.velocity.set(direction.x * 0.35, 0, direction.z * 0.35); // Changed: speed 0.25->0.35
+          } else if (Math.random() < 0.4) {
+            // Changed: chance 0.2->0.4
+            ai.velocity.set(
+              (Math.random() - 0.5) * 0.25, // Changed: velocity 0.15->0.25
+              0,
+              (Math.random() - 0.5) * 0.25
+            );
+          }
+          ai.mesh.position.add(ai.velocity);
+          ai.mesh.position.x = Math.max(-50, Math.min(50, ai.mesh.position.x));
+          ai.mesh.position.z = Math.max(-50, Math.min(50, ai.mesh.position.z));
+        });
+
+        // Car movement
+        cars.forEach((car) => {
+          if (car.userData.isXRoad) {
+            car.position.x += car.userData.velocity;
+            if (car.position.x > 50) car.position.x = -50;
+            if (car.position.x < -50) car.position.x = 50;
+          } else {
+            car.position.z += car.userData.velocity;
+            if (car.position.z > 50) car.position.z = -50;
+            if (car.position.z < -50) car.position.z = 50;
+          }
+        });
+
+        // Check for object consumption
+        objects.forEach((obj, index) => {
+          const distance = playerHole.position.distanceTo(obj.position);
+          if (distance < playerSize) {
+            scene.remove(obj);
+            objects.splice(index, 1);
+            playerHole.userData.blocksConsumed += 1;
+            playerHole.userData.score += 10;
+            if (playerHole.userData.blocksConsumed >= 10) {
+              playerSize += 0.3;
+              playerHole.userData.blocksConsumed = 0;
+              playerHole.geometry.dispose();
+              playerHole.geometry = new THREE.CylinderGeometry(
+                playerSize,
+                playerSize,
+                0.2,
+                8
+              );
+            }
+            scoreDisplay.textContent = `Score: ${playerHole.userData.score}`;
+            updateLeaderboard();
+          }
+        });
+
+        // Check for mailbox consumption
+        mailboxes.forEach((mailbox, index) => {
+          const distance = playerHole.position.distanceTo(mailbox.position);
+          if (distance < playerSize) {
+            scene.remove(mailbox);
+            mailboxes.splice(index, 1);
+            playerHole.userData.blocksConsumed += 1;
+            playerHole.userData.score += 20;
+            if (playerHole.userData.blocksConsumed >= 10) {
+              playerSize += 0.3;
+              playerHole.userData.blocksConsumed = 0;
+              playerHole.geometry.dispose();
+              playerHole.geometry = new THREE.CylinderGeometry(
+                playerSize,
+                playerSize,
+                0.2,
+                8
+              );
+            }
+            scoreDisplay.textContent = `Score: ${playerHole.userData.score}`;
+            updateLeaderboard();
+          }
+        });
+
+        // Check for car consumption
+        cars.forEach((car, index) => {
+          const distance = playerHole.position.distanceTo(car.position);
+          if (distance < playerSize) {
+            scene.remove(car);
+            cars.splice(index, 1);
+            playerHole.userData.blocksConsumed += 1;
+            playerHole.userData.score += 30;
+            if (playerHole.userData.blocksConsumed >= 10) {
+              playerSize += 0.3;
+              playerHole.userData.blocksConsumed = 0;
+              playerHole.geometry.dispose();
+              playerHole.geometry = new THREE.CylinderGeometry(
+                playerSize,
+                playerSize,
+                0.2,
+                8
+              );
+            }
+            scoreDisplay.textContent = `Score: ${playerHole.userData.score}`;
+            updateLeaderboard();
+          }
+        });
+
+        // Check for building consumption
+        buildings.forEach((building, index) => {
+          const distance = playerHole.position.distanceTo(
+            building.mesh.position
+          );
+          if (distance < playerSize && playerSize > building.size * 1.5) {
+            scene.remove(building.mesh);
+            buildings.splice(index, 1);
+            playerHole.userData.score += 100;
+            playerSize += building.size * 0.2;
+            playerHole.geometry.dispose();
+            playerHole.geometry = new THREE.CylinderGeometry(
+              playerSize,
+              playerSize,
+              0.2,
+              8
+            );
+            scoreDisplay.textContent = `Score: ${playerHole.userData.score}`;
+            updateLeaderboard();
+          }
+        });
+
+        // AI holes consumption
+        aiHoles.forEach((ai) => {
+          objects.forEach((obj, index) => {
+            const distance = ai.mesh.position.distanceTo(obj.position);
+            if (distance < ai.radius) {
+              scene.remove(obj);
+              objects.splice(index, 1);
+              ai.blocksConsumed += 1;
+              ai.score += 10;
+              if (ai.blocksConsumed >= 3) {
+                ai.radius += 0.3;
+                ai.blocksConsumed = 0;
+                ai.mesh.geometry.dispose();
+                ai.mesh.geometry = new THREE.CylinderGeometry(
+                  ai.radius,
+                  ai.radius,
+                  0.2,
+                  8
+                );
+              }
+              updateLeaderboard();
+            }
+          });
+          mailboxes.forEach((mailbox, index) => {
+            const distance = ai.mesh.position.distanceTo(mailbox.position);
+            if (distance < ai.radius) {
+              scene.remove(mailbox);
+              mailboxes.splice(index, 1);
+              ai.blocksConsumed += 1;
+              ai.score += 20;
+              if (ai.blocksConsumed >= 3) {
+                ai.radius += 0.3;
+                ai.blocksConsumed = 0;
+                ai.mesh.geometry.dispose();
+                ai.mesh.geometry = new THREE.CylinderGeometry(
+                  ai.radius,
+                  ai.radius,
+                  0.2,
+                  8
+                );
+              }
+              updateLeaderboard();
+            }
+          });
+          cars.forEach((car, index) => {
+            const distance = ai.mesh.position.distanceTo(car.position);
+            if (distance < ai.radius) {
+              scene.remove(car);
+              cars.splice(index, 1);
+              ai.blocksConsumed += 1;
+              ai.score += 30;
+              if (ai.blocksConsumed >= 3) {
+                ai.radius += 0.3;
+                ai.blocksConsumed = 0;
+                ai.mesh.geometry.dispose();
+                ai.mesh.geometry = new THREE.CylinderGeometry(
+                  ai.radius,
+                  ai.radius,
+                  0.2,
+                  8
+                );
+              }
+              updateLeaderboard();
+            }
+          });
+          buildings.forEach((building, index) => {
+            const distance = ai.mesh.position.distanceTo(
+              building.mesh.position
+            );
+            if (distance < ai.radius && ai.radius > building.size * 1.5) {
+              scene.remove(building.mesh);
+              buildings.splice(index, 1);
+              ai.score += 100;
+              ai.radius += building.size * 0.2;
+              ai.mesh.geometry.dispose();
+              ai.mesh.geometry = new THREE.CylinderGeometry(
+                ai.radius,
+                ai.radius,
+                0.2,
+                8
+              );
+              updateLeaderboard();
+            }
+          });
+        });
+
+        // Check for AI hole interactions
+        aiHoles.forEach((ai, index) => {
+          const distance = playerHole.position.distanceTo(ai.mesh.position);
+          if (distance < playerSize + ai.radius) {
+            if (playerSize > ai.radius * 1.2) {
+              scene.remove(ai.mesh);
+              aiHoles.splice(index, 1);
+              playerHole.userData.score += 50;
+              playerSize += ai.radius * 0.25;
+              playerHole.geometry.dispose();
+              playerHole.geometry = new THREE.CylinderGeometry(
+                playerSize,
+                playerSize,
+                0.2,
+                8
+              );
+              scoreDisplay.textContent = `Score: ${playerHole.userData.score}`;
+              spawnAIHole(index);
+              updateLeaderboard();
+            } else if (ai.radius > playerSize * 1.2) {
+              scene.remove(playerHole);
+              scoreDisplay.textContent = `Game Over! Final Score: ${playerHole.userData.score}`;
+              gameOver = true;
+              return;
+            }
+          }
+        });
+
+        renderer.render(scene, camera);
+      }
+
+      // Handle window resize
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // Start game
+      animate();
+    </script>
+  </body>
+</html>
