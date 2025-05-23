@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Dodo News</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <h1>Dodo News <span class="beta">beta</span></h1>
+    </header>
+    <div style="text-align: center">
+
+      <h3>Division of Dodo corp.</h3>
+    </div>
+
+    <nav class="nav">
+      <ul>
+        <li class="home selected" onclick="showslide('home')">Home</li>
+        <li class="brands" onclick="showslide('brands')">Brands</li>
+        <li class="marketplace" onclick="showslide('marketplace')">
+          MarketPlace
+        </li>
+        <li class="employees" onclick="showslide('employees')">Employees</li>
+        <li class="News" onclick="showslide('News')">News</li>
+        <li class="other" onclick="showslide('other')">Other</li>
+       
+      </ul>
+    </nav>
+    <div class="container">
+      <div class="slide home">
+        <div style="text-align: center">
+          <h2>Home</h2>
+          <p>
+            Wanna catch up on whats happening in school? Dodo News is perfect for you!
+          </p>
+          <h3><b>Make sure to check out Dodo Math!</b></h3>
+        </div>
+        <div class="img-container">
+          <img src="img1.png" width="30%" />
+          <img src="img2.png" width="30%" />
+        </div>
+
+        <h3>Deals:</h3>
+        <ul>
+          <li>Buy now if you want a great deal! buy 1 get 1 25% off!</li>
+          <li>These deals only last for 1 day!</li>
+          <li>We are running out of copies!</li>
+        </ul>
+      </div>
+      <div class="slide brands hide">
+        <h3>Brands:</h3>
+        <ul>
+          <li>Quick news</li>
+
+          <li>Dodo times</li>
+         
+        </ul>
+        <img src="img3.png" width="90%" />
+      </div>
+      <div class="marketplace slide hide">
+        <h3>Marketplace:</h3>
+
+        <ul>
+          <li>
+           Dodo Times Newspaper $6 Dodo Bucks
+           </li>
+            <ul>
+              <li>Dodo Quick News $4 Dodo Bucks</li>
+             
+        
+          <button
+            onclick="document.getElementById('order-content').style.display='block'"
+          >
+            ORDER
+          </button>
+          <div id="order-content" style="display: none">
+            Fill in sheet below and give to Dodo member and pickup by next
+            recess at buddy bench <br /><img src="dodo_order.png" width="10%" />
+          </div>
+          <br  />
+          <img src="Dodo currency 1.png" width="40%" height="350" />
+        <div>*Our currency denomination is "Dodos"</div>
+        <h3>Earning</h3>
+        <p>Only if you are in the Dodo club &#8482;</p>
+        <ul>
+          <li>1 Soar Buck = 2 Dodo Bucks</li>
+          <li>1 Soar Ticket = 5 Dodo Buck</li>
+          <li>1 Student of the month = 10 Dodo Bucks</li>
+        </ul>
+        </div>
+       
+
+      <div class="employees slide hide">
+        <h3>Employees</h3>
+        <div>These employees are hardworking ones!</div>
+
+        <h4>Entrepreneur(s):</h4>
+        <ul>
+          <li>Krishna</li>
+          
+        </ul>
+
+        <h4>Co-leaders:</h4>
+        <ul>
+          <li>Yuvaan</li>
+        </ul>
+
+        <h4>Managers:</h4>
+        <ul>
+          <li>Hiring</li>
+        </ul>
+
+        <h4>Quiz checker:</h4>
+        <ul>
+          <li>Hiring</li>
+        </ul>
+
+        <h4>Website creator:</h4>
+        <ul>
+          <li>Krishna</li>
+          <li>Gupta</li>
+        </ul>
+
+        <h4>Artists:</h4>
+        <ul>
+          <li>Bruhati</li>
+        </ul>
+      </div>
+      <div class="News slide hide">
+        <div>School is almost over</div>
+        <input type="date" name="days until end of school" /><br/>
+        New Fourth grade teacher in Red El
+
+      </div>
+      <div class="other slide hide">
+        <h3>Credits</h3>
+
+        <div>Couple of images are from Google.</div>
+        <div>-------------</div>
+        <h3>New Features</h3>
+        <div>This website is still beta.</div>
+        <p>Make sure to check out Dodo Math!</p>
+        <h3>Events</h3>
+        <ul>
+          <li>Planning Dodo websites structure</li>
+          <li>
+            Games, AI, Club, Club benefits, Dodo community and credit
+            coming soon
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
