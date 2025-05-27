@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Dodo Lounge</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <h1>
+        Dodo Lounge <span class="beta">beta</span>
+        <div style="text-align: center; text-align: center; font-size: 12pt">
+          <h3>Division of Dodo corp.</h3>
+        </div>
+      </h1>
+    </header>
+    <nav class="nav">
+      <ul>
+        <li class="home" onclick="showslide('home')">Home</li>
+        <li class="brands" onclick="showslide('brands')">Brands</li>
+        <li class="show-of-the-week" onclick="showslide('show-of-the-week')">
+          Show of the week
+        </li>
+
+        <li class="games" onclick="showslide('games')">Games</li>
+        <li class="Club" onclick="showslide('Club')">Club</li>
+        <li class="employees" onclick="showslide('employees')">Employees</li>
+        <li class="other" onclick="showslide('other')">Other</li>
+      </ul>
+    </nav>
+    <div class="container">
+      <div class="slide home">
+        <div style="text-align: center">
+          <h2>Home</h2>
+          <p>Bored? Watch play and relax in Dodo lounge</p>
+          <h3><b>Make sure to check out other Dodo websites!</b></h3>
+        </div>
+        <div class="img-container">
+          <img src="img3.png" width="15%" />
+          <img src="img4.png" width="15%" />
+          <br />
+          <img src="img5.png" width="15%" />
+          <img src="img6.png" width="15%" />
+        </div>
+
+        <h3>Deals:</h3>
+        <ul>
+          <li>Get cedit now for other dodo features</li>
+          <li>These deals only last for 5 days!</li>
+        </ul>
+      </div>
+      <div class="slide brands hide">
+        <h3>Brands:</h3>
+        <ul>
+          <li>Dodo Movies</li>
+
+          <li>Dodo Games</li>
+        </ul>
+        <img src="img7.png" width="90%" />
+      </div>
+
+      <div class="slide employees hide">
+        <h3>Employees</h3>
+        <div>These employees are hardworking ones!</div>
+
+        <h4>Entrepreneur(s):</h4>
+        <ul>
+          <li>Krishna</li>
+        </ul>
+
+        <h4>Co-leaders:</h4>
+        <ul>
+          <li>Yuvaan</li>
+        </ul>
+
+        <h4>Managers:</h4>
+        <ul>
+          <li>Hiring</li>
+        </ul>
+
+        <h4>Quiz checker:</h4>
+        <ul>
+          <li>Hiring</li>
+        </ul>
+
+        <h4>Website creator:</h4>
+        <ul>
+          <li>Krishna</li>
+          <li>Gupta</li>
+        </ul>
+
+        <h4>Artists:</h4>
+        <ul>
+          <li>Bruhati</li>
+        </ul>
+      </div>
+
+      <div class="slide games hide">
+        <div
+          style="
+            display: flex;
+            align-content: center;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            flex-wrap: wrap;
+          "
+        >
+          <iframe
+            style="margin: 10px"
+            src="game1.html"
+            width="600"
+            height="600"
+          ></iframe>
+          <iframe
+            style="margin: 10px"
+            src="game2.html"
+            width="600"
+            height="600"
+          ></iframe>
+          <iframe
+            style="margin: 10px"
+            src="game3.html"
+            width="600"
+            height="600"
+          ></iframe>
+          <iframe
+            style="margin: 10px"
+            src="game4.html"
+            width="600"
+            height="600"
+          ></iframe>
+          <iframe
+            style="margin: 10px"
+            src="game5.html"
+            width="600"
+            height="600"
+          ></iframe>
+          <iframe
+            style="margin: 10px"
+            src="game6.html"
+            width="600"
+            height="600"
+          ></iframe>
+          <iframe
+            style="margin: 10px"
+            src="game7.html"
+            width="600"
+            height="600"
+          ></iframe>
+          <iframe
+            style="margin: 10px"
+            src="game8.html"
+            width="600"
+            height="600"
+          ></iframe>
+          <iframe
+            style="margin: 10px"
+            src="game9.html"
+            width="600"
+            height="600"
+          ></iframe>
+        </div>
+      </div>
+      <div class="slide show-of-the-week hide">
+        <h3>Show of the week :</h3>
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/njBMVheAuc8"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        >
+        </iframe>
+        <div>
+          For more videos like this view Frame The Earth channel on youtube
+        </div>
+      </div>
+      <div class="slide Club hide">
+        To join Dodo club for Earning, extra shows and games and benefits, you
+        can fill in the dodo club sheet and give to Dodo member.<br />
+        It is not a must, but we ask you to subscribe to Frame The Earth youtube
+        channel.<br />
+        <img src="img8.png" />
+      </div>
+
+      <div class="slide other hide">
+        <h3>Credits</h3>
+
+        <div>Couple of images are from Google.</div>
+        <div>-------------</div>
+        <h3>New Features</h3>
+        <div>This website is still beta.</div>
+        <p>Make sure to check out Dodo Math!</p>
+        <h3>Events</h3>
+        <ul>
+          <li>Planning Dodo websites structure</li>
+          <li>
+            Games, AI, Club, Club benefits, Dodo community and credit coming
+            soon
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

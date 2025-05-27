@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Basic Block Dude HTML Game</title>
+    <meta charset="UTF-8" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        background: #fafafa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      canvas {
+        border: 1px solid white;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas width="384" height="256" id="game"></canvas>
+    <div>
+      <div><b>CONTROLS</b></div>
+      <div><b>Left / Right Arrow:</b> Move left / right</div>
+      <div><b>Down Arrow:</b> Pick up or drop block</div>
+    </div>
+    <script>
+      // since block dude and sokoban share similarities in look and play style
+      // we'll reuse a lot of the code from the basic sokoban game
+      // @see https://gist.github.com/straker/2fddb507d4bb6bec54ea2fdb022d020c
+      const canvas = document.getElementById("game");
+      const context = canvas.getContext("2d");
+
+      const grid = 32;
+
+      // create a new canvas and draw the wall image. then we can use this
+      // canvas to draw the images later on
+      const wallCanvas = document.createElement("canvas");
+      const wallCtx = wallCanvas.getContext("2d");
+      wallCanvas.width = wallCanvas.height = grid;
+
+      wallCtx.fillStyle = "white";
+      wallCtx.fillRect(1, 1, grid, grid);
+      wallCtx.fillStyle = "black";
+
+      // 1st row brick
+      wallCtx.fillRect(0, 1, 21, 10);
+      wallCtx.fillRect(23, 1, 10, 10);
+
+      // 2nd row bricks
+      wallCtx.fillRect(0, 12, 10, 9);
+      wallCtx.fillRect(11, 12, 21, 9);
+
+      // 3rd row bricks
+      wallCtx.fillRect(0, 22, 21, 10);
+      wallCtx.fillRect(23, 22, 10, 10);
+
+      // the direction to move the player each frame. we'll use change in
+      // direction so "row: 1" means move down 1 row, "row: -1" means move
+      // up one row, etc.
+      let playerDir = { row: 0, col: 0 };
+      let playerPos = { row: 0, col: 0 }; // player position in the 2d array
+      let playerFacing = -1; // the direction the player is facing (1 for right, -1 for left)
+      let rAF = null; // keep track of the animation frame so we can cancel it
+      let carryingBlock = false; // if the player is carrying a block
+      let width = 0; // find the largest row and use that as the game width
+
+      // create a mapping of object types using the sok file format
+      const types = {
+        wall: "#",
+        player: "@",
+        block: "$",
+        goal: ".",
+        empty: " ",
+      };
+
+      // a level using the sok file format
+      const level1 = `
+ #    ##        ##
+ #                #
+##                 #
+#.                  #
+##                   #
+ #           #  $    #
+ #           #$ $$@  #
+ #####   #############
+     #  $#
+     #####
+`;
+
+      // keep track of what is in every cell of the game using a 2d array
+      const cells = [];
+
+      // use each line of the level as the row (remove empty lines)
+      level1
+        .split("\n")
+        .filter((rowData) => !!rowData)
+        .forEach((rowData, row) => {
+          cells[row] = [];
+
+          if (rowData.length > width) {
+            width = rowData.length;
+          }
+
+          // use each character of the level as the col
+          rowData.split("").forEach((colData, col) => {
+            cells[row][col] = colData;
+
+            if (colData === types.player) {
+              playerPos = { row, col };
+            }
+          });
+        });
+
+      // clamp a value between two values
+      function clamp(min, max, value) {
+        return Math.min(Math.max(min, value), max);
+      }
+
+      // move an entity from one cell to another
+      function move(startPos, endPos) {
+        const startCell = cells[startPos.row][startPos.col];
+        const endCell = cells[endPos.row][endPos.col];
+
+        const isPlayer = startCell === types.player;
+
+        // first remove then entity from its current cell
+        switch (startCell) {
+          // if the start cell is the player or a block (no goal)
+          // then leave empty
+          case types.player:
+          case types.block:
+            cells[startPos.row][startPos.col] = types.empty;
+            break;
+        }
+
+        // then move then entity into the new cell
+        switch (endCell) {
+          // if the end cell is empty, add the block or player
+          case types.empty:
+            cells[endPos.row][endPos.col] = isPlayer
+              ? types.player
+              : types.block;
+            break;
+        }
+
+        playerFacing = endPos.col - startPos.col;
+
+        // move the block along with the player
+        if (carryingBlock) {
+          cells[startPos.row - 1][startPos.col] = types.empty;
+          cells[endPos.row - 1][endPos.col] = types.block;
+        }
+      }
+
+      // game loop
+      function loop() {
+        rAF = requestAnimationFrame(loop);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        // check to see if the player can move in the desired direction
+        let row = playerPos.row + playerDir.row;
+        const col = playerPos.col + playerDir.col;
+        const cell = cells[row][col];
+        switch (cell) {
+          // allow the player to move into empty or goal cells
+          case types.empty:
+          case types.goal:
+            // apply gravity
+            let rowBelow = row + 1 + playerDir.row;
+            let belowCell = cells[rowBelow][col];
+            while (belowCell === types.empty || belowCell == types.goal) {
+              row = rowBelow;
+              rowBelow = row + 1 + playerDir.row;
+              belowCell = cells[rowBelow][col];
+            }
+
+            move(playerPos, { row, col });
+
+            playerPos.row = row;
+            playerPos.col = col;
+
+            // end game
+            if (cell === types.goal) {
+              cancelAnimationFrame(rAF);
+            }
+            break;
+
+          // only allow the player to move on top of a block or wall
+          // if it is empty above
+          case types.block:
+          case types.wall:
+            const rowAbove = row - 1 + playerDir.row;
+            const nextCell = cells[rowAbove][col];
+
+            if (nextCell === types.empty || nextCell === types.goal) {
+              move(playerPos, { row: rowAbove, col });
+
+              playerPos.row = rowAbove;
+              playerPos.col = col;
+            }
+            break;
+        }
+
+        // reset player dir after checking move
+        playerDir = { row: 0, col: 0 };
+
+        // draw the board
+        context.strokeStyle = "black";
+        context.fillStyle = "black";
+        context.lineWidth = 2;
+
+        // center the view to the player but don't let the view go outside
+        // the game boundaries
+        const startRow = clamp(0, cells.length - 8, playerPos.row - 4);
+        const startCol = clamp(0, width - 12, playerPos.col - 6);
+
+        for (let row = startRow; row < cells.length; row++) {
+          for (let col = startCol; col < cells[row].length; col++) {
+            const cell = cells[row][col];
+            const drawRow = row - startRow;
+            const drawCol = col - startCol;
+
+            switch (cell) {
+              case types.wall:
+                context.drawImage(wallCanvas, drawCol * grid, drawRow * grid);
+                break;
+
+              case types.block:
+                context.strokeRect(drawCol * grid, drawRow * grid, grid, grid);
+                break;
+
+              case types.goal:
+                context.strokeRect(
+                  (drawCol + 0.2) * grid,
+                  drawRow * grid,
+                  grid - 12,
+                  grid
+                );
+                context.beginPath();
+                context.arc(
+                  (drawCol + 0.7) * grid,
+                  (drawRow + 0.5) * grid,
+                  2,
+                  0,
+                  Math.PI * 2
+                );
+                context.fill();
+                break;
+
+              case types.player:
+                context.beginPath();
+
+                // head
+                context.arc(
+                  (drawCol + 0.5) * grid,
+                  (drawRow + 0.3) * grid,
+                  7,
+                  0,
+                  Math.PI * 2
+                );
+                context.stroke();
+                // hat
+                const x = (drawCol + (playerFacing < 0 ? 0.1 : 0.6)) * grid;
+                context.fillRect(x, (drawRow + 0.15) * grid, grid / 3, 2);
+                context.beginPath();
+                context.arc(
+                  (drawCol + 0.5) * grid,
+                  (drawRow + 0.25) * grid,
+                  7,
+                  0,
+                  Math.PI,
+                  1
+                );
+                context.fill();
+                // body
+                context.fillRect(
+                  (drawCol + 0.48) * grid,
+                  (drawRow + 0.4) * grid,
+                  2,
+                  grid / 2.5
+                );
+                // arms
+                context.fillRect(
+                  (drawCol + 0.3) * grid,
+                  (drawRow + 0.6) * grid,
+                  grid / 2.5,
+                  2
+                );
+                // legs
+                context.moveTo((drawCol + 0.5) * grid, (drawRow + 0.8) * grid);
+                context.lineTo((drawCol + 0.65) * grid, (drawRow + 1) * grid);
+                context.moveTo((drawCol + 0.5) * grid, (drawRow + 0.8) * grid);
+                context.lineTo((drawCol + 0.35) * grid, (drawRow + 1) * grid);
+                context.stroke();
+            }
+          }
+        }
+      }
+
+      // listen to keyboard events to move the player
+      document.addEventListener("keydown", function (e) {
+        playerDir = { row: 0, col: 0 };
+
+        // left arrow key
+        if (e.which === 37) {
+          playerDir.col = -1;
+        }
+        // right arrow key
+        else if (e.which === 39) {
+          playerDir.col = 1;
+        }
+        // down arrow key
+        else if (e.which === 40) {
+          const nextCol = playerFacing + playerPos.col;
+          const nextCell = cells[playerPos.row][nextCol];
+          const cellAbove = cells[playerPos.row - 1][nextCol];
+          const cellBelow = cells[playerPos.row + 1][nextCol];
+
+          // pick up block only if there isn't a block on top of it
+          if (
+            !carryingBlock &&
+            nextCell === types.block &&
+            cellAbove === types.empty
+          ) {
+            cells[playerPos.row][nextCol] = types.empty;
+            cells[playerPos.row - 1][playerPos.col] = types.block;
+            carryingBlock = true;
+          }
+          // put down block
+          else if (carryingBlock) {
+            let row = playerPos.row;
+
+            // drop block
+            if (nextCell === types.empty) {
+              // apply gravity
+              let rowBelow = row - 1;
+              let belowCell = cells[rowBelow][nextCol];
+              while (belowCell === types.empty) {
+                row = rowBelow;
+                rowBelow++;
+                belowCell = cells[rowBelow][nextCol];
+              }
+            }
+
+            // put block on top wall or block
+            if (
+              (nextCell === types.wall || nextCell === types.block) &&
+              cellAbove === types.empty
+            ) {
+              row = row - 1;
+            }
+
+            cells[playerPos.row - 1][playerPos.col] = types.empty;
+            cells[row][nextCol] = types.block;
+            carryingBlock = false;
+          }
+        }
+      });
+
+      // start the game
+      requestAnimationFrame(loop);
+    </script>
+  </body>
+</html>
