@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Dodo Corp.</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <header class="header">
+
+      <br/>
+      <div style="text-align: center">
+      <h1>Dodo Corp. <span class="beta">beta</span></h1>
+    </header>
+    <div/>
+    <div style="text-align: center">
+      <h3>Offical website</h3>
+      <div>Redmond Elemantary </div>
+    </div>
+
+    <nav class="nav">
+      <ul>
+        <li class="home selected" onclick="showslide('home')">Home</li>
+        <li class="brands" onclick="showslide('brands')">Brands</li>
+        <li class="websites" onclick="showslide('websites')">Our websites</li>
+        <li class="employees" onclick="showslide('employees')">Employees</li>
+        <li class="credit" onclick="showslide('credit')">Credit</li>
+        <li class="league" onclick="showslide('league')">League</li>
+        <li class="merch" onclick="showslide('merch')">Merch</li>
+        <li class="events" onclick="showslide('events')">Events</li>
+        <li class="blog" onclick="showslide('blog')">Blog</li>
+        <li class="other" onclick="showslide('other')">Other</li>
+   
+      </ul>
+    </nav>
+    <div class="container">
+      <div class="slide home">
+        <div style="text-align: center">
+          <h2>Home</h2>
+          <div>
+            Want to learn math, know whats going on or want entertainment. Its
+            all in the Dodo websites
+          </div>
+          <h3><b>Make sure to check out other Dodo websites</b></h3>
+          <div>Sponsored by @FrameTheEarth.</div>
+        </div>
+        <div class="img-container">
+          <img src="img9.png" width="15%" />
+          <img src="img10.png" width="15%" />
+          <img src="img11.png" width="15%" />
+          <img src="img12.png" width="15%" />
+        </div>
+        <div style="text-align: center">
+        <h4>SUBSCRIBE TO @FrameTheEarth</h4>
+      </div>
+      </div>
+      
+
+      <div class="slide brands hide">
+        <h3>Brands:</h3>
+        <ul>
+          <li>Dodo math</li>
+          <li>Dodo news</li>
+          <li>Dodo lounge</li>
+        </ul>
+        <img src="img13.png" width="90%" />
+        <div style="text-align: center">
+          <h4>SUBSCRIBE TO @FrameTheEarth</h4>
+        </div>
+      </div>
+      <div class="Our websites slide hide">
+        <p>
+          <a href="../dodo_math/index.html" target="_blank">Dodo Math</a>
+          Math quizzes, math marketplace
+        </p>
+        <p>
+          <a href="../dodo_news/index.html" target="_blank">Dodo News</a>
+          News, newspaper marketplace
+        </p>
+        <p>
+          <a href="../dodo_lounge/index.html" target="_blank">Dodo Lounge</a>
+          Games, shows, credit card
+        </p>
+        <div style="text-align: center">
+          <h4>SUBSCRIBE TO @FrameTheEarth</h4>
+        </div>
+      </div>
+      <div class="credit slide hide">
+        <h3>Earning</h3>
+        <p>Only if you are in the Dodo club &#8482;</p>
+        <ul>
+          <li>1 Soar Buck = 2 Dodo Bucks</li>
+          <li>1 Soar Ticket = 5 Dodo Bucks</li>
+          <li>1 Student of the month = 10 Dodo Bucks</li>
+        </ul>
+        <p>To get a Dodo credit card you must pay 10 Dodo bucks</p>
+        Give those 10 Dodo bucks to Dodo employee and ask for a credit card. <br />We
+        will happily give you a credit card</p>
+        <div style="text-align: center">
+          <h4>SUBSCRIBE TO @FrameTheEarth</h4>
+        </div>
+      </div>
+      <div class="league slide hide">
+        <p>We decide league by how many Dodo bucks you have.<br/><br/>1-5=Iron<br/>5-10=Bronze<br/>10-15=Silver<br/>15-20=Gold<br/>20-25=Platinum<br/>25-30=Emerald<br/>30-35=Diamond<br/>+35=God</p>
+        <div style="text-align: center">
+          <h4>SUBSCRIBE TO @FrameTheEarth</h4>
+        </div>
+      </div>
+
+
+      <div class="employees slide hide">
+        <h3>Employees</h3>
+        <div>These employees are hardworking ones!</div>
+
+        <h4>Entrepreneur(s):</h4>
+        <ul>
+          <li>Krishna</li>
+        </ul>
+
+        <h4>Co-leaders:</h4>
+        <ul>
+          <li>Yuvaan</li>
+        </ul>
+
+        <h4>Managers:</h4>
+        <ul>
+          <li>Hiring</li>
+        </ul>
+
+        <h4>Quiz checker:</h4>
+        <ul>
+          <li>Hiring</li>
+        </ul>
+
+        <h4>Website creator:</h4>
+        <ul>
+          <li>Krishna</li>
+          <li>Gupta</li>
+        </ul>
+
+        <h4>Artists:</h4>
+        <ul>
+          <li>Bruhati</li>
+        </ul>
+        <div style="text-align: center">
+          <h4>SUBSCRIBE TO @FrameTheEarth</h4>
+        </div>
+      </div>
+      <div class="slide merch hide">
+      <ul>
+<li>Origami(anything) $3 Dodo Bucks</li>
+<li>Lemonade $2.50 USD</li>
+<li>Chocolate or vannila mug cake $7 USD</li> 
+<li>Diy STEAM electronics begginer kit $13 USD</li>
+<li>Boba (brown sugar, strawberry, mango seasonal) $7 USD</li>
+<li>More</li>
+
+      </ul>
+
+      <div>
+        <button
+          onclick="document.getElementById('order-content').style.display='block'"
+        >
+          ORDER
+        </button>
+        <div id="order-content" style="display: none">
+          Fill in form below and pickup by next 1-7 days at buddy bench<br/>
+          <iframe
+          src="https://forms.office.com/Pages/ResponsePage.aspx?id=P2fUH5bfIUaGOKHYjEyF19J-a2Al-AtBtEX5f4yOZndUNUw3UUlHMTFQUVlGTFAyTlhMTTFUSjNPOS4u"
+          width="400px"
+          height="400px"
+          frameborder="0"
+          marginheight="0"
+          marginwidth="0"
+        >
+          Loading…
+        </iframe>
+        </div>
+        <div style="text-align: center">
+          <h4>SUBSCRIBE TO @FrameTheEarth</h4>
+        </div>
+      </div>
+    </div>
+    
+    <div class="slide events hide">
+      <p>
+      Dodo easy join| June 9<sup>th</sup>
+      <br/>
+      A.R.C. pizza party with winners of A.R.C. and Dodo members| Unknown
+      <br/>
+      Cricket with Dodo members| June 19<sup>th</sup>
+    </p>
+  
+    <div style="text-align: center">
+      <h4>SUBSCRIBE TO @FrameTheEarth</h4>
+    </div>
+  </div>
+
+    <div class="slide blog hide">
+      <div class="voice-note">
+        <button class="play-btn" id="playBtn" onClick="onPlayBtnClick()">▶</button>
+        <div class="waveform" id="waveform"></div>
+        <div class="time">0:10</div>
+      </div>
+      <div style="text-align: center;">
+        <p><h2>Quantum Physics for Curious Minds: A Simple Guide to the Universe’s Strangest Secrets</h2>
+      </div>
+        <br/>
+          
+            If you've ever been curious about how the universe really works under the hood, welcome to the fascinating world of quantum physics, where particles can be in two places at once, nothing is truly certain, and reality behaves in ways that seem almost magical.
+          
+          Don’t worry, you don’t need a PhD or a chalkboard full of equations to understand the basics. Let’s explore quantum physics the simple way, one strange idea at a time.
+          <br/>
+          <br/>
+          
+           🔬 What Is Quantum Physics, Really?
+          Quantum physics is the science that explains how tiny particles, like electrons, protons, photons, and atoms, behave. These are the building blocks of everything: your phone, your body, your coffee mug, even light and heat.
+          
+          While “classical physics” (like Newton’s laws) explains things like gravity, cars, or the moon’s motion, it breaks down when you zoom in really, really close. That’s where quantum physics takes over.
+  
+          Quantum physics also plays a foundational role in chemistry, explaining how atoms bond to form molecules. It helps us understand why metals conduct electricity and why some materials become superconductors at low temperatures.
+          <br/>
+          <br/>
+  
+          📘 What Is Quantum Mechanics?
+          Quantum mechanics is the branch of physics that describes the mathematical rules behind quantum physics. While “quantum physics” is often used as a general term, quantum mechanics refers to the actual framework: the equations and principles that govern how particles behave.
+  
+          It tells us how to calculate probabilities, predict outcomes, and understand systems made of atoms and particles. The Schrödinger equation is a famous part of quantum mechanics. It’s like the Newton’s laws of the quantum world.
+  
+          Quantum mechanics underpins technologies like lasers, semiconductors, and even atomic clocks. It is used to predict chemical reactions, understand the behavior of materials, and is the reason quantum computers are possible.
+          <br/><br/>
+  
+            🌊 Wave-Particle Duality: Are Particles Really Waves?
+          Here’s one of the weirdest things in quantum physics: particles can act like waves.
+          
+          Think of a photon (a particle of light). You might imagine it as a tiny ball. But when scientists shine light through two narrow slits, it creates a pattern, as if it were a wave, not a bunch of particles.
+          
+          But then, if you watch which slit the photon goes through, it acts like a particle again.
+  
+          This dual behavior has been seen not just with photons, but with electrons, neutrons, and even entire atoms. It’s not just light that’s weird; everything at the quantum level behaves this way.
+  
+          🤯 Observation changes reality. That’s not science fiction; it’s been shown again and again in experiments like the Double Slit Experiment.
+          <br/>
+          <br/>
+            🎲 The Uncertainty Principle: Built-In Fuzziness
+          Proposed by Werner Heisenberg, the uncertainty principle says the more accurately you know a particle’s position, the less you know its speed, and vice versa.
+          
+          This isn’t about bad instruments; it’s a fundamental limit of nature. In the quantum world, things are inherently uncertain.
+  
+          This fuzziness also affects how atoms and electrons behave in atoms, leading to the idea of orbitals: regions where electrons are likely to be found rather than fixed paths.
+          <br/>
+          <br/>
+             🔗 Quantum Entanglement: Spooky Action at a Distance
+          Two particles can become entangled, meaning their properties are linked. Change one, and the other changes instantly, even across galaxies.
+          
+          Einstein didn’t like this and called it “spooky action at a distance.” But experiments show it’s real.
+          
+          Entanglement is at the heart of quantum computing and even futuristic ideas like quantum teleportation.
+  
+          It is also central to quantum cryptography, a way to transmit information securely because any attempt to eavesdrop would break the entanglement and be detected.
+          <br/>
+          <br/>
+            🔥 Black Body Radiation: The Mystery That Started It All
+          Here’s a fun historical detour.
+          
+          In the late 1800s, scientists tried to figure out how objects give off heat and light. They built perfect absorbers called black bodies, objects that absorb and emit all radiation.
+          
+          But their equations gave nonsense at high energies, suggesting infinite energy emission (called the ultraviolet catastrophe). Clearly wrong.
+          
+          Enter Max Planck, who suggested that energy is emitted in small packets, or quanta. This was the birth of quantum theory.
+          
+          His equation explained black body radiation perfectly, and this one idea (energy comes in tiny bits) changed physics forever.
+          <br/>
+          <br/>
+           🧠 Superposition: Two Things at Once
+          Quantum particles can be in multiple states at once. That’s called superposition.
+          
+          Imagine you’re both asleep and awake at the same time. Sounds crazy? That’s exactly what quantum particles do.
+          
+          Only when you measure or observe them do they “collapse” into one state. Until then, they’re in a mix of possibilities.
+          
+          This leads to the famous thought experiment: Schrödinger’s Cat, a cat in a box that’s both alive and dead until you check.
+          <br/>
+          <br/>
+  
+          🚪 Quantum Tunneling: Particles That Cheat Barriers
+          Quantum tunneling is when a particle goes through a barrier that it shouldn’t be able to cross, as if it "tunnels" through it.
+  
+          Imagine rolling a ball up a hill that doesn’t have enough energy to reach the top. In classical physics, it would roll back. But in quantum mechanics, there’s a small chance the ball simply appears on the other side.
+  
+          This is not science fiction. Quantum tunneling is real and happens in things like nuclear fusion in the sun and in scanning tunneling microscopes used in nanotechnology.
+  
+          It’s another reminder that quantum particles do not obey classical rules.
+          <br/><br/>
+  
+          🌫️ Quantum Decoherence: Why We Don’t See Superposition in Daily Life  
+          If particles can be in multiple states, why don’t we see superposition in big objects, like people or chairs? That’s because of quantum decoherence.  
+          
+          When a quantum system interacts with the environment, like air molecules or light, it quickly loses its quantum behavior. It decoheres into one classical state.  
+          
+          This explains why the quantum world looks so weird while our everyday world seems normal.
+          <br/><br/>
+  
+          🌌 Quantum Gravity: The Big Missing Piece  
+          Quantum physics works great for tiny particles. General relativity works great for massive things like stars and planets. But the two don’t agree with each other.  
+          
+          Scientists are working on theories like string theory and loop quantum gravity to merge them. If successful, we could understand black holes, the Big Bang, and maybe even build a unified theory of everything.  
+          <br/><br/>
+  
+          🌟 Virtual Particles: Ghosts of the Quantum World  
+          In the vacuum of space, particles constantly pop in and out of existence. These are called virtual particles.  
+          
+          They are not directly observable, but their effects are real. For example, they explain how forces like electromagnetism work and even cause measurable effects like the Casimir effect, where two metal plates in a vacuum attract each other.
+          <br/><br/>
+  
+            🧪 Why Does Any of This Matter?
+          You’re probably wondering: "Okay, this is wild, but what’s the point?"
+          
+          Here’s how quantum physics touches your life every day:
+          
+          Smartphones and computers: Use semiconductors that rely on quantum behavior.
+          
+          Lasers: Work due to quantum energy levels.
+          
+          MRI machines: Based on quantum spin.
+          
+          GPS: Requires quantum-corrected clocks.
+          
+          Quantum computing (emerging): Will be thousands of times faster for some problems.
+  
+          Quantum cryptography: Enables ultra-secure communication by using entanglement and superposition.
+          <br/>
+          <br/>
+            🛸 Final Thoughts: Reality Is Stranger Than Fiction
+          Quantum physics teaches us something humbling and beautiful. The universe is not what it seems. Underneath the world we see every day is a strange, probabilistic dance of particles and waves, full of mystery and wonder.
+          
+          The best part? We’re still just beginning to understand it.
+          
+          So the next time you hear “quantum,” don’t let it scare you. Let it spark your curiosity. Because even the weirdest ideas, like black body radiation, wave-particle duality, or quantum teleportation, are not just possible.
+  
+          They are how reality actually works.
+          🧠 Quantum Physics Dictionary <br/><br/>
+
+          1. Atom  
+          The basic unit of matter. Everything around you is made of atoms. <br/><br/>
+          
+          2. Photon  
+          A tiny particle of light. It has energy but no mass. <br/><br/>
+          
+          3. Electron  
+          A negatively charged particle found in atoms. It helps form electricity and chemical bonds. <br/><br/>
+          
+          4. Proton  
+          A positively charged particle found in the nucleus of an atom. It defines the element. <br/><br/>
+          
+          5. Neutron  
+          A neutral particle in the nucleus of an atom. It has mass but no charge. <br/><br/>
+          
+          6. Quantum  
+          A small, specific amount of something—usually energy. <br/><br/>
+          
+          7. Quantum Mechanics  
+          The mathematical framework that explains how particles behave at the smallest scales. <br/><br/>
+          
+          8. Superposition  
+          When a particle is in multiple states at once (like being in two places or having two energies). <br/><br/>
+          
+          9. Entanglement  
+          A connection between particles so strong that changing one affects the other instantly, even if far apart. <br/><br/>
+          
+          10. Wave-Particle Duality  
+          Particles (like light or electrons) behave like both waves and particles depending on how you observe them. <br/><br/>
+          
+          11. Uncertainty Principle  
+          You can’t know both a particle’s exact position and speed at the same time. Nature has a built-in fuzziness. <br/><br/>
+          
+          12. Quantum State  
+          The complete description of a particle’s properties (like its energy, spin, etc.). <br/><br/>
+          
+          13. Measurement (Observation)  
+          In quantum physics, measuring something can actually change it. It "collapses" possibilities into one result. <br/><br/>
+          
+          14. Black Body  
+          An ideal object that absorbs all light and emits radiation perfectly. Scientists use it to study heat and energy. <br/><br/>
+          
+          15. Black Body Radiation  
+          The energy (like heat and light) that a black body gives off. This led to the discovery of quantum theory. <br/><br/>
+          
+          16. Ultraviolet Catastrophe  
+          A failed prediction from classical physics that said hot objects should release infinite energy—fixed by quantum ideas. <br/><br/>
+          
+          17. Planck’s Constant (h)  
+          A tiny number that shows how energy is “quantized.” It’s the heart of many quantum formulas. <br/><br/>
+          
+          18. Schrödinger’s Cat  
+          A thought experiment about a cat being both alive and dead until you look inside a box—used to explain superposition. <br/><br/>
+          
+          19. Quantum Tunneling  
+          A particle magically goes through a barrier, even if it shouldn’t have enough energy to do so. <br/><br/>
+          
+          20. Qubit  
+          A quantum bit used in quantum computing. Unlike regular bits (0 or 1), a qubit can be both at once (superposition). <br/><br/>
+          
+          21. Spin  
+          A quantum property that’s kind of like rotation—but not exactly. It’s important for how particles behave. <br/><br/>
+          
+          22. Quantum Leap (Jump)  
+          When an electron instantly jumps from one energy level to another without traveling through the space in between. <br/><br/>
+          
+          23. Quantum Field  
+          A field (like an invisible energy layer) that covers space. Particles are seen as vibrations in these fields. <br/><br/>
+          
+          24. Vacuum Fluctuations  
+          Temporary changes in energy that happen in empty space due to virtual particles appearing and disappearing. <br/><br/>
+          
+          25. Virtual Particles  
+          Short-lived particles that exist in quantum fields and affect forces, even though they can't be directly observed. <br/><br/>
+          
+          26. Decoherence  
+          The process by which quantum systems lose their weird behavior and start behaving classically when interacting with the environment. <br/><br/>
+          
+          27. Hilbert Space  
+          An abstract mathematical space where quantum states live. It's used to calculate probabilities. <br/><br/>
+          
+          28. Eigenstate  
+          A specific, measurable state of a quantum system, like a particular energy or spin value. <br/><br/>
+          
+          29. Observable  
+          A physical property that can be measured in a quantum system, such as position or momentum. <br/><br/>
+          
+          30. Quantum Gravity  
+          A theoretical framework that tries to combine quantum mechanics with general relativity. <br/><br/>
+          
+          31. Many-Worlds Interpretation  
+          A theory suggesting that all possible outcomes of quantum measurements happen in separate, branching universes. <br/><br/>
+          
+          32. Quantum Supercomputer  
+          A new kind of computer that uses qubits to perform calculations that are too complex for regular computers. <br/><br/>
+          
+          33. Pauli Exclusion Principle  
+          A rule saying that no two electrons can occupy the same quantum state at the same time. <br/><br/>
+          
+          34. Fermion  
+          A type of particle (like electrons or protons) that follows the Pauli Exclusion Principle. <br/><br/>
+          
+          35. Boson  
+          Particles that carry forces (like photons or gluons) and do not follow the Pauli Exclusion Principle. <br/><br/>
+</p>            
+  
+
+      </div>
+      <div class="slide other hide">
+        <h3>Credits</h3>
+
+        <div>Couple of images are from Google.</div>
+        <div>-------------</div>
+        <h3>New Features</h3>
+        <div>This website is still beta.</div>
+        <ul>
+          <li>Planning Dodo websites structure</li>
+          <li>AI, Club, Club benefits and Dodo community coming soon</li>
+        </ul>
+        <div style="text-align: center">
+          <h4>SUBSCRIBE TO @FrameTheEarth</h4>
+        </div>
+      
+    </div>
+  </div>
+
+  </body>
+</html>
