@@ -7,15 +7,18 @@
     <title>Dodo Corp.</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js"></script>
+    <script src="money-scanner.js" defer></script>
   </head>
   <body>
     <header class="header">
-
       <br/>
       <div style="text-align: center">
       <h1>Dodo Corp. <span class="beta">beta</span></h1>
     </header>
-    <div/>
+
+    <!— Begin Money Scanner UI -->
+    <div id="total" style="position: absolute;top: 20px;right: 20px;">Total: $0</div>
+    
     <div style="text-align: center">
       <h3>Offical website</h3>
       <div>Redmond Elemantary </div>
@@ -95,13 +98,22 @@
           <li>1 Soar Buck = 2 Dodo Bucks</li>
           <li>1 Soar Ticket = 5 Dodo Bucks</li>
           <li>1 Student of the month = 10 Dodo Bucks</li>
-          <li>Play game = infinity</li>
+          <li>Play game = Infinity</li>
         </ul>
         <p>To get a Dodo credit card you must pay 10 Dodo bucks</p>
         Give those 10 Dodo bucks to Dodo employee and ask for a credit card. <br />We
         will happily give you a credit card</p>
-        <div>To get dodo bucks, play this game. Each coin you collect adds to you online cash</div>
+        <div>To get dodo bucks, play this game. Each 5 coins you collect adds to you online cash.<br/>*this feature is still getting coded. This feature might not work</div>
         <iframe src="mario_game/mario.html" width="500px" height="400px"></iframe>
+
+        <div>
+          <div id="message"></div>
+          <div id="inputWrapper">
+            <input id="codeInput" type="text" placeholder="Enter code" autocomplete="off" />
+            <button id="submitBtn">Add</button>
+          </div>
+        </div>
+
         <div style="text-align: center">
           <h4>SUBSCRIBE TO @FrameTheEarth</h4>
         </div>

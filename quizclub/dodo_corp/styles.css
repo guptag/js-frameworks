@@ -145,3 +145,48 @@ nav ul li.selected {
   font-size: 12px;
   color: #333;
 }
+
+#total {
+  font-size: 24px;
+  background: #222;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  width: 200px;
+  text-align: center;
+}
+
+#message {
+  font-size: 16px;
+  color: #444;
+  height: 20px;
+  margin-bottom: 20px;
+  min-height: 24px;
+}
+
+#inputWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+#codeInput {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 2px solid #222;
+  width: 150px;
+}
+
+#submitBtn {
+  padding: 8px 16px;
+  font-size: 16px;
+  background: gold;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
